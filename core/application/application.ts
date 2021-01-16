@@ -1,0 +1,55 @@
+import { ContextInterface, ContextManager, ContextScopeEnum } from '../context'
+import { DI } from '../di'
+import { LoggerInterface } from '../logger'
+import { ParsedVersionInterface } from '../parsed-version.interface'
+import { Service } from '../service'
+import { ApplicationInterface } from './application.interface'
+
+
+// https://github.com/zawinul/eng-docs/blob/68c4199e906e09bc1e9e92548df21e887fb412cc/experimental/eng-ms-ts-service/1/src/api-server.ts
+// https://tsoa-community.github.io/docs/introduction.html
+export class Application extends Service implements ApplicationInterface {
+    private readonly _name: string
+    private readonly _version: ParsedVersionInterface
+
+    constructor(name?: string, version?: string) {
+        super()
+        this._name = name ?? 'app'
+
+        const ver = version ?? process.env.npm_package_version ?? '0.0.0'
+        const [major, minor, patch] = ver.split('.').map(Number)
+        const number = major * 1_000_000 + minor * 1_000 + patch
+        this._version = {version: ver, number, major, minor, patch}
+
+        process.on('unhandledRejection', this.onUnhandledRejection.bind(this))
+        process.on('uncaughtException', this.onUncaughtException.bind(this))
+    }
+
+
+    public get context(): ContextInterface {
+        return DI.get(ContextManager).getContext(ContextScopeEnum.APP)
+    }
+
+    public get name() {
+        return this._name
+    }
+
+    public get version(): ParsedVersionInterface {
+        return this._version
+    }
+
+    public onExit(code: number, logger): void {
+        code > 0 && logger.error({action: 'onExit', exitCode: code})
+    }
+
+    public onUncaughtException(err: Error, logger: LoggerInterface): void {
+        logger.error({module: 'app', error: {message: err.message}}, err.message)
+        process.kill(process.pid, 'SIGINT')
+    }
+
+    public onUnhandledRejection(reason, p, logger): void {
+        const msg = `Unhandled Rejection at: ${p} reason: ${reason}`
+        logger.error({module: 'app', error: {message: msg}}, msg)
+        process.kill(process.pid, 'SIGINT')
+    }
+}
