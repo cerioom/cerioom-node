@@ -1,8 +1,14 @@
+import { ContextInterface } from '../context'
 import { LoggerInterface } from './logger.interface'
 
 
 export class Logger implements LoggerInterface {
     protected _bindings: Record<any, any> = {}
+    protected _context: ContextInterface | undefined
+
+    constructor(context?: ContextInterface) {
+        this._context = context
+    }
 
     public child(bindings: Record<any, any>): LoggerInterface {
         this._bindings = {...this._bindings, bindings}

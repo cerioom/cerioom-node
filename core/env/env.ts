@@ -15,7 +15,7 @@ export class Env implements EnvInterface {
 
         this._name = name
         this._config = config
-        this._isDevMode = isDevMode ?? (prodEnvNames.includes(nodeEnv) || prodEnvNames.includes(configEnv))
+        this._isDevMode = isDevMode ?? !(prodEnvNames.includes(nodeEnv) || prodEnvNames.includes(configEnv))
         this._nodeVersion = parseInt(process.version.slice(1).split('.')[0], 10)
     }
 

@@ -2,6 +2,7 @@ import { EventBusTransportInterface } from './event-bus-transport.interface'
 import { EventBusInterface } from './event-bus.interface'
 
 
+// https://moleculer.services/docs/0.12/transporters.html
 export class EventBusService implements EventBusInterface {
     protected transports: EventBusTransportInterface[] = []
 

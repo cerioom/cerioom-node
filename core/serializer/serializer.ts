@@ -1,7 +1,7 @@
 import { FormatterInterface } from './formatter.interface'
 import { SerializerInterface } from './serializer.interface'
 
-
+// https://moleculer.services/docs/0.12/serializers.html
 export class Serializer<Target = any> implements SerializerInterface<Target> {
     // private _normalizer: DataNormalizer
     private readonly _formatter: FormatterInterface

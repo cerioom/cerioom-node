@@ -6,18 +6,26 @@ import { ServiceInterface } from './service.interface'
 
 
 export class Service extends EventEmitter implements ServiceInterface {
-    public log: LoggerInterface
+    private _log: LoggerInterface
 
     constructor() {
         super()
-        this.log = DI.get(Logger).child({
+        this._log = DI.get(Logger).child({
             // @ts-expect-error
-            module: this.constructor.name === 'ioc_wrapper' ? this.constructor.__parent.name : this.constructor.name
+            module: this.constructor.name.toLowerCase().includes('ioc') && 'name' in this.constructor.__parent ? this.constructor.__parent.name : this.constructor.name
         })
-        this.log.trace('constructed')
+        this._log.debug('constructed')
     }
 
     public get context(): ContextInterface {
         return DI.get(ContextManager).getContext(ContextScopeEnum.REQUEST)
+    }
+
+    public get log(): LoggerInterface {
+        if (!Object.keys(this._log.bindings()).includes('requestId') && this.context.requestId) {
+            return this._log.child({requestId: this.context.requestId})
+        }
+
+        return this._log
     }
 }

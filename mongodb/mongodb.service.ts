@@ -79,7 +79,7 @@ export class MongodbService extends Service {
 
     public async getDb(context: ContextInterface, name?: string): Promise<Db> {
         const dbName = [context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
-        this.log.debug({dbName})
+        this.log.debug({action: 'getDb', dbName})
 
         const db = (await this.getConnection(context)).db(dbName, {returnNonCachedInstance: false})
 
@@ -164,6 +164,7 @@ export class MongodbService extends Service {
             }
         } else {
             const logData = {
+                action: 'getConnection',
                 tenant: {id: context.tenant.id},
                 connectionUrl: connectionUrl,
                 options: inspect(Security.maskFields(connectionOptions, ['auth.password'])),

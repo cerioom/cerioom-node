@@ -5,7 +5,7 @@ export interface LoggerFn {
 
 export interface LoggerInterface {
     child: (bindings: Record<any, any>) => LoggerInterface
-    bindings: () => Record<any, any>
+    bindings: () => Record<string, any>
 
     fatal: LoggerFn
     error: LoggerFn
