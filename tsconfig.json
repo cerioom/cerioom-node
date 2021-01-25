@@ -1,0 +1,39 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "inlineSourceMap": true,
+        "listFiles": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "esModuleInterop": true,
+        "pretty": true,
+        "removeComments": false,
+        "skipLibCheck": true,
+        "sourceMap": false,
+        "sourceRoot": "./",
+        "strict": false,
+        "strictNullChecks": true,
+        "target": "es2019",
+        "types": [
+            "jest",
+            "node"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2019"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

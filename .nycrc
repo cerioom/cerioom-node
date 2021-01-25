@@ -1,0 +1,45 @@
+{
+  "verbose": false,
+  "tempDirectory": "./coverage/.tmp",
+  "semistandard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "extension": [
+    ".ts",
+    ".js"
+  ],
+  "exclude": [
+    "**/test/*",
+    "**/dist/*",
+    "**/*.dist.js",
+    "**/templates/*",
+    "**/tests/*",
+  ],
+  "print": "detail",
+  "reporter": [
+    "html",
+    "text",
+    "text-summary",
+    "lcov"
+  ],
+  "watermarks": {
+    "statements": [
+      70,
+      90
+    ],
+    "lines": [
+      70,
+      90
+    ],
+    "functions": [
+      70,
+      90
+    ],
+    "branches": [
+      70,
+      90
+    ]
+  }
+}

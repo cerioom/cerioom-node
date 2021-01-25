@@ -1,0 +1,65 @@
+{
+    "name": "cerioom",
+    "description": "",
+    "private": false,
+    "author": "Sergey Ilin <sergilyin@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cerioom/cerioom-node.git"
+    },
+    "scripts": {
+        "prepublishOnly": "lerna run build",
+        "test:since": "lerna run test --since",
+        "test:core": "lerna run test --scope=@cerioom/core",
+        "test:main": "lerna run test --scope={@cerioom/core,@cerioom/resource}",
+        "ver": "lerna version --no-push --exact",
+        "new-version": "lerna version --conventional-commits --yes",
+        "release": "lerna publish from-git --yes --pre-dist-tag next",
+        "install": "lerna bootstrap",
+        "publish": "lerna publish && git commit -am \"chore: Update changelog\" && git push origin",
+        "publish:premajor": "lerna publish premajor --preid pre --pre-dist-tag pre && git commit -am \"chore: Update version and changelog\" && git push origin",
+        "publish:prerelease": "lerna publish prerelease --preid pre --pre-dist-tag pre && git commit -am \"chore: Update version and changelog\" && git push origin",
+        "lint": "eslint packages/**/src/**/*.ts packages/**/test/**/*.ts --fix",
+        "update-dependencies": "ncu -u && lerna exec -- ncu -u",
+        "clean": "find . -name node_modules -exec rm -rf '{}' + && find . -name package-lock.json -exec rm -rf '{}' +",
+        "test": "npm run lint && nyc lerna run test"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.22",
+        "@typescript-eslint/eslint-plugin": "^4.11.0",
+        "@typescript-eslint/parser": "^4.11.0",
+        "eslint": "^7.16.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jsdoc": "^31.3.3",
+        "eslint-plugin-prefer-arrow": "^1.2.2",
+        "lerna": "^3.22.1",
+        "npm-check-updates": "^11.1.0",
+        "nyc": "^15.1.0",
+        "typescript": "^4.1.3"
+    },
+    "resolutions": {},
+    "workspaces": [
+        "packages/*"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    },
+    "changelog": {
+        "labels": {
+            "Type: Breaking Change": "🔨 Breaking Changes",
+            "Type: Bug": "🐛 Bugfixes",
+            "Type: Documentation": "📝 Documentation",
+            "Type: Feature": "🚀 Features",
+            "Type: Enhancement": "✨ Enhancements",
+            "Type: Housekeeping": "🏡 Housekeeping"
+        }
+    },
+    "prettier": {
+        "singleQuote": false
+    }
+}

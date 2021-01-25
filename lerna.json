@@ -1,0 +1,32 @@
+{
+  "version": "0.0.1",
+  "npmClient": "npm",
+  "ci": false,
+  "useWorkspaces": true,
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "hoist": true
+    },
+    "publish": {
+      "allowBranch": [
+        "crow",
+        "dove"
+      ],
+      "message": "chore(release): publish %s",
+      "conventionalCommits": true,
+      "createRelease": "github"
+    }
+  },
+  "ignoreChanges": [
+    "**/changelog.md",
+    "**/CHANGELOG.md",
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/test/**",
+    "lerna.json",
+    "readme.md"
+  ]
+}

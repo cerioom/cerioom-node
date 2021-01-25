@@ -1,0 +1,4 @@
+spec
+.idea
+coverage/
+!*.d.ts
