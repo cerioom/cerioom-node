@@ -1,1 +1,0 @@
-export { DI } from './di'
