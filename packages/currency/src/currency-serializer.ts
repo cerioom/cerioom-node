@@ -1,13 +1,14 @@
-import { SerializerInterface } from '../core/serializer'
+import { SerializerInterface } from '@cerioom/core'
 import { UnsupportedCurrencyError } from './currency.error'
 import listOfCurrency = require('world-currencies')
 
 
-const CAPACITY_MAGNIFIER = 2 // DO NOT CHANGE!!!
+// DO NOT TOUCH!!!
+const CAPACITY_MAGNIFIER = 2
 
 
 export class CurrencySerializer implements SerializerInterface<number> {
-    protected currency: string = 'USD'
+    protected currency = 'USD'
 
     public configure(param: {currency: any}): this {
         this.currency = param.currency
@@ -19,14 +20,13 @@ export class CurrencySerializer implements SerializerInterface<number> {
     }
 
     public deserialize(value: number): number {
-        return parseInt(String(value / 10 ** CAPACITY_MAGNIFIER)) / 10 ** CurrencySerializer.getFractionSize(this.currency)
+        return parseInt(String(value / 10 ** CAPACITY_MAGNIFIER), 10) / 10 ** CurrencySerializer.getFractionSize(this.currency)
     }
 
-    public static getFractionSize(currency: string): number {
-        if (currency in listOfCurrency) {
-            return listOfCurrency[currency].units.minor.majorValue
-                .toString()
-                .split('.')[1].length || 2
+    public static getFractionSize(currency: string, defaultValue = 2): number {
+        const curr = listOfCurrency[currency]
+        if (curr) {
+            return curr.units.minor.majorValue.toString().split('.')[1].length || defaultValue
         }
 
         throw new UnsupportedCurrencyError()

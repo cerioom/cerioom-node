@@ -1,6 +1,6 @@
-import { ContextInterface } from '../../core/context'
-import { DI } from '../../core/di'
-import { NumberField, ResourceQueryMapperType } from '../../resource/resource-query'
+import { ContextInterface } from '@cerioom/core'
+import { DI } from '@cerioom/core'
+import { NumberField, ResourceQueryMapperType } from '@cerioom/resource'
 import { CurrencySerializer } from '../currency-serializer'
 
 

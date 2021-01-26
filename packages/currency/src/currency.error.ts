@@ -1,6 +1,6 @@
-import { UnprocessableEntityError } from '../http/error'
+import { RuntimeError } from '@cerioom/core'
 
-export class UnsupportedCurrencyError extends UnprocessableEntityError {
+export class UnsupportedCurrencyError extends RuntimeError {
     constructor(message?: string) {
         super(message ?? 'i18n|common:error.unsupported-currency.text')
     }

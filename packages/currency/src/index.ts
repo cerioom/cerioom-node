@@ -1,2 +1,3 @@
-export { CurrencySerializer } from './currency-serializer'
-export { UnsupportedCurrencyError } from './currency.error'
+export * from './resource-query/resource-query-field-type'
+export * from './currency-serializer'
+export * from './currency.error'
