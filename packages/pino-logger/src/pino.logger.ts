@@ -2,7 +2,7 @@ import { DI, Env, Logger, LoggerFn, LoggerInterface } from '@cerioom/core'
 import { parse } from 'path'
 import * as pino from 'pino'
 import { DestinationObjectOptions, DestinationStream } from 'pino'
-import * as noir from 'pino-noir'
+import noir from 'pino-noir'
 import P = require('pino')
 
 
