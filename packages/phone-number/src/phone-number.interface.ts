@@ -1,3 +1,3 @@
-export interface PhoneInterface {
+export interface PhoneNumberInterface {
     format: (phoneNumber: string, phoneRegion?: string, phoneNumberFormat?: string | number) => string
 }

@@ -1,13 +1,14 @@
-import { PhoneInterface } from './phone.interface'
 import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber'
-import { PhoneNumberInvalidError } from './phone.error'
+import { PhoneNumberInvalidError } from './phone-number.error'
+import { PhoneNumberInterface } from './phone-number.interface'
+
 
 export { PhoneNumberFormat } from 'google-libphonenumber'
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
 
-export class Phone implements PhoneInterface {
+export class PhoneNumber implements PhoneNumberInterface {
     protected phoneRegion: string | undefined
     protected phoneNumberFormat: string | number | undefined
 

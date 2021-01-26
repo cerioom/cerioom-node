@@ -1,4 +1,4 @@
-import {RuntimeError} from '../core/error'
+import {RuntimeError} from '@cerioom/core'
 
 
 export class PhoneNumberInvalidError extends RuntimeError {
