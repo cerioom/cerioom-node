@@ -1,10 +1,8 @@
+import { DI, Env, Logger, LoggerFn, LoggerInterface } from '@cerioom/core'
 import { parse } from 'path'
 import * as pino from 'pino'
 import { DestinationObjectOptions, DestinationStream } from 'pino'
 import * as noir from 'pino-noir'
-import { DI } from '../core/di'
-import { Env } from '../core/env'
-import { Logger, LoggerFn, LoggerInterface } from '../core/logger'
 import P = require('pino')
 
 
@@ -30,7 +28,7 @@ export class PinoLogger extends Logger {
             timestamp: pino.stdTimeFunctions.isoTime,
             serializers: noir(opts?.secureTokens, '*****'),
             formatters: {
-                level(label, number) {
+                level: function(label, number) {
                     return {level: label}
                 },
             },
@@ -43,9 +41,9 @@ export class PinoLogger extends Logger {
         this._logger = pino(this._options, this._destination)
         this._logger.debug('Logger initiated')
 
-        // if (['debug', 'trace'].includes(options.level ?? 'info')) {
-        //     this.logger = this.traceCaller(this.logger)
-        // }
+        if (['debug', 'trace'].includes(this._options.level ?? 'info')) {
+            this._logger = this.traceCaller(this._logger)
+        }
     }
 
     public bindings(): Record<any, any> {
@@ -115,6 +113,6 @@ export class PinoLogger extends Logger {
             return name === asJsonSym ? asJson : target[name]
         }
 
-        return new Proxy(pinoInstance, {get})
+        return new Proxy(pinoInstance, {get: get})
     }
 }
