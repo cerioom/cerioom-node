@@ -1,4 +1,4 @@
-export interface ResponseInterface<T = any> {
+export interface ResourceEnvelopeInterface<T = any> {
     data: T | T[]
     meta: {
         total?: number

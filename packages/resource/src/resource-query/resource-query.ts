@@ -20,14 +20,14 @@ export class ResourceQuery implements ResourceQueryInterface {
     protected parseOneElement(field, value): any {
         if (typeof value === 'boolean') {
             return [{
-                field,
+                field: field,
                 op: this.getOperationSign('eq'),
                 value: String(value),
                 type: 'boolean',
             }]
         } else if (Array.isArray(value)) {
             return [{
-                field,
+                field: field,
                 op: this.getOperationSign('eq'),
                 value: value.join(', '),
                 type: 'array',
@@ -45,14 +45,14 @@ export class ResourceQuery implements ResourceQueryInterface {
             const mm = minutes > 9 ? minutes : `0${minutes}`
             const format = (['0000', '2359'].includes(`${HH}${mm}`)) ? `${YYYY}-${MM}-${DD}` : `${YYYY}-${MM}-${DD} ${HH}:${mm}`
             return [{
-                field,
+                field: field,
                 op: this.getOperationSign('eq'),
                 value: format,
                 type: 'date',
             }]
         } else if (Number.isInteger(Number(value))) {
             return [{
-                field,
+                field: field,
                 op: this.getOperationSign('eq'),
                 value: String(value),
                 type: 'number',
@@ -62,13 +62,13 @@ export class ResourceQuery implements ResourceQueryInterface {
             for (const op of Object.keys(value)) {
                 const res = this.parseOneElement(op, value[op])
                 for (const row of res) {
-                    fields.push({field, op: this.getOperationSign(op), value: row.value, type: row.type})
+                    fields.push({field: field, op: this.getOperationSign(op), value: row.value, type: row.type})
                 }
             }
             return fields
         } else {
             return [{
-                field,
+                field: field,
                 op: this.getOperationSign('eq'),
                 value: String(value),
                 type: 'string',
