@@ -1,5 +1,5 @@
 import { CacheService } from './'
-import * as LRU from 'lru-cache'
+import LRU from 'lru-cache'
 
 
 export class LruCacheService<V = any> extends CacheService<string, V> {

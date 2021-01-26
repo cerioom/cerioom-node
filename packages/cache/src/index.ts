@@ -1,3 +1,4 @@
-export { CacheStoreInterface } from './cache-store.interface'
-export { CacheInterface } from './cache.interface'
-export { CacheService } from './cache.service'
+export * from './cache-store.interface'
+export * from './cache.interface'
+export * from './cache.service'
+export * from './lru-cache.service'
