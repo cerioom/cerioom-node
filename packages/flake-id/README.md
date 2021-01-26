@@ -5,7 +5,7 @@
 ## Installation
 
 ```
-npm i @cerioom/clake-id
+npm i @cerioom/flake-id
 ```
 
 ## Documentation
