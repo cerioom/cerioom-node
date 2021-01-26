@@ -1,4 +1,4 @@
-import { ContextInterface } from '../../core/context'
+import { ContextInterface } from '@cerioom/core'
 import { ResourceQueryMapperType } from './resource-query-field-type'
 
 

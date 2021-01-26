@@ -1,6 +1,6 @@
 import { Readable } from 'stream'
-import { ResponseEnvelopeInterface } from '../../core/response-envelope.interface'
-import { ServiceInterface } from '../../core/service'
+import { ResponseEnvelopeInterface } from '@cerioom/core'
+import { ServiceInterface } from '@cerioom/core'
 import { ResourceQueryInterface } from '../resource-query'
 import { InsertManyOptionsInterface } from './insert-many-options.interface'
 import { InsertManyResultInterface } from './insert-many-result.interface'

@@ -1,4 +1,4 @@
-import { Strings } from '../../core/helper'
+import { Strings } from '@cerioom/core'
 import { ResourceQueryInterface } from './resource-query.interface'
 
 

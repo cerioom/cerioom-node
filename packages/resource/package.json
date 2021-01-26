@@ -1,0 +1,44 @@
+{
+    "name": "@cerioom/resource",
+    "version": "0.0.1",
+    "description": "",
+    "author": "Sergey Ilin <sergilyin@gmail.com>",
+    "license": "MIT",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cerioom/cerioom-node.git",
+        "directory": "packages/resource"
+    },
+    "typings": "dist",
+    "engines": {
+        "node": ">= 14"
+    },
+    "main": "dist/",
+    "types": "dist/",
+    "files": [
+        "CHANGELOG.md",
+        "LICENSE",
+        "README.md",
+        "src/**",
+        "dist/**",
+        "*.d.ts",
+        "*.js"
+    ],
+    "scripts": {
+        "prepublishOnly": "npm run build",
+        "build": "tsc",
+        "test": "jest --detectOpenHandles --forceExit"
+    },
+    "directories": {
+        "lib": "dist"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "peerDependencies": {},
+    "dependencies": {
+        "@cerioom/core": "^0.0.4"
+    },
+    "devDependencies": {}
+}
