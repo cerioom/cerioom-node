@@ -1,6 +1,5 @@
+import { RuntimeError, UniqueIdInterface } from '@cerioom/core'
 import * as uuid from 'uuid'
-import { RuntimeError } from '../core/error'
-import { UniqueIdInterface } from '../core/unique-id.interface'
 
 
 export class UUID implements UniqueIdInterface {
@@ -18,6 +17,6 @@ export class UUID implements UniqueIdInterface {
             return uuid.v4()
         }
 
-        throw new RuntimeError('Unknown version of UUI')
+        throw new RuntimeError('Unknown version of UUID')
     }
 }
