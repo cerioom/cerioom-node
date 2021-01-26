@@ -1,2 +1,2 @@
-export { ApplicationInterface } from './application.interface'
-export { Application } from './application'
+export * from './application.interface'
+export * from './application'

@@ -1,2 +1,2 @@
-export { ServiceInterface } from './service.interface'
-export { Service } from './service'
+export * from './service.interface'
+export * from './service'

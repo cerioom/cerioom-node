@@ -1,3 +1,3 @@
-export { ErrorInterface } from './error.interface'
-export { ValidationResultInterface } from './validation-result.interface'
-export { RuntimeError } from './runtime.error'
+export * from './error.interface'
+export * from './validation-result.interface'
+export * from './runtime.error'

@@ -1,2 +1,2 @@
-export { Config } from './config'
-export { ConfigInterface } from './config.interface'
+export * from './config'
+export * from './config.interface'

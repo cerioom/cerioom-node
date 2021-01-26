@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/core",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -37,7 +37,6 @@
         "access": "public"
     },
     "peerDependencies": {},
-    "devDependencies": {
-        "shx": "^0.3.3"
-    }
+    "dependencies": {},
+    "devDependencies": {}
 }

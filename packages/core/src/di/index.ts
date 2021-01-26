@@ -1,1 +1,1 @@
-export { DI } from './di'
+export * from './di'
