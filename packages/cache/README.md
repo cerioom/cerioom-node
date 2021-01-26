@@ -5,7 +5,7 @@
 ## Installation
 
 ```
-npm i @cerioom/authentication
+npm i @cerioom/cache
 ```
 
 ## Documentation
