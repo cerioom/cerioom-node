@@ -1,4 +1,5 @@
 // https://thecodebarbarian.com/managing-connections-with-the-mongodb-node-driver.html
+import { Application, ContextInterface, DI, Env, Security, Service } from '@cerioom/core'
 import {
     Db,
     DbCreateOptions,
@@ -12,12 +13,6 @@ import {
     SSLOptions,
 } from 'mongodb'
 import { inspect } from 'util'
-import { Application } from '../core/application'
-import { ContextInterface } from '../core/context'
-import { DI } from '../core/di'
-import { Env } from '../core/env'
-import { Security } from '../core/helper'
-import { Service } from '../core/service'
 
 
 const dbCreateOptions = <DbCreateOptions> {
@@ -79,7 +74,7 @@ export class MongodbService extends Service {
 
     public async getDb(context: ContextInterface, name?: string): Promise<Db> {
         const dbName = [context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
-        this.log.debug({action: 'getDb', dbName})
+        this.log.debug({action: 'getDb', dbName: dbName})
 
         const db = (await this.getConnection(context)).db(dbName, {returnNonCachedInstance: false})
 
@@ -187,23 +182,23 @@ export class MongodbService extends Service {
     }
 
     protected onExit(): void {
-        Object.keys(connections).map(async(connectionId) => {
-            this.log.warn({connectionId})
+        Object.keys(connections).map(async (connectionId) => {
+            this.log.warn({connectionId: connectionId})
             await connections[connectionId].close()
         })
     }
 
     protected onError(error) {
-        this.log.error({error, exit: 1})
+        this.log.error({error: error, exit: 1})
         process.exit(1)
     }
 
     protected onClose(info) {
-        this.log.warn({info})
+        this.log.warn({info: info})
     }
 
     protected onReconnect(info) {
-        this.log.warn({info})
+        this.log.warn({info: info})
     }
 
     protected onFullSetup() {

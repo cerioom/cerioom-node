@@ -1,6 +1,6 @@
+import { Strings } from '@cerioom/core'
+import { ResourceQuery, ResourceQueryInterface, ResourceQueryMapper } from '@cerioom/resource'
 import { Cursor } from 'mongodb'
-import { Strings } from '../../core/helper'
-import { ResourceQuery, ResourceQueryInterface, ResourceQueryMapper } from '../../resource/resource-query'
 import { ResourceQueryFieldsInterface, ResourceQueryFilterInterface, ResourceQuerySortInterface } from './'
 
 
@@ -37,7 +37,7 @@ export class MongodbResourceQuery extends ResourceQuery {
         query: ResourceQueryInterface,
         cursor: any,
         resourceQueryMapper: ResourceQueryMapper = new ResourceQueryMapper({}),
-        applyLimitAndSkip: boolean = true,
+        applyLimitAndSkip = true,
     ): any {
         if (query.filter) {
             cursor.filter(this.buildFilter(query.filter, resourceQueryMapper))
@@ -82,7 +82,7 @@ export class MongodbResourceQuery extends ResourceQuery {
     }
 
     public applyLimit(cursor: Cursor<any>, query: ResourceQueryInterface) {
-        let limit = parseInt(<any> query.limit) || 20
+        let limit = parseInt(<any> query.limit, 10) || 20
         if (limit < 0) {
             limit = 1
         }
@@ -91,7 +91,7 @@ export class MongodbResourceQuery extends ResourceQuery {
     }
 
     public applySkip(cursor: Cursor<any>, query: ResourceQueryInterface) {
-        let offset = parseInt(<any> query.offset) || 0
+        let offset = parseInt(<any> query.offset, 10) || 0
         if (offset < 0) {
             offset = 0
         }
@@ -103,7 +103,7 @@ export class MongodbResourceQuery extends ResourceQuery {
         cursor: Cursor<any>,
         query: ResourceQueryInterface,
     ) {
-        let limit = parseInt(<any> query.limit) || 20
+        let limit = parseInt(<any> query.limit, 10) || 20
         if (limit < 0) {
             limit = 1
         }
@@ -112,7 +112,7 @@ export class MongodbResourceQuery extends ResourceQuery {
             limit = 1_000
         }
 
-        let offset = parseInt(<any> query.offset) || 0
+        let offset = parseInt(<any> query.offset, 10) || 0
         if (offset < 0) {
             offset = 0
         }
@@ -127,7 +127,7 @@ export class MongodbResourceQuery extends ResourceQuery {
 
         Object
             .keys(sort)
-            .forEach(key => (result[key] = isNaN(Number(sort[key])) ? sort[key] : parseInt(<any> sort[key]))) // "isNaN(sort[key])" avoid parse int for ".sort( { score: { $meta: "textScore" } } )"
+            .forEach(key => (result[key] = isNaN(Number(sort[key])) ? sort[key] : parseInt(<any> sort[key], 10)))
 
         return result
     }
@@ -137,7 +137,7 @@ export class MongodbResourceQuery extends ResourceQuery {
 
         Object
             .keys(fields)
-            .forEach(key => (result[key] = isNaN(Number(fields[key])) ? fields[key] : parseInt(<any> fields[key]))) // "isNaN(fields[key])" avoid parse int for ".project( { score: { $meta: "textScore" } } )"
+            .forEach(key => (result[key] = isNaN(Number(fields[key])) ? fields[key] : parseInt(<any> fields[key], 10)))
 
         return result
     }
@@ -165,7 +165,7 @@ export class MongodbResourceQuery extends ResourceQuery {
                                 result[field] = {
                                     ...result[field],
                                     // @ts-expect-error
-                                    [FILTERS[operator]]: resourceQueryMapper.formatField(value, field, {logger}),
+                                    [FILTERS[operator]]: resourceQueryMapper.formatField(value, field, {logger: logger}),
                                 }
                             } else if (operator === 'like') {
                                 result[field] = {
@@ -177,14 +177,14 @@ export class MongodbResourceQuery extends ResourceQuery {
                                 result[field] = {
                                     ...result[field],
                                     // @ts-expect-error
-                                    [operator]: resourceQueryMapper.formatField(value, field, {logger}),
+                                    [operator]: resourceQueryMapper.formatField(value, field, {logger: logger}),
                                 }
                             }
                         },
                     )
                 } else {
                     // @ts-expect-error
-                    result[field] = resourceQueryMapper.formatField(filters, field, {logger})
+                    result[field] = resourceQueryMapper.formatField(filters, field, {logger: logger})
                 }
             },
         )

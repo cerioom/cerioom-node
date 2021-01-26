@@ -1,7 +1,8 @@
+import { ResourceQueryFilterInterface } from '@cerioom/resource'
 import { UpdateQuery } from 'mongodb'
-import { ResourceQueryFilterInterface } from '../../resource/resource-query'
 
-export { ResourceQueryFilterInterface, ResourceQueryFilterOperatorInterface } from '../../resource/resource-query'
+
+export { ResourceQueryFilterInterface, ResourceQueryFilterOperatorInterface } from '@cerioom/resource'
 
 export interface ResourceQuerySortInterface {
     [field: string]: number | {$meta: string}

@@ -1,3 +1,15 @@
+import { DI, FormatterInterface, RuntimeError } from '@cerioom/core'
+import {
+    InsertManyResultInterface,
+    RemoveManyResultInterface,
+    Repository as BaseRepository,
+    RepositoryInterface,
+    ResourceEnvelopeInterface,
+    ResourceQueryFilterInterface,
+    ResourceQueryInterface,
+    ResourceQueryMapper,
+    UpdateManyResultInterface,
+} from '@cerioom/resource'
 import * as _ from 'lodash'
 import {
     CollectionInsertOneOptions,
@@ -14,19 +26,7 @@ import {
     UpdateQuery,
 } from 'mongodb'
 import { MongodbService } from '../'
-import { DI } from '../../core/di'
-import { RuntimeError } from '../../core/error'
-import { FormatterInterface } from '../../core/serializer/formatter.interface'
-import { ResponseInterface } from '../../http/response/response.interface'
-import {
-    InsertManyResultInterface,
-    RemoveManyResultInterface,
-    Repository as BaseRepository,
-    RepositoryInterface,
-    UpdateManyResultInterface,
-} from '../../resource/repository'
-import { ResourceQueryInterface, ResourceQueryMapper } from '../../resource/resource-query'
-import { MongodbResourceQuery, ResourceQueryFilterInterface } from '../resource-query'
+import { MongodbResourceQuery } from '../resource-query'
 
 
 export abstract class Repository<Model> extends BaseRepository<Model> implements RepositoryInterface<Model> {
@@ -49,12 +49,12 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
         try {
             const db = await this.getNamespace()
-            await this.emit('pre:count', {repository: this, filter, options: opts})
+            await this.emit('pre:count', {repository: this, filter: filter, options: opts})
             const result = await db.collection(this.collectionName).countDocuments(filter, opts)
-            await this.emit('post:count', {repository: this, filter, result, options: opts})
+            await this.emit('post:count', {repository: this, filter: filter, result: result, options: opts})
             return result
         } catch (err) {
-            await this.emit('error:count', {repository: this, error: err, filter, options: opts})
+            await this.emit('error:count', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -65,10 +65,10 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async export(query: ResourceQueryInterface<Model>, options?: FindOneOptions<Model> & {transform?: (document: Model) => any}): Promise<Cursor> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         try {
-            this.log.debug({action: 'export', tenant: {id: this.context.tenant.id}, collection: this.collectionName, query})
+            this.log.debug({action: 'export', tenant: {id: this.context.tenant.id}, collection: this.collectionName, query: query})
 
             const db = await this.getNamespace()
-            await this.emit('pre:export', {repository: this, query, opts})
+            await this.emit('pre:export', {repository: this, query: query, opts: opts})
             const cursor = db.collection(this.collectionName, opts)
                 .find(this.mongodbResourceQuery.makeFilter(query, this.resourceQueryMapper), opts)
             this.mongodbResourceQuery?.applyFields(cursor, query)
@@ -79,11 +79,11 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                 this.mongodbResourceQuery?.applyLimit(cursor, query)
             }
 
-            return cursor.stream(options).on('end', _ => {
-                this.emit('post:export', {repository: this, query, opts})
+            return cursor.stream(options).on('end', () => {
+                this.emit('post:export', {repository: this, query: query, opts: opts})
             })
         } catch (err) {
-            this.emit('error:export', {repository: this, error: err, query, options: options})
+            this.emit('error:export', {repository: this, error: err, query: query, options: options})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         }
@@ -99,18 +99,18 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         try {
             const db = await this.getNamespace()
 
-            await this.emit('pre:find', {repository: this, filter, options: opts})
+            await this.emit('pre:find', {repository: this, filter: filter, options: opts})
             const cursor = db.collection(this.collectionName)
                 .find(filter, opts)
                 .comment(this.context.requestId ? `requestId=${this.context.requestId}` : '')
             await this.emit('post:find', {repository: this, records: cursor, options: opts})
 
-            return this.overrideCursor(cursor, opts).on('end', _ => {
-                this.emit('post:find', {repository: this, cursor: cursor, opts})
+            return this.overrideCursor(cursor, opts).on('end', () => {
+                this.emit('post:find', {repository: this, cursor: cursor, opts: opts})
             })
 
         } catch (err) {
-            this.emit('error:find', {repository: this, error: err, filter, options: opts})
+            this.emit('error:find', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             opts.session?.endSession()
             throw new RuntimeError().setCause(err)
@@ -126,7 +126,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
         try {
             const db = await this.getNamespace()
-            await this.emit('pre:findOne', {repository: this, filter, options: opts})
+            await this.emit('pre:findOne', {repository: this, filter: filter, options: opts})
             const record = await db.collection(this.collectionName).findOne(filter, opts)
             if (!record) {
                 return null
@@ -136,7 +136,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             await this.emit('post:findOne', {repository: this, records: [result], options: opts})
             return result
         } catch (err) {
-            this.emit('error:findOne', {repository: this, error: err, filter, options: opts})
+            this.emit('error:findOne', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -175,9 +175,9 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                 delete update.$set.created
             }
             const db = await this.getNamespace()
-            await this.emit('pre:findOneAndUpdate', {repository: this, filter, update, options: opts})
+            await this.emit('pre:findOneAndUpdate', {repository: this, filter: filter, update: update, options: opts})
             const {value} = await db.collection(this.collectionName).findOneAndUpdate(filter, update, opts)
-            await this.emit('post:findOneAndUpdate', {repository: this, value, options: opts})
+            await this.emit('post:findOneAndUpdate', {repository: this, value: value, options: opts})
 
             if (value) {
                 return this.serializer.deserialize(value)
@@ -185,7 +185,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
             return value
         } catch (err) {
-            await this.emit('error:findOneAndUpdate', {repository: this, error: err, filter, update, options: opts})
+            await this.emit('error:findOneAndUpdate', {repository: this, error: err, filter: filter, update: update, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -217,8 +217,14 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             const records = entities.map(this.serializer.serialize.bind(this.serializer))
             await this.emit('pre:insert', {repository: this, records: records, options: opts})
             const {insertedCount, insertedIds} = await db.collection(this.collectionName).insertMany(records, opts)
-            await this.emit('post:insert', {repository: this, records: records, insertedCount, insertedIds, options: opts})
-            return {insertedCount, insertedIds}
+            await this.emit('post:insert', {
+                repository: this,
+                records: records,
+                insertedCount: insertedCount,
+                insertedIds: insertedIds,
+                options: opts,
+            })
+            return {insertedCount: insertedCount, insertedIds: insertedIds}
         } catch (err) {
             this.emit('error:insert', {repository: this, error: err, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
@@ -228,7 +234,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         }
     }
 
-    public async list(query: ResourceQueryInterface, unlimited?: boolean, options?: FindOneOptions<Model>): Promise<Omit<ResponseInterface, 'data'> & {data: Model[]}> {
+    public async list(query: ResourceQueryInterface, unlimited?: boolean, options?: FindOneOptions<Model>): Promise<Omit<ResourceEnvelopeInterface, 'data'> & {data: Model[]}> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         if (!opts.session) {
             const client = await this.getConnection()
@@ -236,10 +242,16 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         }
 
         try {
-            this.log.debug({action: 'list', tenant: {id: this.context.tenant.id}, collection: this.collectionName, unlimited, query})
+            this.log.debug({
+                action: 'list',
+                tenant: {id: this.context.tenant.id},
+                collection: this.collectionName,
+                unlimited: unlimited,
+                query: query,
+            })
 
             const db = await this.getNamespace()
-            await this.emit('pre:list', {repository: this, query, unlimited, options: opts})
+            await this.emit('pre:list', {repository: this, query: query, unlimited: unlimited, options: opts})
             const cursor = db.collection(this.collectionName, opts)
                 .find(this.mongodbResourceQuery.makeFilter(query, this.resourceQueryMapper), opts)
             this.mongodbResourceQuery.applyFields(cursor, query)
@@ -263,11 +275,11 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             ])
 
             opts.session?.endSession()
-            this.emit('post:list', {repository: this, records: records, total, options: opts})
+            this.emit('post:list', {repository: this, records: records, total: total, options: opts})
             const data: Model[] = records.map(this.serializer.deserialize.bind(this.serializer))
-            return {data: data, meta: {total}}
+            return {data: data, meta: {total: total}}
         } catch (err) {
-            this.emit('error:list', {repository: this, error: err, query, unlimited, options: opts})
+            this.emit('error:list', {repository: this, error: err, query: query, unlimited: unlimited, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -286,13 +298,13 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             const db = await this.getNamespace()
             // todo
             // filter = serialize(filter).bind(this)
-            await this.emit('pre:remove', {repository: this, filter, options: opts})
+            await this.emit('pre:remove', {repository: this, filter: filter, options: opts})
             const result = await db.collection(this.collectionName).deleteMany(filter, opts)
-            await this.emit('post:remove', {repository: this, result, options: opts})
+            await this.emit('post:remove', {repository: this, result: result, options: opts})
             const {result: {n}, deletedCount} = result
             return {deletedCount: deletedCount ?? n ?? 0}
         } catch (err) {
-            await this.emit('error:remove', {repository: this, error: err, filter, options: opts})
+            await this.emit('error:remove', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -330,13 +342,20 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                 // @ts-expect-error
                 delete update.$set.created
             }
-            await this.emit('pre:update', {repository: this, filter, update, options: opts})
+            await this.emit('pre:update', {repository: this, filter: filter, update: update, options: opts})
             const {modifiedCount, upsertedCount} = await db.collection(this.collectionName)
                 .updateMany(filter, update, options as UpdateOneOptions)
-            await this.emit('post:update', {repository: this, filter, update, opts, modifiedCount, upsertedCount})
-            return {modifiedCount, upsertedCount}
+            await this.emit('post:update', {
+                repository: this,
+                filter: filter,
+                update: update,
+                opts: opts,
+                modifiedCount: modifiedCount,
+                upsertedCount: upsertedCount,
+            })
+            return {modifiedCount: modifiedCount, upsertedCount: upsertedCount}
         } catch (err) {
-            await this.emit('error:update', {repository: this, error: err, filter, update, options: opts})
+            await this.emit('error:update', {repository: this, error: err, filter: filter, update: update, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {

@@ -1,7 +1,7 @@
+import { CacheService } from '@cerioom/cache'
+import { DI } from '@cerioom/core'
 import { Collection } from 'mongodb'
-import { DI } from '../../core/di'
 import { MongodbService } from '../'
-import { CacheService } from '../../cache'
 
 
 export class MongodbCacheService<K, V> extends CacheService<K, V> {
@@ -9,12 +9,12 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
 
 
     constructor(
-        protected collectionName: string
+        protected collectionName: string,
     ) {
         super()
     }
 
-    public async cached(key: K, cb: () => V, ttl: number = 60): Promise<V> {
+    public async cached(key: K, cb: () => V, ttl = 60): Promise<V> {
         let value = await this.get(key)
         if (value === undefined) {
             value = await cb()
@@ -44,7 +44,7 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
         await (await this.getStore()).deleteOne({_id: this.makeKey(key)}, {j: true})
     }
 
-    public async set(key: K, data: V, ttl: number = 60): Promise<void> {
+    public async set(key: K, data: V, ttl = 60): Promise<void> {
         await (await this.getStore()).updateOne(
             {_id: this.makeKey(key)},
             {
