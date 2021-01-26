@@ -1,10 +1,10 @@
-import { RuntimeError } from '../../core/error'
+import { RuntimeError } from '@cerioom/core'
 
 
 export class BaseHttpError extends RuntimeError {
     public readonly status: number
 
-    constructor(message?: string, status: number = 500) {
+    constructor(message?: string, status = 500) {
         super(message ?? 'i18n|common:error.bad-request.text')
         this.status = status
 
