@@ -1,0 +1,15 @@
+src/
+temp/
+var/
+
+.eslintignore
+
+.eslintrc.js
+.babelrc.js
+.prettierrc.js
+.zcrc.js
+
+tsconfig.json
+
+*.spec.ts
+*.log
