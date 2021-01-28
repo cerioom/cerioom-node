@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/flake-id",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -10,35 +10,25 @@
         "url": "git+https://github.com/cerioom/cerioom-node.git",
         "directory": "packages/flake-id"
     },
-    "typings": "dist",
     "engines": {
         "node": ">= 14"
     },
-    "main": "dist/",
-    "types": "dist/",
-    "files": [
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "src/**",
-        "dist/**",
-        "*.d.ts",
-        "*.js"
-    ],
+    "main": "./",
+    "types": "./",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "tsc",
         "test": "jest --detectOpenHandles --forceExit"
     },
     "directories": {
-        "lib": "dist"
+        "lib": "./"
     },
     "publishConfig": {
         "access": "public"
     },
     "peerDependencies": {},
     "dependencies": {
-        "@cerioom/core": "^0.0.3",
+        "@cerioom/core": "^0.0.9",
         "bigint-base-converter": "^0.1.2",
         "flake-idgen": "^1.4.0"
     },
