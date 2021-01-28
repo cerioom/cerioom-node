@@ -53,6 +53,7 @@ export class Logger implements LoggerInterface {
             _args.push({msg: _msg.join(' ')})
         }
 
+        // eslint-disable-next-line no-console
         console[method](Object.assign({level: method}, this._bindings, ..._args))
     }
 }

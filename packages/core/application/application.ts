@@ -38,6 +38,7 @@ export class Application extends Service implements ApplicationInterface {
         process.on('SIGTERM', () => handler(null, 'SIGTERM'))
         */
 
+        this.emit('constructed', this)
     }
 
 

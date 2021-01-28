@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/core",
-    "version": "0.0.4",
+    "version": "0.0.8",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -10,25 +10,15 @@
         "url": "git+https://github.com/cerioom/cerioom-node.git",
         "directory": "packages/core"
     },
-    "typings": "dist",
     "engines": {
         "node": ">= 14"
     },
-    "main": "dist/",
-    "types": "dist/",
-    "files": [
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "src/**",
-        "dist/**",
-        "*.d.ts",
-        "*.js"
-    ],
+    "main": "./",
+    "types": "./",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "tsc",
-        "test": "jest --detectOpenHandles --forceExit"
+        "test": "jest --detectOpenHandles --forceExit --config ../../jest.config.js"
     },
     "directories": {
         "lib": "dist"
