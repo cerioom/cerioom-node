@@ -1,11 +1,11 @@
-# @cerioom/flake-id
+# @cerioom/http
 
-> Flake ID
+> Http functionality
 
 ## Installation
 
 ```
-npm i @cerioom/flake-id
+npm i @cerioom/http
 ```
 
 ## Documentation
