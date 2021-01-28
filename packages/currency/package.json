@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/currency",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -10,36 +10,26 @@
         "url": "git+https://github.com/cerioom/cerioom-node.git",
         "directory": "packages/currency"
     },
-    "typings": "dist",
     "engines": {
         "node": ">= 14"
     },
-    "main": "dist/",
-    "types": "dist/",
-    "files": [
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "src/**",
-        "dist/**",
-        "*.d.ts",
-        "*.js"
-    ],
+    "main": "./",
+    "types": "./",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "tsc",
         "test": "jest --detectOpenHandles --forceExit"
     },
     "directories": {
-        "lib": "dist"
+        "lib": "./"
     },
     "publishConfig": {
         "access": "public"
     },
     "peerDependencies": {},
     "dependencies": {
-        "@cerioom/core": "^0.0.3",
-        "@cerioom/resource": "^0.0.2",
+        "@cerioom/core": "^0.0.8",
+        "@cerioom/resource": "^0.0.3",
         "world-currencies": "^0.0.11"
     },
     "devDependencies": {}
