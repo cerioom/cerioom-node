@@ -1,14 +1,17 @@
+import { Service } from '@cerioom/core/service'
 import { EventBusTransportInterface } from './event-bus-transport.interface'
 import { EventBusInterface } from './event-bus.interface'
 
 
 // https://moleculer.services/docs/0.12/transporters.html
-export class EventBusService implements EventBusInterface {
+export class EventBusService extends Service implements EventBusInterface {
     protected transports: EventBusTransportInterface[] = []
 
 
     constructor(transports: EventBusTransportInterface[]) {
+        super()
         this.transports = transports
+        this.emit('constructed', this)
     }
 
     public getOneTransport(kind: string | symbol): EventBusTransportInterface | null {
@@ -25,6 +28,7 @@ export class EventBusService implements EventBusInterface {
             promises.push(transport.publish(event, args))
         })
         await Promise.all(promises)
+        this.emit('published', event, args)
     }
 
     public async send(event: string | symbol, ...args: any): Promise<void> {
@@ -33,6 +37,7 @@ export class EventBusService implements EventBusInterface {
             promises.push(transport.send(event, ...args))
         })
         await Promise.all(promises)
+        this.emit('send', event, args)
     }
 
     public async request(event: string | symbol, ...args: any[]): Promise<any[]> {
@@ -41,7 +46,9 @@ export class EventBusService implements EventBusInterface {
             promises.push(transport.request(event, args))
         })
 
-        return await Promise.all(promises)
+        const results = await Promise.all(promises)
+        this.emit('requested', event, args, results)
+        return results
     }
 
     public async unsubscribe(event: string | symbol, listener: (...args: any[]) => void): Promise<void> {
@@ -50,6 +57,7 @@ export class EventBusService implements EventBusInterface {
             promises.push(transport.unsubscribe(event, listener))
         })
         await Promise.all(promises)
+        this.emit('unsubscribe', event, listener)
     }
 
     public async subscribe(event: string | symbol, listener: (...args: any[]) => void): Promise<void> {
@@ -58,5 +66,6 @@ export class EventBusService implements EventBusInterface {
             promises.push(transport.subscribe(event, listener))
         })
         await Promise.all(promises)
+        this.emit('subscribe', event, listener)
     }
 }

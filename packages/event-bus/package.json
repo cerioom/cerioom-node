@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/event-bus",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -10,34 +10,26 @@
         "url": "git+https://github.com/cerioom/cerioom-node.git",
         "directory": "packages/event-bus"
     },
-    "typings": "dist",
+    "typings": "./",
     "engines": {
         "node": ">= 14"
     },
-    "main": "dist/",
-    "types": "dist/",
-    "files": [
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "src/**",
-        "dist/**",
-        "*.d.ts",
-        "*.js"
-    ],
+    "main": "./",
+    "types": "./",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "tsc",
         "test": "jest --detectOpenHandles --forceExit"
     },
     "directories": {
-        "lib": "dist"
+        "lib": "./"
     },
     "publishConfig": {
         "access": "public"
     },
     "peerDependencies": {},
     "dependencies": {
+        "@cerioom/core": "^0.0.7",
         "eventemitter2": "^6.4.3"
     },
     "devDependencies": {}
