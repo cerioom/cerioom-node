@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/core",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -21,7 +21,7 @@
         "test": "jest --detectOpenHandles --forceExit --config ../../jest.config.js"
     },
     "directories": {
-        "lib": "dist"
+        "lib": "./"
     },
     "publishConfig": {
         "access": "public"
