@@ -1,0 +1,15 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## 0.0.10 (2021-01-30)
+
+
+### Bug Fixes
+
+* **currency:** make a package ([ed1533f](https://github.com/cerioom/cerioom-node/commit/ed1533fcf4245f5a2f53fdae208b6598ca0b4ac0))
+* **currency:** make a package ([0697e32](https://github.com/cerioom/cerioom-node/commit/0697e329999d4b53c20fb79df96c1bfe031c1217))
+* **currency:** make a package ([0e8dfbf](https://github.com/cerioom/cerioom-node/commit/0e8dfbfa3ea40851637f0d402c9f2f8b73051e50))
+* **currency:** make a package ([76acb32](https://github.com/cerioom/cerioom-node/commit/76acb32f1a6d0268d39903538d8557942aea2cd7))
+* use packages ([d0a94f7](https://github.com/cerioom/cerioom-node/commit/d0a94f795e29fdae96fe1eb8123f4777ed3ec6ec))
