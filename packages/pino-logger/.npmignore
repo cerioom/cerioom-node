@@ -1,15 +1,3 @@
-src/
-temp/
-var/
-
-.eslintignore
-
-.eslintrc.js
-.babelrc.js
-.prettierrc.js
-.zcrc.js
-
+./test
+*.test.ts
 tsconfig.json
-
-*.spec.ts
-*.log
