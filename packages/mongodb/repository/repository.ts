@@ -37,14 +37,17 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
     protected constructor(opts: {modelClass: any, collectionName?: string, formatter?: FormatterInterface}) {
         super(opts)
-        this.collectionName = opts.collectionName ?? opts.modelClass.collectionName ?? _.camelCase(opts.modelClass.name)
+        this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
+
+        if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
+            this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper
+        }
     }
 
     public async count(filter: ResourceQueryFilterInterface<Model>, options?: CommonOptions): Promise<number> {
         const opts = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -92,8 +95,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async find(filter: ResourceQueryFilterInterface<Model>, options?: FindOneOptions<Model>): Promise<Cursor> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -120,8 +122,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async findOne(filter: ResourceQueryFilterInterface<Model>, options?: FindOneOptions<Model>): Promise<Model | null> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -147,8 +148,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async findOneAndUpdate(filter: FilterQuery<Model>, update: UpdateQuery<Model & {updated?: Date}>, options?: FindOneAndUpdateOption<Model> & {autoCreate?: boolean}): Promise<Model> {
         const opts: FindOneAndUpdateOption<any> = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         // todo
@@ -208,8 +208,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async insert(entities: Model[], options?: CollectionInsertOneOptions): Promise<InsertManyResultInterface> {
         const opts = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -237,8 +236,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async list(query: ResourceQueryInterface, unlimited?: boolean, options?: FindOneOptions<Model>): Promise<Omit<ResourceEnvelopeInterface, 'data'> & {data: Model[]}> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -290,8 +288,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async remove(filter: FilterQuery<Model>, options?: CommonOptions): Promise<RemoveManyResultInterface> {
         const opts = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {
@@ -315,8 +312,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async update(filter: FilterQuery<Model>, update: UpdateQuery<Model & {updated?: Date}>, options?: ReplaceOneOptions & {autoCreate?: boolean}): Promise<UpdateManyResultInterface> {
         const opts = Object.assign({}, options)
         if (!opts.session) {
-            const client = await this.getConnection()
-            opts.session = client.startSession()
+            opts.session = (await this.getConnection()).startSession()
         }
 
         try {

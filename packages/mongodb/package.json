@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/mongodb",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -10,37 +10,28 @@
         "url": "git+https://github.com/cerioom/cerioom-node.git",
         "directory": "packages/mongodb"
     },
-    "typings": "dist",
+    "typings": "./",
     "engines": {
         "node": ">= 14"
     },
-    "main": "dist/",
-    "types": "dist/",
-    "files": [
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "src/**",
-        "dist/**",
-        "*.d.ts",
-        "*.js"
-    ],
+    "main": "./",
+    "types": "./",
     "scripts": {
         "prepublishOnly": "npm run build",
         "build": "tsc",
         "test": "jest --detectOpenHandles --forceExit"
     },
     "directories": {
-        "lib": "dist"
+        "lib": "./"
     },
     "publishConfig": {
         "access": "public"
     },
     "peerDependencies": {},
     "dependencies": {
-        "@cerioom/core": "^0.0.4",
-        "@cerioom/cache": "^0.0.1",
-        "@cerioom/resource": "^0.0.3",
+        "@cerioom/core": "^0.0.9",
+        "@cerioom/cache": "^0.0.5",
+        "@cerioom/resource": "^0.0.4",
         "mongodb": "^3.6.3"
     },
     "devDependencies": {
