@@ -1,0 +1,6 @@
+export * from './repository.interface'
+export * from './insert-many-options.interface'
+export * from './insert-many-result.interface'
+export * from './update-many-result.interface'
+export * from './remove-many-result.interface'
+export * from './repository.service'
