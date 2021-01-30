@@ -1,32 +1,32 @@
 {
-  "version": "0.0.1",
-  "npmClient": "npm",
-  "ci": false,
-  "useWorkspaces": true,
-  "packages": [
-    "packages/*"
-  ],
-  "command": {
-    "bootstrap": {
-      "hoist": true
+    "version": "0.0.1",
+    "npmClient": "npm",
+    "ci": false,
+    "useWorkspaces": true,
+    "packages": [
+        "packages/*"
+    ],
+    "command": {
+        "publish": {
+            "message": "chore(release): publish %s",
+            "conventionalCommits": true,
+            "createRelease": "github",
+            "allowBranch": [
+                "master",
+                "feat/*"
+            ]
+        },
+        "bootstrap": {
+            "hoist": true
+        }
     },
-    "publish": {
-      "allowBranch": [
-        "crow",
-        "dove"
-      ],
-      "message": "chore(release): publish %s",
-      "conventionalCommits": true,
-      "createRelease": "github"
-    }
-  },
-  "ignoreChanges": [
-    "**/changelog.md",
-    "**/CHANGELOG.md",
-    "**/package-lock.json",
-    "**/yarn.lock",
-    "**/test/**",
-    "lerna.json",
-    "readme.md"
-  ]
+    "ignoreChanges": [
+        "**/changelog.md",
+        "**/CHANGELOG.md",
+        "**/package-lock.json",
+        "**/yarn.lock",
+        "**/test/**",
+        "lerna.json",
+        "readme.md"
+    ]
 }
