@@ -11,7 +11,7 @@ module.exports = {
     verbose: true,
     globals: {
         'ts-jest': {
-            tsconfig: './tsconfig.test.json',
+            tsconfig: './tsconfig.json',
             diagnostics: {
                 ignoreCodes: [2300],
             },
