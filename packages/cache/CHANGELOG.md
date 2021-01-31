@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/cerioom/cerioom-node/compare/v0.0.10...v0.0.11) (2021-01-31)
+
+
+### Bug Fixes
+
+* tsconfig.json ([fd02a8f](https://github.com/cerioom/cerioom-node/commit/fd02a8f942200ee144fe6e8c609a20d8b35d8e3d))
+
+
+
+
+
 ## 0.0.10 (2021-01-30)
 
 
