@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/cerioom/cerioom-node/compare/v0.0.11...v0.0.12) (2021-01-31)
+
+
+### Bug Fixes
+
+* package.json ([e52c5ba](https://github.com/cerioom/cerioom-node/commit/e52c5ba1a631ff072ec777e9933f5d0029eef551))
+* **core:** DI ([8f99d30](https://github.com/cerioom/cerioom-node/commit/8f99d30ccb538314b702950b62ddff59606bfaed))
+
+
+
+
+
 ## [0.0.11](https://github.com/cerioom/cerioom-node/compare/v0.0.10...v0.0.11) (2021-01-31)
 
 
