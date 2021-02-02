@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from 'async_hooks'
 import { Context } from './context'
 import { ContextManagerInterface } from './context-manager.interface'
 import { ContextInterface } from './context.interface'
+import * as _ from 'lodash'
 
 
 export enum ContextScopeEnum {
@@ -49,6 +50,22 @@ export class ContextManager implements ContextManagerInterface {
         }
 
         return store
+    }
+
+    public makeHeaders(context: ContextInterface): Record<string, string> {
+        return Object.keys(context).reduce((prev, key) => {
+            prev[_.kebabCase(key)] = context[key] // todo js serialize
+            return prev
+        }, {})
+    }
+
+    public makeContext(headers: Record<string, string>): ContextInterface {
+        const data = Object.keys(headers).reduce((prev, key) => {
+            prev[_.camelCase(key)] = headers[key] // todo js deserialize
+            return prev
+        }, {})
+
+        return new Context(data)
     }
 }
 

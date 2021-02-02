@@ -1,5 +1,5 @@
 import { inspect } from 'util'
-import { Config } from '../config/config'
+import { Config } from '../config'
 import { ContextInterface } from './context.interface'
 
 
@@ -18,6 +18,6 @@ export class Context extends Config implements ContextInterface {
     }
 
     public toString(): string {
-        return inspect(this.toJSON())
+        return inspect(this)
     }
 }
