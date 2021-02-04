@@ -1,8 +1,17 @@
-import { Application, ConfigInterface, ContextManager, DI, Env, ResponseEnvelopeInterface, RuntimeError, Service } from '@cerioom/core'
+import {
+    Application,
+    ConfigInterface,
+    ContextManager,
+    DI,
+    Env,
+    RequestEnvelopeInterface,
+    ResponseEnvelopeInterface,
+    RuntimeError,
+    Service,
+} from '@cerioom/core'
 import { EventBusTransportInterface } from '@cerioom/event-bus'
 import { hostname } from 'os'
 import { Client as NatsClient, connect as NATS, Msg, NatsConnectionOptions, NatsError, Payload, Subscription } from 'ts-nats'
-import { RequestEnvelopeInterface } from '../../core/request-envelope.interface'
 import { RequestOptionsInterface } from './request-options.interface'
 import { SubscribeOptionsInterface } from './subscribe-options.interface'
 import Middie = require('middie/engine')
