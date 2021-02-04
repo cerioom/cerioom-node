@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/cerioom/cerioom-node/compare/v0.0.12...v0.0.14) (2021-02-04)
+
+
+### Bug Fixes
+
+* **core:** config + test ([2149eb8](https://github.com/cerioom/cerioom-node/commit/2149eb8d1b135d17a2385b680ff45a2efbfcce11))
+* **core:** context; request-envelope; response-envelope ([14966dd](https://github.com/cerioom/cerioom-node/commit/14966dd536fbde39e837bc01ed6af2038fc2841b))
+* **currency:** small refactoring ([3c5551c](https://github.com/cerioom/cerioom-node/commit/3c5551ccec3cb7307a82e7d1d246b170ff1d24fc))
+* **mongodb:** small refactoring ([d985ee4](https://github.com/cerioom/cerioom-node/commit/d985ee41f825965ca89721f88a0e50a3d65f4146))
+* **nats:** make a package ([e515b58](https://github.com/cerioom/cerioom-node/commit/e515b5863140d801f2c1b1f1a3f2d9208eead20c))
+* **permission:** make a package ([4a3377b](https://github.com/cerioom/cerioom-node/commit/4a3377bcda9fcb372194e11525969f7c763a6bc9))
+
+
+
+
+
 ## [0.0.12](https://github.com/cerioom/cerioom-node/compare/v0.0.11...v0.0.12) (2021-01-31)
 
 

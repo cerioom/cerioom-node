@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/cerioom/cerioom-node/compare/v0.0.12...v0.0.14) (2021-02-04)
+
+
+### Bug Fixes
+
+* **nats:** make a package ([e515b58](https://github.com/cerioom/cerioom-node/commit/e515b5863140d801f2c1b1f1a3f2d9208eead20c))
+
+
+
+
+
 ## [0.0.12](https://github.com/cerioom/cerioom-node/compare/v0.0.11...v0.0.12) (2021-01-31)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/cerioom/cerioom-node/compare/v0.0.12...v0.0.14) (2021-02-04)
+
+
+### Bug Fixes
+
+* **permission:** make a package ([4a3377b](https://github.com/cerioom/cerioom-node/commit/4a3377bcda9fcb372194e11525969f7c763a6bc9))
+
+
+
+
+
 ## [0.0.12](https://github.com/cerioom/cerioom-node/compare/v0.0.11...v0.0.12) (2021-01-31)
 
 **Note:** Version bump only for package @cerioom/cache

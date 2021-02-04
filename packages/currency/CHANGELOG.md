@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.14](https://github.com/cerioom/cerioom-node/compare/v0.0.12...v0.0.14) (2021-02-04)
+
+
+### Bug Fixes
+
+* **currency:** small refactoring ([3c5551c](https://github.com/cerioom/cerioom-node/commit/3c5551ccec3cb7307a82e7d1d246b170ff1d24fc))
+
+
+
+
+
 ## [0.0.12](https://github.com/cerioom/cerioom-node/compare/v0.0.11...v0.0.12) (2021-01-31)
 
 
