@@ -1,0 +1,39 @@
+{
+    "name": "@cerioom/nats",
+    "version": "0.0.12",
+    "description": "",
+    "author": "Sergey Ilin <sergilyin@gmail.com>",
+    "license": "MIT",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cerioom/cerioom-node.git",
+        "directory": "packages/nats"
+    },
+    "engines": {
+        "node": ">= 14"
+    },
+    "main": "./",
+    "types": "./",
+    "scripts": {
+        "prepublishOnly": "npm run build",
+        "build": "tsc",
+        "test": "jest --detectOpenHandles --forceExit --passWithNoTests --config ../../jest.config.js"
+    },
+    "directories": {
+        "lib": "./"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@cerioom/core": "^0.0.13",
+        "@cerioom/event-bus": "^0.0.12",
+        "@cerioom/resource": "^0.0.12",
+        "middie": "^5.2.0",
+        "node-nats-streaming": "^0.3.2"
+    },
+    "devDependencies": {
+        "ts-nats": "^1.2.15"
+    }
+}
