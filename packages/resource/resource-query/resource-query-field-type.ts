@@ -1,11 +1,11 @@
-import { ContextInterface, Util } from '@cerioom/core'
+import { Util } from '@cerioom/core'
 import { UnexpectedFieldTypeError } from './unexpected-field-type.error'
 
 
 const regexUtcDate = /\b[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z)?\b/
 
 
-export type ResourceQueryMapperType<T = any> = (value: any, name: string, context: ContextInterface) => T
+export type ResourceQueryMapperType<T = any> = (value: any, name: string) => T
 
 export const DateField: ResourceQueryMapperType<Date> = (value: any, name: string) => {
     if (value instanceof Date) {
@@ -16,7 +16,7 @@ export const DateField: ResourceQueryMapperType<Date> = (value: any, name: strin
         return new Date(value)
     }
 
-    throw new UnexpectedFieldTypeError()
+    throw new UnexpectedFieldTypeError().setData({name: name, value: value})
 }
 
 export const EnumField = (expectedEnumType: any) => {
@@ -25,7 +25,7 @@ export const EnumField = (expectedEnumType: any) => {
             return value
         }
 
-        throw new UnexpectedFieldTypeError()
+        throw new UnexpectedFieldTypeError().setData({name: name, value: value})
     }
 }
 
@@ -38,7 +38,7 @@ export const NumberField: ResourceQueryMapperType<number> = (value: any, name: s
         return Number(value)
     }
 
-    throw new UnexpectedFieldTypeError()
+    throw new UnexpectedFieldTypeError().setData({name: name, value: value})
 }
 
 export const BooleanField: ResourceQueryMapperType<boolean> = (value: any, name: string) => {
@@ -50,7 +50,7 @@ export const BooleanField: ResourceQueryMapperType<boolean> = (value: any, name:
         return Util.toBoolean(value)
     }
 
-    throw new UnexpectedFieldTypeError()
+    throw new UnexpectedFieldTypeError().setData({name: name, value: value})
 }
 
 export type ResourceQueryPropertyType =
