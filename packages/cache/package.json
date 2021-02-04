@@ -27,10 +27,11 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.12",
+        "@cerioom/core": "0.0.14",
         "lru-cache": "^6.0.0"
     },
     "devDependencies": {
         "@types/lru-cache": "^5.1.0"
-    }
+    },
+    "gitHead": "fd2960e8edea7617ae3095b30fbb846a648bb19e"
 }

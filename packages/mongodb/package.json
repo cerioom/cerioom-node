@@ -29,11 +29,12 @@
     },
     "dependencies": {
         "@cerioom/cache": "0.0.14",
-        "@cerioom/core": "^0.0.12",
+        "@cerioom/core": "0.0.14",
         "@cerioom/resource": "0.0.14",
         "mongodb": "^3.6.3"
     },
     "devDependencies": {
         "@types/mongodb": "^3.6.3"
-    }
+    },
+    "gitHead": "fd2960e8edea7617ae3095b30fbb846a648bb19e"
 }

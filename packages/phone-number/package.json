@@ -27,7 +27,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.12",
+        "@cerioom/core": "0.0.14",
         "google-libphonenumber": "^3.2.16"
-    }
+    },
+    "gitHead": "fd2960e8edea7617ae3095b30fbb846a648bb19e"
 }

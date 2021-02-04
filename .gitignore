@@ -40,4 +40,5 @@ dist/
 .mocha-puppeteer
 
 # TypeScript compiled files
-packages/**/dist
+packages/**/*.d.ts
+packages/**/*.js
