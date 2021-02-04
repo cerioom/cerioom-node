@@ -40,7 +40,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
 
         if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
-            this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper
+            this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper()
         }
     }
 

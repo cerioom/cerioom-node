@@ -72,7 +72,7 @@ export class MongodbService extends Service {
         process.on('exit', this.onExit)
     }
 
-    public async getDb(context: ContextInterface, name?: string): Promise<Db> {
+    public async getDb(context: ContextInterface /* todo remove */, name?: string): Promise<Db> {
         const dbName = [context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
         this.log.debug({action: 'getDb', dbName: dbName})
 
