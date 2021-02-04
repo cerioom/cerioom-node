@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/core",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -29,5 +29,5 @@
     "dependencies": {
         "lodash": "^4.17.20"
     },
-    "gitHead": "fd2960e8edea7617ae3095b30fbb846a648bb19e"
+    "gitHead": "899352b384d81c52744f257819ef0e921b131689"
 }
