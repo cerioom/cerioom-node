@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/cerioom/cerioom-node/compare/v0.0.15...v0.0.17) (2021-02-04)
+
+
+### Bug Fixes
+
+* **core:** export request-envelope.interface ([1f3dc40](https://github.com/cerioom/cerioom-node/commit/1f3dc400930bc33d1b21ae93d523469e6b47b471))
+* **nats:** import RequestEnvelopeInterface from core ([681db41](https://github.com/cerioom/cerioom-node/commit/681db41c69082a1dfe7aa277675897c529034eaf))
+
+
+
+
+
 ## [0.0.15](https://github.com/cerioom/cerioom-node/compare/v0.0.14...v0.0.15) (2021-02-04)
 
 **Note:** Version bump only for package cerioom
