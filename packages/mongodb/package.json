@@ -28,13 +28,13 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/cache": "0.0.20",
-        "@cerioom/core": "0.0.20",
-        "@cerioom/resource": "0.0.20",
+        "@cerioom/cache": "^0.0.20",
+        "@cerioom/core": "^0.0.20",
+        "@cerioom/resource": "^0.0.20",
         "mongodb": "^3.6.3"
     },
     "devDependencies": {
         "@types/mongodb": "^3.6.3"
     },
-    "gitHead": "ec8c2063821b4f211ebbd34e206c4f6ab7f0e5b6"
+    "gitHead": "ac7ca1b173d2ee701ea4e02eda5ad271e5417b5c"
 }
