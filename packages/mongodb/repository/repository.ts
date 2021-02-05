@@ -1,4 +1,4 @@
-import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface, Serializer } from '@cerioom/core'
+import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
@@ -6,7 +6,6 @@ import {
     RepositoryInterface,
     ResourceQueryFilterInterface,
     ResourceQueryInterface,
-    ResourceQueryMapper,
     UpdateManyResultInterface,
 } from '@cerioom/resource'
 import * as _ from 'lodash'
@@ -32,19 +31,10 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     protected readonly collectionName: string
     protected mongodbService = DI.get(MongodbService)
     protected mongodbResourceQuery = DI.get(MongodbResourceQuery)
-    protected resourceQueryMapper?: ResourceQueryMapper
 
     protected constructor(opts: {modelClass: any, collectionName?: string, formatter?: FormatterInterface}) {
         super(opts)
         this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
-
-        if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
-            this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper()
-        }
-
-        if (!opts.formatter && typeof opts.modelClass.getFormatter === 'function') {
-            this.serializer = new Serializer(opts.modelClass.getFormatter())
-        }
     }
 
     public async count(filter: ResourceQueryFilterInterface<Model>, options?: CommonOptions): Promise<number> {
