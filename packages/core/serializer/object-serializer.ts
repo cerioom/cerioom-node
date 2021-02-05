@@ -1,9 +1,12 @@
-import { FormatterInterface } from './formatter.interface'
+import { Serializer } from './serializer'
 
 
-export class ObjectFormatter implements FormatterInterface<object> {
+export class ObjectSerializer extends Serializer<object> {
 
-    constructor(private readonly modelClass) {
+    constructor(
+        private readonly modelClass
+    ) {
+        super()
     }
 
     public serialize(data: object): any {

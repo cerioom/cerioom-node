@@ -1,13 +1,14 @@
-import { FormatterInterface } from './formatter.interface'
+import { Serializer } from './serializer'
 
 
-export class JsonFormatter implements FormatterInterface<string> {
+export class JsonSerializer extends Serializer<string> {
 
     constructor(private readonly options: {
         reviver?: (key: any, value: any) => any
         replacer?: (key: string, value: any) => any
         space?: number
     } = {}) {
+        super()
     }
 
     public serialize(data: any) {
