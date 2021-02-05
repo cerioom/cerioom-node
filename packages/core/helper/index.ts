@@ -1,4 +1,5 @@
+export * from './num'
 export * from './random'
 export * from './security'
-export * from './strings'
+export * from './str'
 export * from './util'
