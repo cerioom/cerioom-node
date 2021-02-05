@@ -11,22 +11,26 @@ export class ResourceQueryMapper<Model = any> {
     ) {
     }
 
+    public has(field: string): boolean {
+        return field in this.schema
+    }
+
     public format(input: object): any {
         const result = {}
 
-        for (const [key, value] of Object.entries(input)) {
-            if (this.schema[key]) {
-                result[key] = this.schema[key](value, key)
+        for (const [field, value] of Object.entries(input)) {
+            if (this.schema[field]) {
+                result[field] = this.schema[field](value, field)
             } else {
-                result[key] = value
+                result[field] = value
             }
         }
         return result
     }
 
-    public formatField(value: any, name: string): any {
-        if (this.schema[name]) {
-            return this.schema[name](value, name)
+    public formatField(value: any, field: string): any {
+        if (this.schema[field]) {
+            return this.schema[field](value, field)
         }
         return value
     }
