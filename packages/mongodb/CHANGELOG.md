@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/cerioom/cerioom-node/compare/v0.0.23...v0.0.24) (2021-02-05)
+
+
+### Bug Fixes
+
+* **mongodb:** import Str ([8467e97](https://github.com/cerioom/cerioom-node/commit/8467e97ef1249c1f13b474881331d63bbbe0ea01))
+
+
+
+
+
 ## [0.0.23](https://github.com/cerioom/cerioom-node/compare/v0.0.22...v0.0.23) (2021-02-05)
 
 **Note:** Version bump only for package @cerioom/mongodb
