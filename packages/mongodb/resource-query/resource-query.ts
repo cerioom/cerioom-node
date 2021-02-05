@@ -1,4 +1,4 @@
-import { Strings } from '@cerioom/core'
+import { Str } from '@cerioom/core'
 import { ResourceQuery, ResourceQueryInterface, ResourceQueryMapper } from '@cerioom/resource'
 import { Cursor } from 'mongodb'
 import { ResourceQueryFieldsInterface, ResourceQueryFilterInterface, ResourceQuerySortInterface } from './'
@@ -159,7 +159,7 @@ export class MongodbResourceQuery extends ResourceQuery {
                         }
                     } else if (typeof filters === 'string' && filters.includes(',')) {
                         result[field] = {
-                            $in: filters.split(',').map(Strings.trim).filter(Boolean).slice(0, 1000),
+                            $in: filters.split(',').map(Str.trim).filter(Boolean).slice(0, 1000),
                         }
                     } else if (typeof filters === 'object' && filters !== null) {
                         Object.entries(filters || {}).forEach(
