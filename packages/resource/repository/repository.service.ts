@@ -1,4 +1,4 @@
-import { DI, ObjectSerializer, ResponseEnvelopeInterface, SerializerInterface, Service } from '@cerioom/core'
+import { ObjectSerializer, ResponseEnvelopeInterface, SerializerInterface, Service } from '@cerioom/core'
 import { Readable } from 'stream'
 import { ResourceQueryInterface, ResourceQueryMapper } from '../resource-query'
 import { InsertManyOptionsInterface } from './insert-many-options.interface'
@@ -16,12 +16,12 @@ import {
 import { UpdateManyResultInterface } from './update-many-result.interface'
 
 
-export abstract class Repository<M> extends Service implements RepositoryInterface<M> {
+export abstract class Repository<Model> extends Service implements RepositoryInterface<Model> {
     protected readonly modelClass: any
-    protected serializer: SerializerInterface<M>
+    protected serializer: SerializerInterface<Model>
     protected resourceQueryMapper?: ResourceQueryMapper
 
-    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<M>}) {
+    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<Model>}) {
         super()
 
         this.modelClass = opts.modelClass
@@ -38,21 +38,21 @@ export abstract class Repository<M> extends Service implements RepositoryInterfa
         } else if (opts.serializer) {
             this.serializer = opts.serializer
         } else {
-            this.serializer = DI.get(ObjectSerializer)
+            this.serializer = new ObjectSerializer<Model>(this.modelClass)
         }
 
         this.emit('constructed', {repository: this, modelClass: this.modelClass})
     }
 
-    public abstract count(filter: FilterQuery<M>, options: CommonOptions | undefined): Promise<number>
+    public abstract count(filter: FilterQuery<Model>, options: CommonOptions | undefined): Promise<number>
 
-    public abstract export(query: ResourceQueryInterface, options: (FindOneOptions<M> & {transform?: (document: M) => any}) | undefined): Promise<Readable>
+    public abstract export(query: ResourceQueryInterface, options: (FindOneOptions<Model> & {transform?: (document: Model) => any}) | undefined): Promise<Readable>
 
-    public abstract find(filter: FilterQuery<M>, options: FindOneOptions<M> | undefined): Promise<Readable>
+    public abstract find(filter: FilterQuery<Model>, options: FindOneOptions<Model> | undefined): Promise<Readable>
 
-    public abstract findOne(filter: FilterQuery<M>, options: FindOneOptions<M> | undefined): Promise<M | null>
+    public abstract findOne(filter: FilterQuery<Model>, options: FindOneOptions<Model> | undefined): Promise<Model | null>
 
-    public abstract findOneAndUpdate(filter: FilterQuery<M>, update: UpdateQuery<M & {updated?: Date}>, options: (FindOneAndUpdateOption<M> & {autoCreate?: boolean}) | undefined): Promise<M>
+    public abstract findOneAndUpdate(filter: FilterQuery<Model>, update: UpdateQuery<Model & {updated?: Date}>, options: (FindOneAndUpdateOption<Model> & {autoCreate?: boolean}) | undefined): Promise<Model>
 
     public abstract getCollection(): Promise<any>
 
@@ -60,11 +60,11 @@ export abstract class Repository<M> extends Service implements RepositoryInterfa
 
     public abstract getNamespace(): Promise<any>
 
-    public abstract insert(entities: M[], options: InsertManyOptionsInterface | undefined): Promise<InsertManyResultInterface>
+    public abstract insert(entities: Model[], options: InsertManyOptionsInterface | undefined): Promise<InsertManyResultInterface>
 
-    public abstract list(query: ResourceQueryInterface, unlimited: boolean | undefined, options: FindOneOptions<M> | undefined): Promise<Omit<ResponseEnvelopeInterface, 'data'> & {data: M[]}>
+    public abstract list(query: ResourceQueryInterface, unlimited: boolean | undefined, options: FindOneOptions<Model> | undefined): Promise<Omit<ResponseEnvelopeInterface, 'data'> & {data: Model[]}>
 
-    public abstract remove(filter: FilterQuery<M>, options: CommonOptions | undefined): Promise<RemoveManyResultInterface>
+    public abstract remove(filter: FilterQuery<Model>, options: CommonOptions | undefined): Promise<RemoveManyResultInterface>
 
-    public abstract update(filter: FilterQuery<M>, update: UpdateQuery<M & {updated?: Date}>, options: (ReplaceOneOptions & {autoCreate?: boolean}) | undefined): Promise<UpdateManyResultInterface>
+    public abstract update(filter: FilterQuery<Model>, update: UpdateQuery<Model & {updated?: Date}>, options: (ReplaceOneOptions & {autoCreate?: boolean}) | undefined): Promise<UpdateManyResultInterface>
 }
