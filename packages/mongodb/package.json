@@ -29,8 +29,8 @@
     },
     "dependencies": {
         "@cerioom/cache": "^0.0.22",
-        "@cerioom/core": "^0.0.22",
-        "@cerioom/resource": "^0.0.22",
+        "@cerioom/core": "^0.0.26",
+        "@cerioom/resource": "^0.0.26",
         "mongodb": "^3.6.4"
     },
     "devDependencies": {

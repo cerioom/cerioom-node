@@ -1,4 +1,4 @@
-import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface } from '@cerioom/core'
+import { DI, RuntimeError, ResponseEnvelopeInterface, SerializerInterface } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
@@ -32,7 +32,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     protected mongodbService = DI.get(MongodbService)
     protected mongodbResourceQuery = DI.get(MongodbResourceQuery)
 
-    protected constructor(opts: {modelClass: any, collectionName?: string, formatter?: FormatterInterface}) {
+    protected constructor(opts: {modelClass: any, collectionName?: string, serializer?: SerializerInterface<Model>}) {
         super(opts)
         this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
     }
@@ -154,7 +154,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             }
 
             if (update.$set) {
-                update.$set = this.serializer.serialize(update.$set)
+                update.$set = this.serializer.serialize(<Model>update.$set)
             }
             if (update.$set?.updated) { // todo
                 // @ts-expect-error
