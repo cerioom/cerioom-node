@@ -1,4 +1,4 @@
-import { Strings } from '@cerioom/core'
+import { Str } from '@cerioom/core'
 import { ResourceQueryInterface } from './resource-query.interface'
 
 
@@ -32,7 +32,7 @@ export class ResourceQuery implements ResourceQueryInterface {
                 value: value.join(', '),
                 type: 'array',
             }]
-        } else if (Strings.isDate(value)) {
+        } else if (Str.isDate(value)) {
             const d = new Date(value)
             const hours = d.getHours()
             const minutes = d.getMinutes()
