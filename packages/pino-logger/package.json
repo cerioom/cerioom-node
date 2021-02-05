@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/pino-logger",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
