@@ -1,4 +1,3 @@
-import { ContextInterface } from '@cerioom/core'
 import { ResourceQueryMapperType } from './resource-query-field-type'
 
 
@@ -12,12 +11,12 @@ export class ResourceQueryMapper<Model = any> {
     ) {
     }
 
-    public format(input: object, ctx: ContextInterface): any {
+    public format(input: object): any {
         const result = {}
 
         for (const [key, value] of Object.entries(input)) {
             if (this.schema[key]) {
-                result[key] = this.schema[key](value, key, ctx)
+                result[key] = this.schema[key](value, key)
             } else {
                 result[key] = value
             }
@@ -25,9 +24,9 @@ export class ResourceQueryMapper<Model = any> {
         return result
     }
 
-    public formatField(value: any, name: string, ctx: ContextInterface): any {
+    public formatField(value: any, name: string): any {
         if (this.schema[name]) {
-            return this.schema[name](value, name, ctx)
+            return this.schema[name](value, name)
         }
         return value
     }

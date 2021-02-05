@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "0.0.15"
+        "@cerioom/core": "^0.0.19"
     },
-    "gitHead": "27006173e825b4ad30190fa488084833bae43b9d"
+    "gitHead": "ec8c2063821b4f211ebbd34e206c4f6ab7f0e5b6"
 }
