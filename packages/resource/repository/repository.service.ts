@@ -1,6 +1,6 @@
-import { FormatterInterface, ObjectFormatter, ResponseEnvelopeInterface, Serializer, SerializerInterface, Service } from '@cerioom/core'
+import { DI, ObjectSerializer, ResponseEnvelopeInterface, SerializerInterface, Service } from '@cerioom/core'
 import { Readable } from 'stream'
-import { ResourceQueryInterface } from '../resource-query'
+import { ResourceQueryInterface, ResourceQueryMapper } from '../resource-query'
 import { InsertManyOptionsInterface } from './insert-many-options.interface'
 import { InsertManyResultInterface } from './insert-many-result.interface'
 import { RemoveManyResultInterface } from './remove-many-result.interface'
@@ -19,17 +19,27 @@ import { UpdateManyResultInterface } from './update-many-result.interface'
 export abstract class Repository<M> extends Service implements RepositoryInterface<M> {
     protected readonly modelClass: any
     protected serializer: SerializerInterface<M>
+    protected resourceQueryMapper?: ResourceQueryMapper
 
-    protected constructor(opts: {modelClass: any, formatter?: FormatterInterface}) {
+    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<M>}) {
         super()
 
-        if (!opts.modelClass) {
+        this.modelClass = opts.modelClass
+        if (!this.modelClass) {
             throw new Error('Model was not defined')
         }
 
-        this.modelClass = opts.modelClass
-        const formatter = opts.formatter ?? new ObjectFormatter(this.modelClass)
-        this.serializer = new Serializer(formatter)
+        if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
+            this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper()
+        }
+
+        if (typeof opts.modelClass.getSerializer === 'function') {
+            this.serializer = opts.modelClass.getSerializer()
+        } else if (opts.serializer) {
+            this.serializer = opts.serializer
+        } else {
+            this.serializer = DI.get(ObjectSerializer)
+        }
 
         this.emit('constructed', {repository: this, modelClass: this.modelClass})
     }
