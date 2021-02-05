@@ -1,5 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class DI {
+
+    /**
+     * ```ts
+     * DI.init(<T>(source: Function & { prototype: T } | string | symbol): T => {
+     *     return Container.getValue(source)
+     * })
+     * ```
+     */
     public static init(get: <T extends unknown>(source: Function & {prototype: T} | string | symbol) => T) {
         // @ts-ignore
         global.__cerioom = {DI: {}}
@@ -12,6 +20,11 @@ export class DI {
         })
     }
 
+    /**
+     * ```ts
+     * const cache = DI.get(CacheService)
+     * ```
+     */
     public static get<T extends unknown>(source: Function & {prototype: T} | string | symbol): T {
         // @ts-ignore
         if (!global.__cerioom?.DI?.get) {
