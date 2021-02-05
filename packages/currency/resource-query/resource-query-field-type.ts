@@ -10,5 +10,5 @@ export const CurrencyField: ResourceQueryMapperType<number> = (value: any, name:
         currency: context.tenant?.config?.get('currency.alpha3') || 'USD', // todo parameter name
     })
 
-    return currencyManager.serialize(NumberField(value, name, context))
+    return currencyManager.serialize(NumberField(value, name))
 }
