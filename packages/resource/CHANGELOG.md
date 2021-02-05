@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/cerioom/cerioom-node/compare/v0.0.24...v0.0.25) (2021-02-05)
+
+
+### Bug Fixes
+
+* **resource:** repository refactoring ([9e23be6](https://github.com/cerioom/cerioom-node/commit/9e23be669725cc77af6dc8b2edefcfe1fb48512c))
+
+
+
+
+
 ## [0.0.24](https://github.com/cerioom/cerioom-node/compare/v0.0.23...v0.0.24) (2021-02-05)
 
 **Note:** Version bump only for package @cerioom/resource
