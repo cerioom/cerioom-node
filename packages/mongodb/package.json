@@ -31,10 +31,10 @@
         "@cerioom/cache": "^0.0.21",
         "@cerioom/core": "^0.0.21",
         "@cerioom/resource": "^0.0.21",
-        "mongodb": "^3.6.3"
+        "mongodb": "^3.6.4"
     },
     "devDependencies": {
-        "@types/mongodb": "^3.6.3"
+        "@types/mongodb": "^3.6.5"
     },
     "gitHead": "194083afad93b3684ccc7d58484696573154f46a"
 }

@@ -31,7 +31,7 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
         this.store.set(this.makeKey(key), data, ttl ? ttl * 1000 : undefined)
     }
 
-    public async cached(key: string, cb: () => V, ttl: number = 60): Promise<V> {
+    public async cached(key: string, cb: () => V, ttl = 60): Promise<V> {
         let value = await this.get(this.makeKey(key))
         if (value === undefined) {
             value = await cb()
