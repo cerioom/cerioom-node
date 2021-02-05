@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/cerioom/cerioom-node/compare/v0.0.21...v0.0.22) (2021-02-05)
+
+
+### Bug Fixes
+
+* small changes ([7cb82b0](https://github.com/cerioom/cerioom-node/commit/7cb82b0c55e0c73adb3afa73bac9e200ec455b93))
+* **num:** add ([3d36187](https://github.com/cerioom/cerioom-node/commit/3d36187f1f63c95180b6e6dd5ae9d0e3e60aebd9))
+* **resource:** init serializer ([bf504b0](https://github.com/cerioom/cerioom-node/commit/bf504b0d1d5cf57ec42b096cdd708431b25cbf19))
+* **str:** refactoring ([050de37](https://github.com/cerioom/cerioom-node/commit/050de3724fc35d8f36ca12afd7b8a35bb3a65468))
+
+
+
+
+
 ## [0.0.21](https://github.com/cerioom/cerioom-node/compare/v0.0.20...v0.0.21) (2021-02-05)
 
 
