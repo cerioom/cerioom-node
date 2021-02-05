@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/cache",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.22",
+        "@cerioom/core": "^0.0.23",
         "lru-cache": "^6.0.0"
     },
     "devDependencies": {

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.23](https://github.com/cerioom/cerioom-node/compare/v0.0.22...v0.0.23) (2021-02-05)
+
+
+### Bug Fixes
+
+* **resource:** import Str ([66d53d8](https://github.com/cerioom/cerioom-node/commit/66d53d84d153263dae85cf99aed7d17cafb1489f))
+
+
+
+
+
 ## [0.0.22](https://github.com/cerioom/cerioom-node/compare/v0.0.21...v0.0.22) (2021-02-05)
 
 
