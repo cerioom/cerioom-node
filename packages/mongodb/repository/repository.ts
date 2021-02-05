@@ -1,4 +1,4 @@
-import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface } from '@cerioom/core'
+import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface, Serializer } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
@@ -40,6 +40,10 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
         if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
             this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper()
+        }
+
+        if (!opts.formatter && typeof opts.modelClass.getFormatter === 'function') {
+            this.serializer = new Serializer(opts.modelClass.getFormatter())
         }
     }
 

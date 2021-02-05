@@ -18,7 +18,7 @@ import { UpdateManyResultInterface } from './update-many-result.interface'
 
 export abstract class Repository<M> extends Service implements RepositoryInterface<M> {
     protected readonly modelClass: any
-    protected readonly serializer: SerializerInterface<M>
+    protected serializer: SerializerInterface<M>
 
     protected constructor(opts: {modelClass: any, formatter?: FormatterInterface}) {
         super()
