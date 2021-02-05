@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/cerioom/cerioom-node/compare/v0.0.26...v0.0.27) (2021-02-05)
+
+
+### Bug Fixes
+
+* **mongodb:** repository refactoring ([c9fd2e4](https://github.com/cerioom/cerioom-node/commit/c9fd2e4cbbe485e5de52191847d0af2caef55059))
+
+
+
+
+
 ## [0.0.26](https://github.com/cerioom/cerioom-node/compare/v0.0.25...v0.0.26) (2021-02-05)
 
 **Note:** Version bump only for package @cerioom/mongodb
