@@ -1,4 +1,4 @@
-export interface SerializerInterface<T> {
-    serialize: (data: any) => T
-    deserialize: (data: T) => any
+export interface SerializerInterface<Model> {
+    serialize: (data: Model) => any
+    deserialize: (data: any) => Model
 }

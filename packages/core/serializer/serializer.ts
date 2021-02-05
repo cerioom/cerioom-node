@@ -1,6 +1,6 @@
 import { SerializerInterface } from './serializer.interface'
 
-export abstract class Serializer<Target = any> implements SerializerInterface<Target> {
-    public abstract serialize(data: any): Target
-    public abstract deserialize(data: Target): any
+export abstract class Serializer<Model = any> implements SerializerInterface<Model> {
+    public abstract serialize(data: Model): any
+    public abstract deserialize(data: any): Model
 }

@@ -1,7 +1,7 @@
 import { Serializer } from './serializer'
 
 
-export class JsonSerializer extends Serializer<string> {
+export class JsonSerializer<Model> extends Serializer<Model> {
 
     constructor(private readonly options: {
         reviver?: (key: any, value: any) => any
@@ -11,11 +11,11 @@ export class JsonSerializer extends Serializer<string> {
         super()
     }
 
-    public serialize(data: any) {
+    public serialize(data: Model): string {
         return JSON.stringify(data, this.options.replacer, this.options.space)
     }
 
-    public deserialize(data: string): any {
+    public deserialize(data: string): Model {
         return JSON.parse(data, this.options.reviver)
     }
 }
