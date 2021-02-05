@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/http",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "0.0.20"
+        "@cerioom/core": "^0.0.21"
     },
     "gitHead": "ac7ca1b173d2ee701ea4e02eda5ad271e5417b5c"
 }
