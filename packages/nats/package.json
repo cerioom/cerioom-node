@@ -27,14 +27,14 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "0.0.19",
-        "@cerioom/event-bus": "0.0.12",
-        "@cerioom/resource": "0.0.12",
+        "@cerioom/core": "^0.0.19",
+        "@cerioom/event-bus": "^0.0.19",
+        "@cerioom/resource": "^0.0.19",
         "middie": "^5.2.0",
         "node-nats-streaming": "^0.3.2"
     },
     "devDependencies": {
         "ts-nats": "^1.2.15"
     },
-    "gitHead": "27006173e825b4ad30190fa488084833bae43b9d"
+    "gitHead": "ec8c2063821b4f211ebbd34e206c4f6ab7f0e5b6"
 }
