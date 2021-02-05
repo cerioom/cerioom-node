@@ -1,10 +1,9 @@
-import { DI, FormatterInterface, RuntimeError } from '@cerioom/core'
+import { DI, FormatterInterface, RuntimeError, ResponseEnvelopeInterface } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
     Repository as BaseRepository,
     RepositoryInterface,
-    ResourceEnvelopeInterface,
     ResourceQueryFilterInterface,
     ResourceQueryInterface,
     ResourceQueryMapper,
@@ -82,11 +81,11 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                 this.mongodbResourceQuery?.applyLimit(cursor, query)
             }
 
-            return cursor.stream(options).on('end', () => {
-                this.emit('post:export', {repository: this, query: query, opts: opts})
+            return cursor.stream(options).on('end', async () => {
+                await this.emit('post:export', {repository: this, query: query, opts: opts})
             })
         } catch (err) {
-            this.emit('error:export', {repository: this, error: err, query: query, options: options})
+            await this.emit('error:export', {repository: this, error: err, query: query, options: options})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         }
@@ -107,12 +106,12 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                 .comment(this.context.requestId ? `requestId=${this.context.requestId}` : '')
             await this.emit('post:find', {repository: this, records: cursor, options: opts})
 
-            return this.overrideCursor(cursor, opts).on('end', () => {
-                this.emit('post:find', {repository: this, cursor: cursor, opts: opts})
+            return this.overrideCursor(cursor, opts).on('end', async () => {
+                await this.emit('post:find', {repository: this, cursor: cursor, opts: opts})
             })
 
         } catch (err) {
-            this.emit('error:find', {repository: this, error: err, filter: filter, options: opts})
+            await this.emit('error:find', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             opts.session?.endSession()
             throw new RuntimeError().setCause(err)
@@ -137,7 +136,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             await this.emit('post:findOne', {repository: this, records: [result], options: opts})
             return result
         } catch (err) {
-            this.emit('error:findOne', {repository: this, error: err, filter: filter, options: opts})
+            await this.emit('error:findOne', {repository: this, error: err, filter: filter, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {
@@ -225,7 +224,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             })
             return {insertedCount: insertedCount, insertedIds: insertedIds}
         } catch (err) {
-            this.emit('error:insert', {repository: this, error: err, options: opts})
+            await this.emit('error:insert', {repository: this, error: err, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw err
         } finally {
@@ -233,7 +232,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         }
     }
 
-    public async list(query: ResourceQueryInterface, unlimited?: boolean, options?: FindOneOptions<Model>): Promise<Omit<ResourceEnvelopeInterface, 'data'> & {data: Model[]}> {
+    public async list(query: ResourceQueryInterface, unlimited?: boolean, options?: FindOneOptions<Model>): Promise<Omit<ResponseEnvelopeInterface, 'data'> & {data: Model[]}> {
         const opts: FindOneOptions<any> = Object.assign({}, options)
         if (!opts.session) {
             opts.session = (await this.getConnection()).startSession()
@@ -273,11 +272,11 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             ])
 
             opts.session?.endSession()
-            this.emit('post:list', {repository: this, records: records, total: total, options: opts})
+            await this.emit('post:list', {repository: this, records: records, total: total, options: opts})
             const data: Model[] = records.map(this.serializer.deserialize.bind(this.serializer))
             return {data: data, meta: {total: total}}
         } catch (err) {
-            this.emit('error:list', {repository: this, error: err, query: query, unlimited: unlimited, options: opts})
+            await this.emit('error:list', {repository: this, error: err, query: query, unlimited: unlimited, options: opts})
             this.log.error({error: RuntimeError.toJSON(err)})
             throw new RuntimeError().setCause(err)
         } finally {

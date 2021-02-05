@@ -1,6 +1,6 @@
 import { ContextInterface, ContextManager, ContextScopeEnum } from '../context'
 import { DI } from '../di'
-import { Util, ParsedVersionInterface } from '../helper'
+import { ParsedVersionInterface, Util } from '../helper'
 import { LoggerInterface } from '../logger'
 import { Service } from '../service'
 import { ApplicationInterface } from './application.interface'
@@ -55,17 +55,19 @@ export class Application extends Service implements ApplicationInterface {
     }
 
     public onExit(code: number, logger): void {
-        code > 0 && logger.error({action: 'onExit', exitCode: code})
+        if (code > 0) {
+            logger.error({action: 'onExit', exitCode: code})
+        }
     }
 
     public onUncaughtException(err: Error, logger: LoggerInterface): void {
-        logger.error({module: 'app', error: {message: err.message}}, err.message)
+        logger.error({action: 'onUncaughtException', error: {message: err.message}}, err.message)
         process.kill(process.pid, 'SIGINT')
     }
 
     public onUnhandledRejection(reason, p, logger): void {
         const msg = `Unhandled Rejection at: ${p} reason: ${reason}`
-        logger.error({module: 'app', error: {message: msg}}, msg)
+        logger.error({action: 'onUnhandledRejection', error: {message: msg}}, msg)
         process.kill(process.pid, 'SIGINT')
     }
 }
