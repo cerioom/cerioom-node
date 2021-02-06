@@ -21,7 +21,7 @@ export abstract class Repository<Model> extends Service implements RepositoryInt
     protected serializer: SerializerInterface<Model>
     protected resourceQueryMapper?: ResourceQueryMapper
 
-    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<Model>}) {
+    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<Model>, resourceQueryMapper?: ResourceQueryMapper}) {
         super()
 
         this.modelClass = opts.modelClass
@@ -31,6 +31,10 @@ export abstract class Repository<Model> extends Service implements RepositoryInt
 
         if (typeof opts.modelClass.getResourceQueryMapper === 'function') {
             this.resourceQueryMapper = opts.modelClass.getResourceQueryMapper()
+        } else if (opts.resourceQueryMapper) {
+            this.resourceQueryMapper = opts.resourceQueryMapper
+        } else {
+            this.resourceQueryMapper = new ResourceQueryMapper()
         }
 
         if (typeof opts.modelClass.getSerializer === 'function') {

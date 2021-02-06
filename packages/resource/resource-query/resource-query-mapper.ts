@@ -7,7 +7,7 @@ export type ResourceQueryMapperSchema<Model> = {
 
 export class ResourceQueryMapper<Model = any> {
     constructor(
-        protected schema: ResourceQueryMapperSchema<Model>,
+        protected schema: ResourceQueryMapperSchema<Model> = {},
     ) {
     }
 
