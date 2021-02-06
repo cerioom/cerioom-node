@@ -29,7 +29,7 @@
     "dependencies": {
         "@cerioom/core": "^0.0.31",
         "@cerioom/event-bus": "^0.0.31",
-        "@cerioom/resource": "^0.0.29",
+        "@cerioom/resource": "^0.0.31",
         "middie": "^5.2.0",
         "node-nats-streaming": "^0.3.2"
     },

@@ -28,8 +28,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/cache": "^0.0.22",
-        "@cerioom/core": "^0.0.28",
+        "@cerioom/cache": "^0.0.31",
+        "@cerioom/core": "^0.0.31",
         "@cerioom/resource": "^0.0.31",
         "mongodb": "^3.6.4"
     },
