@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/cerioom/cerioom-node/compare/v0.0.36...v0.0.37) (2021-02-06)
+
+
+### Bug Fixes
+
+* **flake-id:** small changes ([4f78f46](https://github.com/cerioom/cerioom-node/commit/4f78f46a1a7c9b24266d9f0ebeb6658e843eb0dd))
+
+
+
+
+
 ## [0.0.36](https://github.com/cerioom/cerioom-node/compare/v0.0.35...v0.0.36) (2021-02-06)
 
 **Note:** Version bump only for package @cerioom/flake-id

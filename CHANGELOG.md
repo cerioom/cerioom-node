@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.37](https://github.com/cerioom/cerioom-node/compare/v0.0.36...v0.0.37) (2021-02-06)
+
+
+### Bug Fixes
+
+* **core:** add `configure` method to `Service` ([577f33b](https://github.com/cerioom/cerioom-node/commit/577f33b242ac74f6147e9fb843353dc0c4b9256f))
+* **core:** add helper `Util.ifEmpty` ([97b385f](https://github.com/cerioom/cerioom-node/commit/97b385f5768ffb936a676685643055958b62a5b0))
+* **flake-id:** small changes ([4f78f46](https://github.com/cerioom/cerioom-node/commit/4f78f46a1a7c9b24266d9f0ebeb6658e843eb0dd))
+* **mongodb:** small changes ([e6aa0ba](https://github.com/cerioom/cerioom-node/commit/e6aa0ba77a8baa2373339da127edc7352736f403))
+
+
+
+
+
 ## [0.0.36](https://github.com/cerioom/cerioom-node/compare/v0.0.35...v0.0.36) (2021-02-06)
 
 **Note:** Version bump only for package cerioom
