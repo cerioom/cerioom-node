@@ -10,21 +10,23 @@ const escapeMap = {
     '>': '&gt;',
 }
 
+export enum CharSet {
+    NUM = '0123456789',
+    ALPHA = 'abcdefghijklmnopqrstuvwxyz',
+    B16 = '0123456789abcdef',
+    B36 = '0123456789abcdefghijklmnopqrstuvwxyz',
+    B62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    B64 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_',
+}
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Str {
-    public static readonly NUM = '0123456789'
-    public static readonly ALPHA = 'abcdefghijklmnopqrstuvwxyz'
-    public static readonly B16 = `${Str.NUM}abcdef`
-    public static readonly B36 = `${Str.NUM}${Str.ALPHA}`
-    public static readonly B62 = `${Str.NUM}${Str.ALPHA}${Str.ALPHA.toUpperCase()}`
-    public static readonly B64 = `${Str.B62}_-`
 
     public static trim(str) {
         return str.replace(/\s+/g, ' ').trim()
     }
 
-    public static random(length = 10, chars = Str.B62): string {
+    public static random(length = 10, chars: CharSet | string = CharSet.B62): string {
         const base = [...chars]
         // eslint-disable-next-line no-bitwise
         return [...Array(length)].map((_) => base[Math.random() * base.length | 0]).join('')

@@ -1,6 +1,6 @@
 import { DI } from '../di'
 import { Env } from '../env'
-import { Str } from '../helper'
+import { CharSet, Str } from '../helper'
 import { ErrorInterface } from './error.interface'
 import { ValidationResultInterface } from './validation-result.interface'
 
@@ -19,7 +19,7 @@ export class RuntimeError extends Error implements ErrorInterface {
         this.name = this.constructor.name
 
         Object.defineProperty(this, 'id', {
-            value: 'E' + Str.random(5, Str.B36),
+            value: 'E' + Str.random(5, CharSet.B36.toUpperCase()),
             configurable: true,
             writable: false,
         })
