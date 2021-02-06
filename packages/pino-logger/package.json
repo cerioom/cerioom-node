@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.33",
+        "@cerioom/core": "0.0.35",
         "pino": "6.7.0",
         "pino-noir": "^2.2.1"
     },

@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.33",
+        "@cerioom/core": "0.0.35",
         "lru-cache": "^6.0.0"
     },
     "devDependencies": {

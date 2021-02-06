@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.35",
+        "@cerioom/core": "0.0.35",
         "bigint-base-converter": "^0.1.2",
         "flake-idgen": "^1.4.0"
     },
