@@ -1,8 +1,8 @@
 import { AsyncLocalStorage } from 'async_hooks'
+import * as _ from 'lodash'
 import { Context } from './context'
 import { ContextManagerInterface } from './context-manager.interface'
 import { ContextInterface } from './context.interface'
-import * as _ from 'lodash'
 
 
 export enum ContextScopeEnum {
@@ -94,6 +94,8 @@ export class ContextManager implements ContextManagerInterface {
 }
 
 // @ts-ignore
-global.__cerioom.scopes = new Map<string, AsyncLocalStorage<ContextInterface>>()
-    .set(ContextScopeEnum.APP, new AsyncLocalStorage<ContextInterface>())
-    .set(ContextScopeEnum.REQUEST, new AsyncLocalStorage<ContextInterface>())
+global.__cerioom = Object.assign({}, global.__cerioom, {
+    scopes: new Map<string, AsyncLocalStorage<ContextInterface>>()
+        .set(ContextScopeEnum.APP, new AsyncLocalStorage<ContextInterface>())
+        .set(ContextScopeEnum.REQUEST, new AsyncLocalStorage<ContextInterface>()),
+})

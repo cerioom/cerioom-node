@@ -10,9 +10,6 @@ export class DI {
      */
     public static init(get: <T extends unknown>(source: Function & {prototype: T} | string | symbol) => T) {
         // @ts-ignore
-        global.__cerioom = {DI: {}}
-
-        // @ts-ignore
         Object.defineProperty(global.__cerioom.DI, 'get', {
             value: get,
             writable: false, // to prevent changes
@@ -35,3 +32,7 @@ export class DI {
         return global.__cerioom.DI.get(source)
     }
 }
+
+
+// @ts-ignore
+global.__cerioom = Object.assign({}, global.__cerioom, {DI: {}})
