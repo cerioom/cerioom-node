@@ -1,4 +1,4 @@
-import { DI, ResponseEnvelopeInterface, RuntimeError, SerializerInterface } from '@cerioom/core'
+import { DI, ResponseEnvelopeInterface, RuntimeError } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
@@ -7,6 +7,7 @@ import {
     ResourceQueryFilterInterface,
     ResourceQueryInterface,
     UpdateManyResultInterface,
+    RepositoryConstructorOptions
 } from '@cerioom/resource'
 import * as _ from 'lodash'
 import {
@@ -24,7 +25,6 @@ import {
     UpdateQuery,
 } from 'mongodb'
 import { MongodbService } from '../'
-import { ResourceQueryMapper } from '../../resource'
 import { MongodbResourceQuery } from '../resource-query'
 
 
@@ -33,12 +33,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     protected mongodbService = DI.get(MongodbService)
     protected mongodbResourceQuery = DI.get(MongodbResourceQuery)
 
-    protected constructor(opts: {
-        modelClass: any,
-        collectionName?: string,
-        serializer?: SerializerInterface<Model>,
-        resourceQueryMapper?: ResourceQueryMapper
-    }) {
+    protected constructor(opts: RepositoryConstructorOptions<Model> & {collectionName?: string}) {
         super(opts)
         this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
     }

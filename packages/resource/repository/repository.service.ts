@@ -15,13 +15,14 @@ import {
 } from './repository.interface'
 import { UpdateManyResultInterface } from './update-many-result.interface'
 
+export type RepositoryConstructorOptions<Model> = {modelClass: any, serializer?: SerializerInterface<Model>, resourceQueryMapper?: ResourceQueryMapper}
 
 export abstract class Repository<Model> extends Service implements RepositoryInterface<Model> {
     protected readonly modelClass: any
     protected serializer: SerializerInterface<Model>
     protected resourceQueryMapper?: ResourceQueryMapper
 
-    protected constructor(opts: {modelClass: any, serializer?: SerializerInterface<Model>, resourceQueryMapper?: ResourceQueryMapper}) {
+    protected constructor(opts: RepositoryConstructorOptions<Model>) {
         super()
 
         this.modelClass = opts.modelClass
