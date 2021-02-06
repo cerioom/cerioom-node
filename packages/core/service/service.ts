@@ -5,7 +5,7 @@ import { Logger, LoggerInterface } from '../logger'
 import { ServiceInterface } from './service.interface'
 
 
-export class Service extends EventEmitter implements ServiceInterface {
+export abstract class Service extends EventEmitter implements ServiceInterface {
     private readonly _module: string
     private _log: LoggerInterface | undefined
 
@@ -26,5 +26,9 @@ export class Service extends EventEmitter implements ServiceInterface {
         }
 
         return this._log
+    }
+
+    public configure(opts: Record<string, any>): this {
+        return this
     }
 }
