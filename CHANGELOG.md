@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.33](https://github.com/cerioom/cerioom-node/compare/v0.0.32...v0.0.33) (2021-02-06)
+
+
+### Bug Fixes
+
+* **core:** context scopes storage ([4fd4478](https://github.com/cerioom/cerioom-node/commit/4fd44786ace45f9f3cca7ca9a4e10d7a3c8ee270))
+
+
+
+
+
 ## [0.0.32](https://github.com/cerioom/cerioom-node/compare/v0.0.31...v0.0.32) (2021-02-06)
 
 
