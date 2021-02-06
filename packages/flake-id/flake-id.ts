@@ -2,6 +2,7 @@ import { CharSet, UniqueIdInterface } from '@cerioom/core'
 import FlakeIdGen from 'flake-idgen'
 import convertBase = require('bigint-base-converter')
 
+const defaultCharSet = CharSet.B36.toUpperCase()
 
 export class FlakeId implements UniqueIdInterface {
     protected generator: FlakeIdGen
@@ -16,7 +17,7 @@ export class FlakeId implements UniqueIdInterface {
         this.generator = new FlakeIdGen(opts ?? {epoch: 1577836800000})
     }
 
-    public decode(input: string, chars: CharSet = CharSet.B36): Buffer {
+    public decode(input: string, chars: CharSet | string = defaultCharSet): Buffer {
         return Buffer.from(convertBase(input, chars, 256))
     }
 
@@ -24,11 +25,11 @@ export class FlakeId implements UniqueIdInterface {
         return this.toString(opts?.chars)
     }
 
-    public async toStringAsync(chars: CharSet = CharSet.B36): Promise<string> {
+    public async toStringAsync(chars: CharSet | string = defaultCharSet): Promise<string> {
         return convertBase([].slice.call(this.nextAsync()), 256, chars)
     }
 
-    public toString(chars: CharSet = CharSet.B36): string {
+    public toString(chars: CharSet | string = defaultCharSet): string {
         const buf = this.next()
         return convertBase([].slice.call(buf), 256, chars)
     }
