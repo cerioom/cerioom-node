@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/cerioom/cerioom-node/compare/v0.0.28...v0.0.29) (2021-02-06)
+
+
+### Bug Fixes
+
+* **mongodb:** initialize ResourceQueryMapper in constructor ([9a467bc](https://github.com/cerioom/cerioom-node/commit/9a467bc76db26fe0f62523a8269d71315d6bec26))
+
+
+
+
+
 ## [0.0.28](https://github.com/cerioom/cerioom-node/compare/v0.0.27...v0.0.28) (2021-02-06)
 
 **Note:** Version bump only for package @cerioom/mongodb
