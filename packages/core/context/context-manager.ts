@@ -40,7 +40,8 @@ export class ContextManager implements ContextManagerInterface {
      * @param args
      */
     public setContext<R>(scope: ContextScopeEnum, callback: (...args: any[]) => R, ...args: any[]): R {
-        const als = scopes.get(scope)
+        // @ts-ignore
+        const als = global.__cerioom.scopes.get(scope)
         if (!als) {
             throw new ReferenceError(`Scope "${scope}" was not initiated`)
         }
@@ -55,19 +56,15 @@ export class ContextManager implements ContextManagerInterface {
      * @param scope
      */
     public getContext(scope: ContextScopeEnum = ContextScopeEnum.REQUEST): ContextInterface {
-        if (!scopes.has(scope) && !scopes.has(ContextScopeEnum.APP)) {
+        // @ts-ignore
+        if (!global.__cerioom.scopes.has(scope) && !global.__cerioom.scopes.has(ContextScopeEnum.APP)) {
             throw new ReferenceError('Scopes were not initiated')
         }
 
-        // @ts-expect-error
-        let store = scopes.get(scope).getStore()
+        // @ts-ignore
+        const store = global.__cerioom.scopes.get(scope)?.getStore()
         if (!store) {
-            // @ts-expect-error
-            store = scopes.get(ContextScopeEnum.APP).getStore()
-        }
-
-        if (!store) {
-            throw new ReferenceError(`Scope "${scope}" storage was not initiated`)
+            throw new ReferenceError(`Scope "${scope}" was not initiated`)
         }
 
         return store
@@ -96,6 +93,7 @@ export class ContextManager implements ContextManagerInterface {
     }
 }
 
-const scopes = new Map<string, AsyncLocalStorage<ContextInterface>>()
+// @ts-ignore
+global.__cerioom.scopes = new Map<string, AsyncLocalStorage<ContextInterface>>()
     .set(ContextScopeEnum.APP, new AsyncLocalStorage<ContextInterface>())
     .set(ContextScopeEnum.REQUEST, new AsyncLocalStorage<ContextInterface>())
