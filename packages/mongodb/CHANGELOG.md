@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/cerioom/cerioom-node/compare/v0.0.29...v0.0.31) (2021-02-06)
+
+
+### Bug Fixes
+
+* add RepositoryConstructorOptions ([f5dc3fe](https://github.com/cerioom/cerioom-node/commit/f5dc3fe80514d9acd7443aba5ac8af9a7e0bedad))
+
+
+
+
+
 ## [0.0.29](https://github.com/cerioom/cerioom-node/compare/v0.0.28...v0.0.29) (2021-02-06)
 
 
