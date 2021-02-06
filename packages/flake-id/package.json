@@ -27,9 +27,12 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.0.33",
-        "bigint-base-converter": "^0.1.2",
-        "flake-idgen": "^1.4.0"
+        "@cerioom/core": "^0.0.34",
+        "flake-idgen": "^1.4.0",
+        "bigint-base-converter": "^0.1.2"
+    },
+    "devDependencies": {
+        "@types/flake-idgen": "^0.1.30"
     },
     "gitHead": "b78f3c5dbc0cb7cd10e8b3b021a92e9ef15adab5"
 }

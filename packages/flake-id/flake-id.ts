@@ -1,14 +1,6 @@
-import { UniqueIdInterface } from '@cerioom/core'
-import * as FlakeIdGen from 'flake-idgen'
+import { CharSet, UniqueIdInterface } from '@cerioom/core'
+import FlakeIdGen from 'flake-idgen'
 import convertBase = require('bigint-base-converter')
-
-
-export enum BaseEnum {
-    BASE10 = '0123456789',
-    BASE16 = '0123456789abcdef',
-    BASE36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    BASE64 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-',
-}
 
 
 export class FlakeId implements UniqueIdInterface {
@@ -24,21 +16,21 @@ export class FlakeId implements UniqueIdInterface {
         this.generator = new FlakeIdGen(opts ?? {epoch: 1577836800000})
     }
 
-    public decode(input: string, base: BaseEnum = BaseEnum.BASE36): Buffer {
-        return Buffer.from(convertBase(input, base, 256))
+    public decode(input: string, chars: CharSet = CharSet.B36): Buffer {
+        return Buffer.from(convertBase(input, chars, 256))
     }
 
-    public gen(opts?: {base?: BaseEnum}): string {
-        return this.toString(opts?.base)
+    public gen(opts?: {chars?: CharSet}): string {
+        return this.toString(opts?.chars)
     }
 
-    public async toStringAsync(base: BaseEnum = BaseEnum.BASE36): Promise<string> {
-        return convertBase([].slice.call(this.nextAsync()), 256, base)
+    public async toStringAsync(chars: CharSet = CharSet.B36): Promise<string> {
+        return convertBase([].slice.call(this.nextAsync()), 256, chars)
     }
 
-    public toString(base: BaseEnum = BaseEnum.BASE36): string {
+    public toString(chars: CharSet = CharSet.B36): string {
         const buf = this.next()
-        return convertBase([].slice.call(buf), 256, base)
+        return convertBase([].slice.call(buf), 256, chars)
     }
 
     protected next(): Buffer {
