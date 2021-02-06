@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/cerioom/cerioom-node/compare/v0.0.33...v0.0.35) (2021-02-06)
+
+
+### Bug Fixes
+
+* **core:** add CharSet enum ([869dd2e](https://github.com/cerioom/cerioom-node/commit/869dd2e7ca93ee69a06a6ff631f659cf4c6d975b))
+
+
+
+
+
 ## [0.0.33](https://github.com/cerioom/cerioom-node/compare/v0.0.32...v0.0.33) (2021-02-06)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.35](https://github.com/cerioom/cerioom-node/compare/v0.0.33...v0.0.35) (2021-02-06)
+
+
+### Bug Fixes
+
+* **flake-id:** id generation ([c53b9d6](https://github.com/cerioom/cerioom-node/commit/c53b9d6c0554154ff62aa5ec6025a85d06f62ba4))
+
+
+
+
+
 ## [0.0.33](https://github.com/cerioom/cerioom-node/compare/v0.0.32...v0.0.33) (2021-02-06)
 
 **Note:** Version bump only for package @cerioom/flake-id
