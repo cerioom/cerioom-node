@@ -65,6 +65,8 @@ export abstract class Repository<Model> extends Service implements RepositoryInt
 
     public abstract getNamespace(): Promise<any>
 
+    // todo public abstract insertOne(entity: Model, options: InsertOneOptionsInterface | undefined): Promise<InsertOneResultInterface<Model>>
+
     public abstract insert(entities: Model[], options: InsertManyOptionsInterface | undefined): Promise<InsertManyResultInterface>
 
     public abstract list(query: ResourceQueryInterface, unlimited: boolean | undefined, options: FindOneOptions<Model> | undefined): Promise<Omit<ResponseEnvelopeInterface, 'data'> & {data: Model[]}>

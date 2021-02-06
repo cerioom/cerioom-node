@@ -149,25 +149,10 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         // filter = serialize(filter).bind(this)
 
         try {
-            if (!('autoCreate' in opts)) {
-                // @ts-expect-error
-                opts.autoCreate = true
-            }
-
-            if (update.$set) {
+            if (update.$set && update.$set instanceof this.modelClass) {
                 update.$set = this.serializer.serialize(<Model> update.$set)
             }
-            if (update.$set?.updated) { // todo
-                // @ts-expect-error
-                update.$set.updated = new Date()
-            }
-            // @ts-expect-error
-            if (opts.autoCreate && update.$set?.created) {
-                // @ts-expect-error
-                update.$setOnInsert = {...update.$setOnInsert, created: new Date()}
-                // @ts-expect-error
-                delete update.$set.created
-            }
+
             const db = await this.getNamespace()
             await this.emit('pre:findOneAndUpdate', {repository: this, filter: filter, update: update, options: opts})
             const {value} = await db.collection(this.collectionName).findOneAndUpdate(filter, update, opts)
@@ -198,6 +183,8 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     public async getNamespace(): Promise<Db> {
         return await this.mongodbService.getDb(this.context)
     }
+
+    // todo public abstract insertOne(entity: Model, options: InsertOneOptionsInterface | undefined): Promise<InsertOneResultInterface<Model>>
 
     public async insert(entities: Model[], options?: CollectionInsertOneOptions): Promise<InsertManyResultInterface> {
         const opts = Object.assign({}, options)
@@ -315,23 +302,10 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
             // todo
             // filter = serialize.bind(this.serializer)(filter)
 
-            if (!('autoCreate' in opts)) {
-                opts.autoCreate = true
-            }
-
             if (update.$set) {
                 update.$set = this.serializer.serialize.bind(this.serializer)(update.$set)
             }
-            if (update.$set?.updated) {
-                // @ts-expect-error
-                update.$set.updated = new Date()
-            }
-            if (opts.autoCreate && update.$set?.created) {
-                // @ts-expect-error
-                update.$setOnInsert = {...update.$setOnInsert, created: new Date()}
-                // @ts-expect-error
-                delete update.$set.created
-            }
+
             await this.emit('pre:update', {repository: this, filter: filter, update: update, options: opts})
             const {modifiedCount, upsertedCount} = await db.collection(this.collectionName)
                 .updateMany(filter, update, options as UpdateOneOptions)
