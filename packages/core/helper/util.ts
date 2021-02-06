@@ -73,6 +73,16 @@ export class Util {
         const [major, minor, patch] = version.split('.').map(Number)
         const number = major * 1_000_000 + minor * 1_000 + patch
 
-        return {version, number, major, minor, patch}
+        return {version: version, number: number, major: major, minor: minor, patch: patch}
+    }
+
+    public static ifEmpty(fn) {
+        return (...args: any[]) => {
+            if (args[0] === undefined || args[0] === null || args[0] === '') {
+                return fn(...args)
+            }
+
+            return args[0]
+        }
     }
 }
