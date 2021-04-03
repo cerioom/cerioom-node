@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/cerioom/cerioom-node/compare/v0.0.38...v0.1.0) (2021-04-03)
+
+
+### Features
+
+* **validator:** add validator interface ([d7278df](https://github.com/cerioom/cerioom-node/commit/d7278df0950fa911bc7bceca135501465f290e16))
+
+
+
+
+
 ## [0.0.38](https://github.com/cerioom/cerioom-node/compare/v0.0.37...v0.0.38) (2021-04-03)
 
 **Note:** Version bump only for package @cerioom/core
