@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/cerioom/cerioom-node/compare/v0.1.0...v0.2.0) (2021-04-03)
+
+
+### Bug Fixes
+
+* **validator:** add abstract ValidatorService ([aead5cb](https://github.com/cerioom/cerioom-node/commit/aead5cb59ef3e63ecb11bbcb9a4dab2cb0310cb8))
+
+
+### Features
+
+* **error:** add NotImplementedError ([4591d31](https://github.com/cerioom/cerioom-node/commit/4591d31387480ef3492a5ce334557877c38e0f56))
+
+
+
+
+
 # [0.1.0](https://github.com/cerioom/cerioom-node/compare/v0.0.38...v0.1.0) (2021-04-03)
 
 
