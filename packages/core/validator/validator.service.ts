@@ -1,6 +1,6 @@
+import { ValidatorInterface } from '.'
 import { Service } from '..'
-import { NotImplementedError } from '../../http'
-import { ValidatorInterface } from './validator.interface'
+import { NotImplementedError } from '../error'
 
 
 export abstract class ValidatorService extends Service implements ValidatorInterface {
