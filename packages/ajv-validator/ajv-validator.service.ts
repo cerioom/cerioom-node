@@ -1,13 +1,12 @@
-import { RuntimeError } from '@cerioom/core'
+import { RuntimeError, Service } from '@cerioom/core'
 import ajv from 'ajv'
 import localize from 'ajv-i18n'
 import fs from 'fs'
 import { cloneDeep } from 'lodash'
 import path from 'path'
-import { ValidatorService } from '../core/validator'
 
 
-export class AjvValidatorService extends ValidatorService {
+export class AjvValidatorService extends Service {
     private ajv: ajv.Ajv
     private readonly ajvCustomizer: (ajv: ajv.Ajv) => ajv.Ajv
     private schemas: any[]
