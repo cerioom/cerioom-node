@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/nats",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,9 +27,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "0.2.1",
-        "@cerioom/event-bus": "0.2.1",
-        "@cerioom/resource": "0.2.1",
+        "@cerioom/core": "0.2.2",
+        "@cerioom/event-bus": "0.2.2",
+        "@cerioom/resource": "0.2.2",
         "middie": "^5.2.0",
         "node-nats-streaming": "^0.3.2"
     },
