@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/cerioom/cerioom-node/compare/v0.2.3...v0.2.4) (2021-04-03)
+
+
+### Bug Fixes
+
+* **validator:** extend AjvValidatorService from abstract ValidatorService ([a926fa0](https://github.com/cerioom/cerioom-node/commit/a926fa024de9bce14e1905ec41c45840deb7ec53))
+
+
+
+
+
 ## [0.2.3](https://github.com/cerioom/cerioom-node/compare/v0.2.2...v0.2.3) (2021-04-03)
 
 
