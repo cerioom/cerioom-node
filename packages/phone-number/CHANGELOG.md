@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/cerioom/cerioom-node/compare/v0.2.0...v0.2.1) (2021-04-03)
+
+
+### Bug Fixes
+
+* **http-error:** NotImplementedError ([c528fe5](https://github.com/cerioom/cerioom-node/commit/c528fe5d58fd986cce3d50a435d6fc9dfccb6d5f))
+
+
+
+
+
 # [0.2.0](https://github.com/cerioom/cerioom-node/compare/v0.1.0...v0.2.0) (2021-04-03)
 
 

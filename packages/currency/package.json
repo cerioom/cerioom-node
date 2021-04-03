@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/currency",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,8 +27,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "0.2.0",
-        "@cerioom/resource": "0.2.0",
+        "@cerioom/core": "0.2.1",
+        "@cerioom/resource": "0.2.1",
         "world-currencies": "^0.0.11"
     },
     "gitHead": "ea993580f10c61bb73cf67188c3d079b6b513679"
