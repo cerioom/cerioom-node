@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.38](https://github.com/cerioom/cerioom-node/compare/v0.0.37...v0.0.38) (2021-04-03)
+
+
+### Bug Fixes
+
+* **http-error:** add token errors ([2108c3a](https://github.com/cerioom/cerioom-node/commit/2108c3ac0a62271af667dc8fc0360ca47e89e2fc))
+
+
+
+
+
 ## [0.0.37](https://github.com/cerioom/cerioom-node/compare/v0.0.36...v0.0.37) (2021-02-06)
 
 
