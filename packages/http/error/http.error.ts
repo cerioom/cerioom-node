@@ -1,4 +1,3 @@
-import { NotImplementedError as BaseNotImplementedError } from '@cerioom/core'
 import { BaseHttpError } from './base-http.error'
 
 
@@ -92,7 +91,7 @@ export class InternalServerError extends BaseHttpError {
     }
 }
 
-export class NotImplementedError extends BaseNotImplementedError {
+export class NotImplementedError extends BaseHttpError {
     constructor(message?: string) {
         super(message ?? 'i18n|common:error.not-implemented.text', 501)
     }
