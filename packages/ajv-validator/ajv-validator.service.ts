@@ -1,4 +1,4 @@
-import { RuntimeError, ValidatorService } from '@cerioom/core'
+import { LoggerInterface, RuntimeError, ValidatorService } from '@cerioom/core'
 import ajv from 'ajv'
 import localize from 'ajv-i18n'
 import fs from 'fs'
@@ -13,6 +13,7 @@ export class AjvValidatorService extends ValidatorService {
     private readonly defaults: ajv.Options | any = {}
     private opts: ajv.Options | any = {}
     private lang: any = {language: 'en', region: undefined}
+    private log: LoggerInterface
 
 
     constructor(opts?: ajv.Options, dir?: string, ajvCustomizer?: (ajv: ajv.Ajv) => ajv.Ajv) {
@@ -20,7 +21,6 @@ export class AjvValidatorService extends ValidatorService {
 
         dir = dir ?? path.resolve(__dirname, '/../../resources/schemas/')
 
-        this.log.debug({action: 'constructor', path: dir}, 'Loading json-schemas')
         this.schemas = this.readDir(fs.realpathSync(dir))
             .filter(file => /^.*\.json$/.test(file))
             .map(file => require(file))
@@ -56,6 +56,25 @@ export class AjvValidatorService extends ValidatorService {
 
     public getLang(): any {
         return this.lang
+    }
+
+    public setLogger(logger: LoggerInterface) {
+        this.log = logger
+
+        this.options({
+            ...this.opts,
+            ...{
+                log: this.log.info.bind(this.log),
+                warn: this.log.warn.bind(this.log),
+                error: this.log.error.bind(this.log),
+            },
+        })
+
+        return this
+    }
+
+    public getLogger() {
+        return this.log
     }
 
     // public setI18n(i18n: I18nService): this {
@@ -114,15 +133,6 @@ export class AjvValidatorService extends ValidatorService {
     }
 
     private updateAjvInstance(): this {
-        this.log.debug()
-
-        this.opts.logger = {
-            log: this.log.info.bind(this.log),
-            warn: this.log.warn.bind(this.log),
-            error: this.log.error.bind(this.log),
-        }
-
-        // eslint-disable-next-line new-cap
         this.ajv = new ajv(Object.assign({}, this.defaults, this.opts))
 
         if (this.ajvCustomizer) {
