@@ -1,8 +1,9 @@
+import { Service } from '..'
 import { NotImplementedError } from '../../http'
 import { ValidatorInterface } from './validator.interface'
 
 
-export abstract class ValidatorService implements ValidatorInterface {
+export abstract class ValidatorService extends Service implements ValidatorInterface {
     public getLang(): any {
         throw new NotImplementedError()
     }
