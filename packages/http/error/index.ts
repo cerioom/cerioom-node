@@ -1,2 +1,3 @@
 export * from './http.error'
-export { BaseHttpError } from './base-http.error'
+export * from './base-http.error'
+export * from './token.error'
