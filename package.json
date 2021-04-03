@@ -14,7 +14,7 @@
         "test:core": "lerna run test --scope=@cerioom/core",
         "test:main": "lerna run test --scope={@cerioom/core,@cerioom/resource}",
         "new-version": "lerna version --no-push --conventional-commits --yes",
-        "release": "lerna publish from-git --yes --pre-dist-tag next && git commit -am \"chore: Update changelog\" && git push origin",
+        "release": "lerna publish from-git --yes --pre-dist-tag next && git commit -am \"chore: Update changelog\"",
         "install": "lerna bootstrap",
         "publish:premajor": "lerna publish premajor --preid pre --pre-dist-tag pre && git commit -am \"chore: Update version and changelog\" && git push origin",
         "publish:prerelease": "lerna publish prerelease --preid pre --pre-dist-tag pre && git commit -am \"chore: Update version and changelog\" && git push origin",
