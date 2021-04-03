@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/cerioom/cerioom-node/compare/v0.2.4...v0.3.0) (2021-04-03)
+
+
+### Bug Fixes
+
+* **validator:** use LoggableInterface for validator ([1e0342e](https://github.com/cerioom/cerioom-node/commit/1e0342e9838b43969db8cf05610de93696147c19))
+
+
+### Features
+
+* **loggable:** add LoggableInterface ([3af490e](https://github.com/cerioom/cerioom-node/commit/3af490ed3d328b4b7d704d1dea24c74f0053fb68))
+
+
+
+
+
 ## [0.2.3](https://github.com/cerioom/cerioom-node/compare/v0.2.2...v0.2.3) (2021-04-03)
 
 
