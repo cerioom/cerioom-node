@@ -9,7 +9,7 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     private readonly _module: string
     private _log: LoggerInterface | undefined
 
-    constructor() {
+    protected constructor() {
         super()
         // @ts-expect-error
         this._module = this.constructor.name.toLowerCase().includes('ioc') && 'name' in this.constructor.__parent ? this.constructor.__parent.name : this.constructor.name
@@ -26,6 +26,10 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
         }
 
         return this._log
+    }
+
+    public getModuleName(): string {
+        return this._module
     }
 
     public configure(opts: Record<string, any>): this {
