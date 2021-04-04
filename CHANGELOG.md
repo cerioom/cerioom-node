@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/cerioom/cerioom-node/compare/v0.3.2...v0.4.0) (2021-04-04)
+
+
+### Bug Fixes
+
+* bump ([3f39c70](https://github.com/cerioom/cerioom-node/commit/3f39c70ebad7d81bb369fb8cdbcbe493fc028881))
+
+
+### Features
+
+* **service:** add setContext ([68e88d0](https://github.com/cerioom/cerioom-node/commit/68e88d0f6f6b15ba0178f927c0be8d7eec9a9f0d))
+
+
+
+
+
 ## [0.3.2](https://github.com/cerioom/cerioom-node/compare/v0.3.1...v0.3.2) (2021-04-04)
 
 
