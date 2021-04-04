@@ -8,6 +8,7 @@ import { ServiceInterface } from './service.interface'
 export abstract class Service extends EventEmitter implements ServiceInterface {
     private readonly _module: string
     private _log: LoggerInterface | undefined
+    private _context: ContextInterface
 
     protected constructor() {
         super()
@@ -16,7 +17,12 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     }
 
     public get context(): ContextInterface {
-        return DI.get(ContextManager).getContext(ContextScopeEnum.REQUEST)
+        return this._context || DI.get(ContextManager).getContext(ContextScopeEnum.REQUEST)
+    }
+
+    public setContext(context: ContextInterface): this {
+        this._context = context
+        return this
     }
 
     public get log(): LoggerInterface {
