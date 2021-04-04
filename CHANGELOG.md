@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/cerioom/cerioom-node/compare/v0.3.1...v0.3.2) (2021-04-04)
+
+
+### Bug Fixes
+
+* linter ([f61e737](https://github.com/cerioom/cerioom-node/commit/f61e737f6c6e3a64cf85588431aa344745bb8e32))
+* **logger:** add export LoggableInterface ([c900754](https://github.com/cerioom/cerioom-node/commit/c90075432e82f54609f65b488500f03a55fd0649))
+* **service:** add getModuleName ([391ca96](https://github.com/cerioom/cerioom-node/commit/391ca96a21c14e6539ae1a850671130f7ed598f0))
+* **validator:** add index export ([87faa57](https://github.com/cerioom/cerioom-node/commit/87faa57b4cf62743c197ffe92379e6e23fb5c16e))
+
+
+
+
+
 ## [0.3.1](https://github.com/cerioom/cerioom-node/compare/v0.3.0...v0.3.1) (2021-04-03)
 
 

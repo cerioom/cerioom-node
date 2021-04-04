@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/cerioom/cerioom-node/compare/v0.3.1...v0.3.2) (2021-04-04)
+
+
+### Bug Fixes
+
+* linter ([f61e737](https://github.com/cerioom/cerioom-node/commit/f61e737f6c6e3a64cf85588431aa344745bb8e32))
+
+
+
+
+
 # [0.3.0](https://github.com/cerioom/cerioom-node/compare/v0.2.4...v0.3.0) (2021-04-03)
 
 **Note:** Version bump only for package @cerioom/cache
