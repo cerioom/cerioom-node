@@ -1,3 +1,4 @@
+import { RuntimeError } from '@cerioom/core'
 import { Service } from '@cerioom/core/service'
 import { EventBusTransportInterface } from './event-bus-transport.interface'
 import { EventBusInterface } from './event-bus.interface'
@@ -10,6 +11,10 @@ export class EventBusService extends Service implements EventBusInterface {
 
     constructor(transports: EventBusTransportInterface[]) {
         super()
+        if (!transports.length) {
+            throw new RuntimeError('Transport for event bus was not defined')
+        }
+
         this.transports = transports
         this.emit('constructed', this)
     }
