@@ -16,6 +16,6 @@ describe('FlakeId', () => {
         jest.spyOn(FlakeId.prototype as any, 'next').mockReturnValueOnce(Buffer.from('AgZOurRAAAA=', 'base64'))
 
         const id = flakeId.gen({chars: CharSet.B36})
-        expect(id).toBe('13WHWH72ZE2O')
+        expect(id).toBe('13whwh72ze2o')
     })
 })

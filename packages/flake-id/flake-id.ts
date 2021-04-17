@@ -21,7 +21,7 @@ export class FlakeId implements UniqueIdInterface {
         return Buffer.from(convertBase(input, chars, 256))
     }
 
-    public gen(opts?: {chars?: CharSet}): string {
+    public gen(opts?: {chars?: CharSet | string}): string {
         return this.toString(opts?.chars)
     }
 
