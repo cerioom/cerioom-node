@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/cerioom/cerioom-node/compare/v0.4.0...v0.5.0) (2021-04-17)
+
+
+### Features
+
+* **currency:** add CurrencyNumber, CurrencyManager ([525df06](https://github.com/cerioom/cerioom-node/commit/525df06e99ac23c424208b7117e65ca1164afdc9))
+
+
+
+
+
 # [0.4.0](https://github.com/cerioom/cerioom-node/compare/v0.3.2...v0.4.0) (2021-04-04)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/cerioom/cerioom-node/compare/v0.4.0...v0.5.0) (2021-04-17)
+
+
+### Features
+
+* **mongodb:** disallow to return all resources if query contains unknown fields; context handling ([e4d3e24](https://github.com/cerioom/cerioom-node/commit/e4d3e240525a89d42682307eeab4af545342937e))
+
+
+
+
+
 # [0.4.0](https://github.com/cerioom/cerioom-node/compare/v0.3.2...v0.4.0) (2021-04-04)
 
 

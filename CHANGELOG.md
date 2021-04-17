@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/cerioom/cerioom-node/compare/v0.4.0...v0.5.0) (2021-04-17)
+
+
+### Bug Fixes
+
+* **core:** context definition ([5d3bc3e](https://github.com/cerioom/cerioom-node/commit/5d3bc3e062d49015e6c1d6d2e7df29880bbb57e5))
+* **event-bus:** throw error for not defined transport ([c63b9a4](https://github.com/cerioom/cerioom-node/commit/c63b9a44e0f85bdceb2b5cf3a873e778415ab296))
+* **packages:** bump ([f7ca930](https://github.com/cerioom/cerioom-node/commit/f7ca9301b8b5c50ec532460a895e8c8658828325))
+
+
+### Features
+
+* **currency:** add CurrencyNumber, CurrencyManager ([525df06](https://github.com/cerioom/cerioom-node/commit/525df06e99ac23c424208b7117e65ca1164afdc9))
+* **http:** rename RestExceptionHandler ([5662194](https://github.com/cerioom/cerioom-node/commit/56621945b8cd686a482801a2e7bbb14c0d6cbde2))
+* **mongodb:** disallow to return all resources if query contains unknown fields; context handling ([e4d3e24](https://github.com/cerioom/cerioom-node/commit/e4d3e240525a89d42682307eeab4af545342937e))
+
+
+
+
+
 # [0.4.0](https://github.com/cerioom/cerioom-node/compare/v0.3.2...v0.4.0) (2021-04-04)
 
 
