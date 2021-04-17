@@ -145,49 +145,52 @@ export class MongodbResourceQuery extends ResourceQuery {
     public buildFilter(filter: ResourceQueryFilterInterface, resourceQueryMapper: ResourceQueryMapper): Record<string, any> {
         const result = {}
 
-        Object
-            .entries(filter)
-            .filter(([field]) => resourceQueryMapper.has(field))
-            .forEach(
-                ([field, filters]) => {
-                    if (field[0] === '$' || filters instanceof RegExp) {
-                        // using standard mongodb operators
-                        result[field] = filters
-                    } else if (Array.isArray(filters)) {
-                        result[field] = {
-                            $in: filters,
-                        }
-                    } else if (typeof filters === 'string' && filters.includes(',')) {
-                        result[field] = {
-                            $in: filters.split(',').map(Str.trim).filter(Boolean).slice(0, 1000),
-                        }
-                    } else if (typeof filters === 'object' && filters !== null) {
-                        Object.entries(filters || {}).forEach(
-                            ([operator, value]) => {
-                                if (operator in FILTERS) {
-                                    result[field] = {
-                                        ...result[field],
-                                        [FILTERS[operator]]: resourceQueryMapper.formatField(value, field),
-                                    }
-                                } else if (operator === 'like') {
-                                    result[field] = {
-                                        ...result[field],
-                                        $regex: value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'),
-                                        $options: 'i',
-                                    }
-                                } else {
-                                    result[field] = {
-                                        ...result[field],
-                                        [operator]: resourceQueryMapper.formatField(value, field),
-                                    }
-                                }
-                            },
-                        )
-                    } else {
-                        result[field] = resourceQueryMapper.formatField(filters, field)
+        const fields = Object.entries(filter).filter(([field]) => resourceQueryMapper.has(field))
+
+        if (Object.entries(filter).length && !fields.length) {
+            return {undefined: null}
+        }
+
+        fields.forEach(
+            ([field, filters]) => {
+                if (field[0] === '$' || filters instanceof RegExp) {
+                    // using standard mongodb operators
+                    result[field] = filters
+                } else if (Array.isArray(filters)) {
+                    result[field] = {
+                        $in: filters,
                     }
-                },
-            )
+                } else if (typeof filters === 'string' && filters.includes(',')) {
+                    result[field] = {
+                        $in: filters.split(',').map(Str.trim).filter(Boolean).slice(0, 1000),
+                    }
+                } else if (typeof filters === 'object' && filters !== null) {
+                    Object.entries(filters || {}).forEach(
+                        ([operator, value]) => {
+                            if (operator in FILTERS) {
+                                result[field] = {
+                                    ...result[field],
+                                    [FILTERS[operator]]: resourceQueryMapper.formatField(value, field),
+                                }
+                            } else if (operator === 'like') {
+                                result[field] = {
+                                    ...result[field],
+                                    $regex: value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'),
+                                    $options: 'i',
+                                }
+                            } else {
+                                result[field] = {
+                                    ...result[field],
+                                    [operator]: resourceQueryMapper.formatField(value, field),
+                                }
+                            }
+                        },
+                    )
+                } else {
+                    result[field] = resourceQueryMapper.formatField(filters, field)
+                }
+            },
+        )
 
         return result
     }
