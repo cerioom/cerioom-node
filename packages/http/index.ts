@@ -1,2 +1,2 @@
 export * from './error'
-export * from './rest-exception-handler.decorator'
+export * from './connect-exception-handler.decorator'
