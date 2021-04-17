@@ -1,6 +1,5 @@
-import { SerializerInterface } from '@cerioom/core'
+import { RuntimeError, SerializerInterface } from '@cerioom/core'
 import { UnsupportedCurrencyError } from './currency.error'
-import listOfCurrency = require('world-currencies')
 
 
 // DO NOT TOUCH!!!
@@ -9,26 +8,31 @@ const CAPACITY_MAGNIFIER = 2
 
 export class CurrencySerializer implements SerializerInterface<number> {
     protected currency = 'USD'
+    protected locales: string | string[] = 'en-US'
 
-    public configure(param: {currency: any}): this {
-        this.currency = param.currency
+    public configure(param: {currency?: any,  locales?: string | string[]}): this {
+        this.currency = param.currency || 'USD'
+        this.locales = param.locales || 'en-US'
         return this
     }
 
     public serialize(value: number): number {
-        return Math.round(value * 10 ** (CurrencySerializer.getFractionSize(this.currency) + CAPACITY_MAGNIFIER))
+        return Math.round(value * 10 ** (this.getFractionSize() + CAPACITY_MAGNIFIER))
     }
 
     public deserialize(value: number): number {
-        return parseInt(String(value / 10 ** CAPACITY_MAGNIFIER), 10) / 10 ** CurrencySerializer.getFractionSize(this.currency)
+        return parseInt(String(value / 10 ** CAPACITY_MAGNIFIER), 10) / 10 ** this.getFractionSize()
     }
 
-    public static getFractionSize(currency: string, defaultValue = 2): number {
-        const curr = listOfCurrency[currency]
-        if (curr) {
-            return curr.units.minor.majorValue.toString().split('.')[1].length || defaultValue
+    public getFractionSize(): number {
+        try {
+            return new Intl.NumberFormat(this.locales, {style: 'currency', currency: this.currency})
+                .resolvedOptions()
+                .minimumFractionDigits
+        } catch (e) {
+            const err = new UnsupportedCurrencyError()
+            err.setCause(new RuntimeError(e.message)).setData({currency: this.currency})
+            throw err
         }
-
-        throw new UnsupportedCurrencyError()
     }
 }

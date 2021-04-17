@@ -1,3 +1,5 @@
-export * from './resource-query/resource-query-field-type'
+export * from './currency-manager'
+export * from './currency-number'
 export * from './currency-serializer'
 export * from './currency.error'
+export * from './resource-query/resource-query-field-type'
