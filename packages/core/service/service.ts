@@ -7,7 +7,6 @@ import { ServiceInterface } from './service.interface'
 
 export abstract class Service extends EventEmitter implements ServiceInterface {
     private readonly _module: string
-    private _scope: ContextScopeEnum = ContextScopeEnum.REQUEST
     private _log: LoggerInterface | undefined
     private _context: ContextInterface
 
@@ -25,15 +24,6 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
         return this._context
     }
 
-    public getScope(): ContextScopeEnum {
-        return this._scope
-    }
-
-    public setScope(scope: ContextScopeEnum): this {
-        this._scope = scope
-        return this
-    }
-
     public getContext(scope: ContextScopeEnum = ContextScopeEnum.REQUEST): ContextInterface {
         return DI.get(ContextManager).getContext(scope)
     }
@@ -45,16 +35,21 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
 
     public get log(): LoggerInterface {
         if (!this._log) {
-            let context
-            try {
-                context = this.getContext(ContextScopeEnum.REQUEST)
-            } catch (e) {
-                context = this.getContext(ContextScopeEnum.APP)
+            let context: ContextInterface
+
+            if (this._context) {
+                context = this._context
+            } else {
+                try {
+                    context = this.getContext(ContextScopeEnum.REQUEST)
+                } catch (e) {
+                    context = this.getContext(ContextScopeEnum.APP)
+                }
             }
 
             const bindings = context.logger ? context.logger.bindings() : {}
             const logger = DI.get(Logger).child({...bindings, module: this._module})
-            if (context.getScope() === ContextScopeEnum.APP) {
+            if (context.scope === ContextScopeEnum.APP) {
                 return logger
             }
 
