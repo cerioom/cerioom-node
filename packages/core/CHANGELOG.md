@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/cerioom/cerioom-node/compare/v0.5.0...v0.5.1) (2021-04-18)
+
+
+### Bug Fixes
+
+* **core:** add scope attribute for context ([949f443](https://github.com/cerioom/cerioom-node/commit/949f443ce35a6026130f71e1ddc0252bcb358bb0))
+* **core:** smart obtaining a context for service logger ([4a5fbd9](https://github.com/cerioom/cerioom-node/commit/4a5fbd9f8dd29c4a3f54e7dc4b1762ee1355b50e))
+
+
+
+
+
 # [0.5.0](https://github.com/cerioom/cerioom-node/compare/v0.4.0...v0.5.0) (2021-04-17)
 
 
