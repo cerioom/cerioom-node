@@ -1,5 +1,4 @@
-import { RuntimeError } from '@cerioom/core'
-import { Service } from '@cerioom/core/service'
+import { RuntimeError, Service } from '@cerioom/core'
 import { EventBusTransportInterface } from './event-bus-transport.interface'
 import { EventBusInterface } from './event-bus.interface'
 
