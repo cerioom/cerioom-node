@@ -1,9 +1,12 @@
 import { inspect } from 'util'
 import { Config } from '../config'
+import { ContextScopeEnum } from './context-manager'
 import { ContextInterface } from './context.interface'
 
 
 export class Context extends Config implements ContextInterface {
+    public readonly scope: ContextScopeEnum
+
     public destroy(): void {
         Object.getOwnPropertyNames(this).forEach((key) => {
             try {

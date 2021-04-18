@@ -1,3 +1,6 @@
+import { ContextScopeEnum } from './context-manager'
+
+
 export interface ContextInterface {
     [key: string]: any
 
@@ -6,4 +9,5 @@ export interface ContextInterface {
     destroy: () => void
     toJSON: () => object
     toString: () => string
+    readonly scope: ContextScopeEnum
 }
