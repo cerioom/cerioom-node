@@ -5,7 +5,7 @@ import { LoggableInterface } from '../logger'
 
 
 export abstract class Validator implements ValidatorInterface, LoggableInterface {
-    protected lang: any
+    protected lang: any = {language: 'en', region: undefined}
     protected log: LoggerInterface
 
     public setLang(lang: any): this {
