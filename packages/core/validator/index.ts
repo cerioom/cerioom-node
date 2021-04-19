@@ -1,2 +1,2 @@
 export * from './validator.interface'
-export * from './validator.service'
+export * from './validator'
