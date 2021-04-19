@@ -1,27 +1,32 @@
 import { ValidatorInterface } from '.'
 import { LoggerInterface } from '..'
 import { NotImplementedError } from '../error'
-import { LoggableInterface } from '../logger/loggable.interface'
+import { LoggableInterface } from '../logger'
 
 
-export abstract class ValidatorService implements ValidatorInterface, LoggableInterface {
-    public getLang(): any {
-        throw new NotImplementedError()
-    }
+export abstract class Validator implements ValidatorInterface, LoggableInterface {
+    protected lang: any
+    protected log: LoggerInterface
 
     public setLang(lang: any): this {
-        throw new NotImplementedError()
+        this.lang = lang
+        return this
     }
 
-    public validate(how: any, what: any): any {
-        throw new NotImplementedError()
+    public getLang(): any {
+        return this.lang
     }
 
     public setLogger(logger: LoggerInterface): this {
-        throw new NotImplementedError()
+        this.log = logger
+        return this
     }
 
     public getLogger(): LoggerInterface {
+        return this.log
+    }
+
+    public validate(how: any, what: any): any {
         throw new NotImplementedError()
     }
 }
