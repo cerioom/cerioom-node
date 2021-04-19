@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.3](https://github.com/cerioom/cerioom-node/compare/v0.5.2...v0.5.3) (2021-04-19)
+
+
+### Bug Fixes
+
+* **ajv-validator:** change name to AjvValidator ([96bb6f3](https://github.com/cerioom/cerioom-node/commit/96bb6f30e153b1c5fea9d60ea7cc2c81419d23dc))
+* **packages:** bump ([19a4cb3](https://github.com/cerioom/cerioom-node/commit/19a4cb3e06d89a5cb356d78084e736368b6a96a1))
+
+
+
+
+
 ## [0.5.2](https://github.com/cerioom/cerioom-node/compare/v0.5.1...v0.5.2) (2021-04-19)
 
 
