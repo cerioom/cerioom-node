@@ -1,4 +1,4 @@
-import { LoggerInterface, RuntimeError, ValidatorService } from '@cerioom/core'
+import { LoggerInterface, RuntimeError, Validator } from '@cerioom/core'
 import ajv from 'ajv'
 import localize from 'ajv-i18n'
 import fs from 'fs'
@@ -6,14 +6,12 @@ import { cloneDeep } from 'lodash'
 import path from 'path'
 
 
-export class AjvValidatorService extends ValidatorService {
+export class AjvValidator extends Validator {
     private ajv: ajv.Ajv
     private readonly ajvCustomizer: (ajv: ajv.Ajv) => ajv.Ajv
     private schemas: any[]
     private readonly defaults: ajv.Options | any = {}
     private opts: ajv.Options | any = {}
-    private lang: any = {language: 'en', region: undefined}
-    private log: LoggerInterface
 
 
     constructor(opts?: ajv.Options, dir?: string, ajvCustomizer?: (ajv: ajv.Ajv) => ajv.Ajv) {
@@ -49,28 +47,17 @@ export class AjvValidatorService extends ValidatorService {
         return this.schemas.find((value) => value.id === id)
     }
 
-    public setLang(lang: any /* todo */): this {
-        this.lang = lang
-        return this
-    }
-
-    public getLang(): any {
-        return this.lang
-    }
-
     public setLogger(logger: LoggerInterface) {
-        this.log = logger
-
         this.options({
             ...this.opts,
             ...{
-                log: this.log.info.bind(this.log),
-                warn: this.log.warn.bind(this.log),
-                error: this.log.error.bind(this.log),
+                log: logger.info.bind(logger),
+                warn: logger.warn.bind(logger),
+                error: logger.error.bind(logger),
             },
         })
 
-        return this
+        return super.setLogger(logger)
     }
 
     public getLogger() {

@@ -1,1 +1,1 @@
-export * from './ajv-validator.service'
+export * from './ajv-validator'
