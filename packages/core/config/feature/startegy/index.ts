@@ -1,0 +1,5 @@
+export * from './strategy.interface'
+export * from './strategy'
+export * from './first-strategy'
+export * from './last-strategy'
+export * from './random-strategy'
