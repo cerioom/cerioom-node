@@ -5,7 +5,7 @@ export class Random {
         return Math.floor(Math.random() * (end - start + 1)) + start
     }
 
-    public static element(arr: any[]): number {
+    public static element<T>(arr: T[]): T {
         return arr[Math.floor(Math.random() * arr.length)]
     }
 
