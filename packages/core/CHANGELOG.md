@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/cerioom/cerioom-node/compare/v0.6.0...v0.6.1) (2021-04-20)
+
+
+### Bug Fixes
+
+* **core:** renaming config feature ([efd8a20](https://github.com/cerioom/cerioom-node/commit/efd8a20b033313145291b14ad9c6fe8517038b2b))
+
+
+
+
+
 # [0.6.0](https://github.com/cerioom/cerioom-node/compare/v0.5.3...v0.6.0) (2021-04-20)
 
 
