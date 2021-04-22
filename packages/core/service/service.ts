@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { ContextInterface, ContextManager, ContextScopeEnum } from '../context'
+import { ContextInterface, ContextManager, ContextScope } from '../context'
 import { DI } from '../di'
 import { Logger, LoggerInterface } from '../logger'
 import { ServiceInterface } from './service.interface'
@@ -11,7 +11,7 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     private _context: ContextInterface
 
 
-    protected constructor() {
+    public constructor() {
         super()
 
         // typescript-ioc hack
@@ -21,11 +21,14 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     }
 
     public get context(): ContextInterface {
-        return this._context
+        return this.getContext()
     }
 
-    public getContext(scope: ContextScopeEnum = ContextScopeEnum.REQUEST): ContextInterface {
-        return DI.get(ContextManager).getContext(scope)
+    public getContext(scope: ContextScope = ContextScope.REQUEST): ContextInterface {
+        if (!this._context) {
+            this._context = DI.get(ContextManager).getContext(scope)
+        }
+        return this._context
     }
 
     public setContext(context: ContextInterface): this {
@@ -41,7 +44,7 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
                 bindings = this._context.logger.bindings()
             } else {
                 try {
-                    bindings = this.getContext(ContextScopeEnum.REQUEST).logger?.bindings() || {}
+                    bindings = this.getContext(ContextScope.REQUEST).logger?.bindings() || {}
                 } catch (e) {
                     bindings = {}
                 }

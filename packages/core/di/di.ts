@@ -1,4 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+import { Class } from '../types'
+
+
 export class DI {
 
     /**
@@ -22,10 +25,19 @@ export class DI {
      * const cache = DI.get(CacheService)
      * ```
      */
-    public static get<T extends unknown>(source: Function & {prototype: T} | string | symbol): T {
+    public static get<T extends unknown>(source: Class | Function & {prototype: T} | string | symbol): T {
         // @ts-ignore
         if (!global.__cerioom?.DI?.get) {
-            throw new Error('Not implemented "DI.get"')
+            // @ts-ignore
+            if (source?.prototype) {
+                // @ts-ignore
+                return new source()
+            } else if (typeof source === 'function') {
+                // @ts-ignore
+                return new source()
+            } else {
+                throw new Error('Not implemented "DI.get"')
+            }
         }
 
         // @ts-ignore

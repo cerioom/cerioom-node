@@ -5,12 +5,18 @@ import { ContextManagerInterface } from './context-manager.interface'
 import { ContextInterface } from './context.interface'
 
 
-export enum ContextScopeEnum {
+export enum ContextScope {
     APP = 'APP',
-    REQUEST = 'REQUEST'
+    REQUEST = 'REQUEST',
+    LOCAL = 'LOCAL',
 }
 
 export class ContextManager implements ContextManagerInterface {
+
+    public constructor(
+        public readonly strictScope = false
+    ) {
+    }
 
     /**
      * Middleware to setup context for request
@@ -18,14 +24,14 @@ export class ContextManager implements ContextManagerInterface {
      * ```ts
      * const app = express()
      * const contextManager = DI.get(ContextManager)
-     * app.use(contextManager.connectResponseMiddleware())
+     * app.use(contextManager.connectMiddleware())
      * ````
      */
-    public connectResponseMiddleware(): (req, res, next) => void {
+    public connectMiddleware(): (req, res, next) => void {
         return function contextRequest(req, res, next) {
             try {
                 // @ts-ignore
-                this.setContext(ContextScopeEnum.REQUEST, next)
+                this.setContext(ContextScope.REQUEST, next)
             } catch (e) {
                 next(e)
             }
@@ -39,11 +45,11 @@ export class ContextManager implements ContextManagerInterface {
      * @param callback
      * @param args
      */
-    public setContext<R>(scope: ContextScopeEnum, callback: (...args: any[]) => R, ...args: any[]): R {
+    public setContext<R>(scope: ContextScope, callback: (...args: any[]) => R, ...args: any[]): R {
         // @ts-ignore
         const als = global.__cerioom.scopes.get(scope)
         if (!als) {
-            throw new ReferenceError(`Scope "${scope}" was not initiated`)
+            throw new Error(`Scope "${scope}" was not initiated`)
         }
 
         const context = new Context({scope: scope})
@@ -55,19 +61,18 @@ export class ContextManager implements ContextManagerInterface {
      *
      * @param scope
      */
-    public getContext(scope: ContextScopeEnum = ContextScopeEnum.REQUEST): ContextInterface {
+    public getContext(scope: ContextScope = ContextScope.REQUEST): ContextInterface {
         // @ts-ignore
-        if (!global.__cerioom.scopes.has(scope) && !global.__cerioom.scopes.has(ContextScopeEnum.APP)) {
-            throw new ReferenceError('Scopes were not initiated')
+        const context = global.__cerioom?.scopes?.get(scope)?.getStore()
+        if (context) {
+            return context
         }
 
-        // @ts-ignore
-        const store = global.__cerioom.scopes.get(scope)?.getStore()
-        if (!store) {
-            throw new ReferenceError(`Scope "${scope}" was not initiated`)
+        if (this.strictScope) {
+            throw new Error(`Scope "${scope}" was not initiated`)
         }
 
-        return store
+        return new Context({scope: ContextScope.LOCAL})
     }
 
     /**
@@ -96,6 +101,6 @@ export class ContextManager implements ContextManagerInterface {
 // @ts-ignore
 global.__cerioom = Object.assign({}, global.__cerioom, {
     scopes: new Map<string, AsyncLocalStorage<ContextInterface>>()
-        .set(ContextScopeEnum.APP, new AsyncLocalStorage<ContextInterface>())
-        .set(ContextScopeEnum.REQUEST, new AsyncLocalStorage<ContextInterface>()),
+        .set(ContextScope.APP, new AsyncLocalStorage<ContextInterface>())
+        .set(ContextScope.REQUEST, new AsyncLocalStorage<ContextInterface>()),
 })

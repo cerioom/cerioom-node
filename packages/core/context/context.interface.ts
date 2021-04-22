@@ -1,5 +1,4 @@
-import { LoggerInterface } from '../logger'
-import { ContextScopeEnum } from './context-manager'
+import { ContextScope } from './context-manager'
 
 
 export interface ContextInterface {
@@ -10,6 +9,5 @@ export interface ContextInterface {
     destroy: () => void
     toJSON: () => object
     toString: () => string
-    readonly scope: ContextScopeEnum
-    logger?: LoggerInterface
+    readonly scope: ContextScope
 }

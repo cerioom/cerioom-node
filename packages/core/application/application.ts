@@ -1,4 +1,4 @@
-import { ContextInterface, ContextManager, ContextScopeEnum } from '../context'
+import { ContextInterface, ContextManager, ContextScope } from '../context'
 import { DI } from '../di'
 import { ParsedVersionInterface, Util } from '../helper'
 import { LoggerInterface } from '../logger'
@@ -43,7 +43,7 @@ export class Application extends Service implements ApplicationInterface {
 
 
     public get context(): ContextInterface {
-        return DI.get(ContextManager).getContext(ContextScopeEnum.APP)
+        return DI.get(ContextManager).getContext(ContextScope.APP)
     }
 
     public get name() {
