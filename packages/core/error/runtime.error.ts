@@ -1,5 +1,3 @@
-import { DI } from '../di'
-import { Env } from '../env'
 import { CharSet, Str } from '../helper'
 import { ErrorInterface } from './error.interface'
 import { ValidationResultInterface } from './validation-result.interface'
@@ -26,15 +24,12 @@ export class RuntimeError extends Error implements ErrorInterface {
     }
 
     public static toJSON(error): Record<string, any> {
-        const env = DI.get(Env)
         return {
             id: error.id ?? undefined,
             name: error.name ?? undefined,
             message: error.message ?? undefined,
             data: error.data ?? undefined,
             validation: error.validation ?? undefined,
-            cause: error.cause && env.isDevMode ? RuntimeError.toJSON(error.cause) : undefined,
-            stack: env.isDevMode ? error.stack : undefined,
         }
     }
 

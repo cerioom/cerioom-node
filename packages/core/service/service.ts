@@ -35,25 +35,24 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
 
     public get log(): LoggerInterface {
         if (!this._log) {
-            let context: ContextInterface
+            let parentLogger: LoggerInterface
 
             if (this._context) {
-                context = this._context
+                parentLogger = this._context.log
             } else {
                 try {
-                    context = this.getContext(ContextScopeEnum.REQUEST)
+                    parentLogger = this.getContext(ContextScopeEnum.REQUEST).log
                 } catch (e) {
-                    context = this.getContext(ContextScopeEnum.APP)
+                    try {
+                        parentLogger = this.getContext(ContextScopeEnum.APP).log
+                    } catch (e) {
+                        parentLogger = new Logger()
+                    }
                 }
             }
 
-            const bindings = context.logger ? context.logger.bindings() : {}
-            const logger = DI.get(Logger).child({...bindings, module: this._module})
-            if (context.scope === ContextScopeEnum.APP) {
-                return logger
-            }
-
-            this._log = logger
+            const bindings = parentLogger.bindings() || {}
+            this._log = parentLogger.child({...bindings, module: this._module})
         }
 
         return this._log

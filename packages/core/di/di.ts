@@ -25,7 +25,7 @@ export class DI {
     public static get<T extends unknown>(source: Function & {prototype: T} | string | symbol): T {
         // @ts-ignore
         if (!global.__cerioom?.DI?.get) {
-            throw new Error('Not implemented')
+            throw new Error('Not implemented "DI.get"')
         }
 
         // @ts-ignore
