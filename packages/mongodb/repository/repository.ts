@@ -328,12 +328,13 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     }
 
     protected overrideCursor(cursor: Cursor<Model>, options): Cursor<Model> {
+        const repository = this
         const cursorToArray = cursor.toArray
         cursor.toArray = function(callback?: MongoCallback<any[]>) {
             if (!callback) {
                 return cursorToArray.call(this).then((results: any[]) => {
                     options.session.endSession()
-                    return results.map(this.serializer.deserialize.bind(this.serializer))
+                    return results.map(repository.serializer.deserialize.bind(repository.serializer))
                 })
             }
 
@@ -343,7 +344,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                     return
                 }
 
-                return callback(error, records.map(this.serializer.deserialize.bind(this.serializer)))
+                return callback(error, records.map(repository.serializer.deserialize.bind(repository.serializer)))
             })
         }
 
@@ -358,7 +359,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                         return result
                     }
 
-                    return this.serializer.deserialize(result)
+                    return repository.serializer.deserialize(result)
                 })
             }
 
@@ -370,7 +371,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
                     return
                 }
 
-                return callback(error, this.serializer.deserialize(result))
+                return callback(error, repository.serializer.deserialize(result))
             })
         }
 

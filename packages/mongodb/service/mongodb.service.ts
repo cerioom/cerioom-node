@@ -57,6 +57,7 @@ const highAvailabilityOptions = <HighAvailabilityOptions> {
 }
 
 const connectionsParams = new Map<string, [string, MongoClientOptions]>()
+const connections = new Map<string, any>()
 const dbs = new Set()
 
 
@@ -72,7 +73,7 @@ export class MongodbService extends Service {
     }
 
     public async getDb(name?: string): Promise<Db> {
-        const dbName = [this.context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
+        const dbName = this.getDbName(name)
         this.log.debug({action: 'getDb', dbName: dbName})
 
         const mongoClient = await this.getConnection()
@@ -84,43 +85,27 @@ export class MongodbService extends Service {
         // }
 
         if (!dbs.has(dbName)) {
+            dbs.add(dbName)
             db.on('error', this.onError)
             db.on('close', this.onClose)
             db.on('reconnect', this.onReconnect)
             db.on('fullsetup', this.onFullSetup)
-
-            dbs.add(dbName)
         }
 
         return db
     }
 
     public async getConnection(): Promise<MongoClient> {
-        return await this.clientClass.connect(...this.getConnectionParams())
+        const [url, options] = this.getConnectionParams()
+        const mongoClient = await this.clientClass.connect(url, options)
+        connections.set(this.context.tenant.id, mongoClient)
+        return mongoClient
     }
 
-    protected onExit(): void {
-        Object.keys(connectionsParams).map(async (connectionId) => {
-            this.log.warn({connectionId: connectionId})
-            await connectionsParams[connectionId].close()
-        })
-    }
-
-    protected onError(error) {
-        this.log.error({error: error, exit: 1})
-        process.exit(1)
-    }
-
-    protected onClose(info) {
-        this.log.warn({info: info})
-    }
-
-    protected onReconnect(info) {
-        this.log.warn({info: info})
-    }
-
-    protected onFullSetup() {
-        this.log.warn()
+    protected getDbName(name?: string): string {
+        const appName = name ?? DI.get(Application).name
+        const tenantId = this.context.tenant?.id
+        return [tenantId, appName].filter(Boolean).join('-')
     }
 
     protected getConnectionParams(): [string, MongoClientOptions] {
@@ -173,12 +158,35 @@ export class MongodbService extends Service {
         if (Array.isArray(servers)) {
             servers = servers.join(',')
         }
-        this.log.trace({tenant: {id: this.context.tenant?.id}})
 
         const connectionUrl = `${schema}://${servers}`
 
         connectionsParams.set(hash, [connectionUrl, connectionOptions])
 
         return [connectionUrl, connectionOptions]
+    }
+
+    protected onExit(): void {
+        Object.keys(connections).map(async (connectionId) => {
+            this.log.warn({action: 'onExit', connectionId: connectionId})
+            await connections[connectionId].close()
+        })
+    }
+
+    protected onError(error) {
+        this.log.error({action: 'onError', error: error, exit: 1})
+        process.exit(1)
+    }
+
+    protected onClose(info) {
+        this.log.warn({action: 'onClose', info: info})
+    }
+
+    protected onReconnect(info) {
+        this.log.warn({action: 'onReconnect', info: info})
+    }
+
+    protected onFullSetup() {
+        this.log.warn({action: 'onFullSetup'})
     }
 }
