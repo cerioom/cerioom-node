@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/nats",
-    "version": "0.6.6",
+    "version": "0.6.9",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@cerioom/core": "^0.6.6",
-        "@cerioom/event-bus": "^0.6.6",
+        "@cerioom/event-bus": "^0.6.9",
         "@cerioom/resource": "^0.6.6",
         "middie": "^5.2.0",
         "node-nats-streaming": "^0.3.2"

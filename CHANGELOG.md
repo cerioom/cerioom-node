@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.9](https://github.com/cerioom/cerioom-node/compare/v0.6.8...v0.6.9) (2021-04-22)
+
+
+### Bug Fixes
+
+* **event-bus:** event emitter options type ([e79f2e9](https://github.com/cerioom/cerioom-node/commit/e79f2e930ed098d921ceb22c9d3db5158fd306b0))
+* **mongodb:** connecting process ([c371e11](https://github.com/cerioom/cerioom-node/commit/c371e11ca53749d1ed6f9d4f6055d8f21fa32345))
+* **packages:** bump ([b47a009](https://github.com/cerioom/cerioom-node/commit/b47a00904e8bc687b81326be9a84297b53d6af12))
+
+
+
+
+
 ## [0.6.8](https://github.com/cerioom/cerioom-node/compare/v0.6.7...v0.6.8) (2021-04-22)
 
 

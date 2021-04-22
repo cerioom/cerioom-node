@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.9](https://github.com/cerioom/cerioom-node/compare/v0.6.8...v0.6.9) (2021-04-22)
+
+
+### Bug Fixes
+
+* **event-bus:** event emitter options type ([e79f2e9](https://github.com/cerioom/cerioom-node/commit/e79f2e930ed098d921ceb22c9d3db5158fd306b0))
+
+
+
+
+
 ## [0.6.6](https://github.com/cerioom/cerioom-node/compare/v0.6.5...v0.6.6) (2021-04-22)
 
 **Note:** Version bump only for package @cerioom/event-bus
