@@ -1,5 +1,5 @@
 // https://thecodebarbarian.com/managing-connections-with-the-mongodb-node-driver.html
-import { Application, ContextInterface, DI, Env, Security, Service } from '@cerioom/core'
+import { Application, DI, Env, Service } from '@cerioom/core'
 import {
     Db,
     DbCreateOptions,
@@ -12,7 +12,6 @@ import {
     SocketOptions,
     SSLOptions,
 } from 'mongodb'
-import { inspect } from 'util'
 
 
 const dbCreateOptions = <DbCreateOptions> {
@@ -57,8 +56,8 @@ const highAvailabilityOptions = <HighAvailabilityOptions> {
     domainsEnabled: false,
 }
 
-const connections: {[hash: string]: MongoClient} = {}
-let dbs: string[] = []
+const connectionsParams = new Map<string, [string, MongoClientOptions]>()
+const dbs = new Set()
 
 
 export class MongodbService extends Service {
@@ -72,41 +71,64 @@ export class MongodbService extends Service {
         process.on('exit', this.onExit)
     }
 
-    public async getDb(context?: ContextInterface /* todo remove */, name?: string): Promise<Db> {
-        const _context = context || this.context
-        const dbName = [_context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
+    public async getDb(name?: string): Promise<Db> {
+        const dbName = [this.context.tenant?.id ?? '', name ?? DI.get(Application).name].filter(Boolean).join('-')
         this.log.debug({action: 'getDb', dbName: dbName})
 
-        const db = (await this.getConnection(_context)).db(dbName, {returnNonCachedInstance: false})
+        const mongoClient = await this.getConnection()
+        const db = mongoClient.db(dbName, {returnNonCachedInstance: false})
 
         // if (this.profilingLevel) {
         //     this.logger.debug({dbName, profilingLevel: this.profilingLevel})
         //     await db.setProfilingLevel(this.profilingLevel)
         // }
 
-        if (!dbs.includes(dbName)) {
+        if (!dbs.has(dbName)) {
             db.on('error', this.onError)
             db.on('close', this.onClose)
             db.on('reconnect', this.onReconnect)
             db.on('fullsetup', this.onFullSetup)
 
-            dbs.push(dbName)
-            dbs = [...new Set(dbs)]
+            dbs.add(dbName)
         }
 
         return db
     }
 
-    public async getConnection(context?: ContextInterface): Promise<MongoClient> {
-        const _context = context || this.context
-        if (connections[_context.tenant.id]) {
-            if (connections[_context.tenant.id] instanceof Promise) {
-                await connections[_context.tenant.id]
-            }
-            if (!connections[_context.tenant.id].isConnected()) {
-                this.log.warn({}, 'Connection is not connected')
-            }
-            return connections[_context.tenant.id]
+    public async getConnection(): Promise<MongoClient> {
+        return await this.clientClass.connect(...this.getConnectionParams())
+    }
+
+    protected onExit(): void {
+        Object.keys(connectionsParams).map(async (connectionId) => {
+            this.log.warn({connectionId: connectionId})
+            await connectionsParams[connectionId].close()
+        })
+    }
+
+    protected onError(error) {
+        this.log.error({error: error, exit: 1})
+        process.exit(1)
+    }
+
+    protected onClose(info) {
+        this.log.warn({info: info})
+    }
+
+    protected onReconnect(info) {
+        this.log.warn({info: info})
+    }
+
+    protected onFullSetup() {
+        this.log.warn()
+    }
+
+    protected getConnectionParams(): [string, MongoClientOptions] {
+        const hash = this.context.tenant.id || 'default'
+        const connectionParams = connectionsParams.get(hash)
+        if (connectionParams) {
+            // return cached params
+            return connectionParams
         }
 
         const envConfig = DI.get(Env).config
@@ -151,59 +173,12 @@ export class MongodbService extends Service {
         if (Array.isArray(servers)) {
             servers = servers.join(',')
         }
-        this.log.trace({tenant: {id: _context.tenant?.id}})
+        this.log.trace({tenant: {id: this.context.tenant?.id}})
 
         const connectionUrl = `${schema}://${servers}`
 
-        if (connections[_context.tenant.id]) {
-            if (connections[_context.tenant.id] instanceof Promise) {
-                await connections[_context.tenant.id]
-            }
-        } else {
-            const logData = {
-                action: 'getConnection',
-                tenant: {id: _context.tenant.id},
-                connectionUrl: connectionUrl,
-                options: inspect(Security.maskFields(connectionOptions, ['auth.password'])),
-            }
-            this.log.info(logData)
+        connectionsParams.set(hash, [connectionUrl, connectionOptions])
 
-            connections[_context.tenant.id] = this.clientClass.connect(connectionUrl, connectionOptions)
-
-            try {
-                connections[_context.tenant.id] = await connections[_context.tenant.id]
-            } catch (err) {
-                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-                delete connections[_context.tenant.id]
-                this.log.warn({...logData, error: err})
-                throw err
-            }
-        }
-
-        return connections[_context.tenant.id]
-    }
-
-    protected onExit(): void {
-        Object.keys(connections).map(async (connectionId) => {
-            this.log.warn({connectionId: connectionId})
-            await connections[connectionId].close()
-        })
-    }
-
-    protected onError(error) {
-        this.log.error({error: error, exit: 1})
-        process.exit(1)
-    }
-
-    protected onClose(info) {
-        this.log.warn({info: info})
-    }
-
-    protected onReconnect(info) {
-        this.log.warn({info: info})
-    }
-
-    protected onFullSetup() {
-        this.log.warn()
+        return [connectionUrl, connectionOptions]
     }
 }

@@ -177,11 +177,11 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     }
 
     public async getConnection(): Promise<any> {
-        return await this.mongodbService.getConnection(this.context)
+        return await this.mongodbService.getConnection()
     }
 
     public async getNamespace(): Promise<Db> {
-        return await this.mongodbService.getDb(this.context)
+        return await this.mongodbService.getDb()
     }
 
     // todo public abstract insertOne(entity: Model, options: InsertOneOptionsInterface | undefined): Promise<InsertOneResultInterface<Model>>

@@ -59,7 +59,7 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
     }
 
     public async getStore(): Promise<Collection> {
-        return (await this.mongodbService.getDb(this.context as any)).collection(this.collectionName)
+        return (await this.mongodbService.getDb()).collection(this.collectionName)
     }
 
     protected makeKey(key: K): string {
