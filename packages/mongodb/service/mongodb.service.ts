@@ -68,7 +68,7 @@ export class MongodbService extends Service {
         protected clientClass: any = MongoClient,
     ) {
         super()
-        process.on('exit', this.onExit)
+        process.on('exit', this.onExit.bind(this))
     }
 
     public async getDb(name?: string): Promise<Db> {
@@ -90,11 +90,8 @@ export class MongodbService extends Service {
         const [url, options] = this.getConnectionParams()
         const mongoClient: MongoClient = await this.clientClass.connect(url, options)
         if (!connections.has(this.context.tenant.id)) {
-            mongoClient
-                .on('error', this.onError)
-                .on('close', this.onClose)
-                .on('reconnect', this.onReconnect)
-                .on('fullsetup', this.onFullSetup)
+            mongoClient.on('error', this.onError.bind(this))
+            mongoClient.on('close', this.onClose.bind(this))
         }
         connections.set(this.context.tenant.id, mongoClient)
         return mongoClient
@@ -178,10 +175,6 @@ export class MongodbService extends Service {
 
     protected onClose(info) {
         this.log.warn({action: 'onClose', info: info})
-    }
-
-    protected onReconnect(info) {
-        this.log.warn({action: 'onReconnect', info: info})
     }
 
     protected onFullSetup() {
