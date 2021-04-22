@@ -58,7 +58,6 @@ const highAvailabilityOptions = <HighAvailabilityOptions> {
 
 const connectionsParams = new Map<string, [string, MongoClientOptions]>()
 const connections = new Map<string, any>()
-const dbs = new Set()
 
 
 export class MongodbService extends Service {
@@ -84,20 +83,19 @@ export class MongodbService extends Service {
         //     await db.setProfilingLevel(this.profilingLevel)
         // }
 
-        if (!dbs.has(dbName)) {
-            dbs.add(dbName)
-            db.on('error', this.onError)
-            db.on('close', this.onClose)
-            db.on('reconnect', this.onReconnect)
-            db.on('fullsetup', this.onFullSetup)
-        }
-
         return db
     }
 
     public async getConnection(): Promise<MongoClient> {
         const [url, options] = this.getConnectionParams()
-        const mongoClient = await this.clientClass.connect(url, options)
+        const mongoClient: MongoClient = await this.clientClass.connect(url, options)
+        if (!connections.has(this.context.tenant.id)) {
+            mongoClient
+                .on('error', this.onError)
+                .on('close', this.onClose)
+                .on('reconnect', this.onReconnect)
+                .on('fullsetup', this.onFullSetup)
+        }
         connections.set(this.context.tenant.id, mongoClient)
         return mongoClient
     }
