@@ -26,7 +26,7 @@ export class Security {
         encoding: BufferEncoding = 'base64',
         algorithm = 'aes-256-cbc',
         ivLength = 16,
-        separator: string = '.'
+        separator = '.'
     ): string {
         const passwordHash = createHash('md5').update(key, 'utf8').digest('hex').toUpperCase()
         const iv = randomBytes(ivLength)
@@ -41,7 +41,7 @@ export class Security {
         key: string,
         encoding: BufferEncoding = 'base64',
         algorithm = 'aes-256-cbc',
-        separator: string = '.'
+        separator = '.'
     ): string | undefined {
         try {
             const passwordHash = createHash('md5').update(key, 'utf8').digest('hex').toUpperCase()

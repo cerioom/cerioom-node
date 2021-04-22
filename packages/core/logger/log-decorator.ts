@@ -70,6 +70,7 @@ function LogMethod(target, key, descriptor) {
 
                     const arg = args[i]
                     const argStr = JSON.stringify(arg) || arg.toString()
+                    // eslint-disable-next-line no-console
                     console.log(`${key} arg[${i}]: ${argStr}`)
                 }
             }
@@ -101,12 +102,14 @@ function LogProperty(target: any, key: string) {
 
     // property getter
     const getter = function() {
+        // eslint-disable-next-line no-console
         console.log(`Get: ${key} => ${_val}`)
         return _val
     }
 
     // property setter
     const setter = function(newVal) {
+        // eslint-disable-next-line no-console
         console.log(`Set: ${key} => ${newVal}`)
         _val = newVal
     }

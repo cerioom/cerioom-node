@@ -6,7 +6,7 @@ import { ServiceInterface } from './service.interface'
 
 
 export abstract class Service extends EventEmitter implements ServiceInterface {
-    private readonly _module: string
+    private _module: string
     private _log: LoggerInterface | undefined
     private _context: ContextInterface
 
