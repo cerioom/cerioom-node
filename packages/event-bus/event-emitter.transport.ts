@@ -1,4 +1,4 @@
-import { EventEmitter2 } from 'eventemitter2'
+import { ConstructorOptions, EventEmitter2 } from 'eventemitter2'
 import { EventBusTransportInterface } from './'
 
 
@@ -7,7 +7,7 @@ export class EventEmitterTransport implements EventBusTransportInterface {
 
     protected eventEmitter2: EventEmitter2
 
-    constructor(opts?) {
+    constructor(opts?: ConstructorOptions) {
         this.eventEmitter2 = new EventEmitter2(opts)
     }
 
