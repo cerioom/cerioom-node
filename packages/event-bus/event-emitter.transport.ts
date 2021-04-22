@@ -16,7 +16,7 @@ export class EventEmitterTransport implements EventBusTransportInterface {
     }
 
     public async send(event: string | symbol, ...values: any[]): Promise<any> {
-        throw new ReferenceError('Not implemented')
+        throw new Error('Not implemented "send"')
     }
 
     public async request(event: string | symbol, ...values: any[]): Promise<any[]> {
