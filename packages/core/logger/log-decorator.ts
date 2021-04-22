@@ -5,20 +5,20 @@ import { Logger } from './logger'
 export function Log(...args: any[]) {
     switch (args.length) {
         case 1:
-            return logClass.apply(this, args)
+            return LogClass.apply(this, args)
         case 2:
-            return logProperty.apply(this, args)
+            return LogProperty.apply(this, args)
         case 3:
             if (typeof args[2] === 'number') {
-                return logParameter.apply(this, args)
+                return LogParameter.apply(this, args)
             }
-            return logMethod.apply(this, args)
+            return LogMethod.apply(this, args)
         default:
             throw new Error()
     }
 }
 
-function logClass(target: any) {
+function LogClass(target: any) {
     const original = target
     const f: any = function(...args) {
         const instance = DI.get(original)
@@ -41,7 +41,7 @@ function logClass(target: any) {
     // return target
 }
 
-function logParameter(target: any, key: string, index: number) {
+function LogParameter(target: any, key: string, index: number) {
     const metadataKey = `__log_${key}_parameters`
     if (Array.isArray(target[metadataKey])) {
         target[metadataKey].push(index)
@@ -50,7 +50,7 @@ function logParameter(target: any, key: string, index: number) {
     }
 }
 
-function logMethod(target, key, descriptor) {
+function LogMethod(target, key, descriptor) {
     if (descriptor === undefined) {
         descriptor = Object.getOwnPropertyDescriptor(target, key)
     }
@@ -94,7 +94,7 @@ function logMethod(target, key, descriptor) {
     return descriptor
 }
 
-function logProperty(target: any, key: string) {
+function LogProperty(target: any, key: string) {
 
     // property value
     let _val = this[key]
