@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/cerioom/cerioom-node/compare/v0.6.1...v0.6.2) (2021-04-22)
+
+
+### Bug Fixes
+
+* **core:** config feature ([6dd4025](https://github.com/cerioom/cerioom-node/commit/6dd40257879113463b4ac2ccd6c5c35f27ffb188))
+* **core:** lint ([5e38c8a](https://github.com/cerioom/cerioom-node/commit/5e38c8ab6e02abda21ba44ce3b86faf90226bdc6))
+* **core:** remove logger manager ([17657a1](https://github.com/cerioom/cerioom-node/commit/17657a1fe8c123ed2e045309ceaca98b575ae0e9))
+* **core:** small changes ([48b204c](https://github.com/cerioom/cerioom-node/commit/48b204c81409a56a995d75ea2672d411603c4749))
+* **core:** small fixes ([b5e8f72](https://github.com/cerioom/cerioom-node/commit/b5e8f72621a73c9b180f52968b99ac89e33456bb))
+
+
+
+
+
 ## [0.6.1](https://github.com/cerioom/cerioom-node/compare/v0.6.0...v0.6.1) (2021-04-20)
 
 
