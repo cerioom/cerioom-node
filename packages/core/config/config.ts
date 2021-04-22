@@ -1,9 +1,7 @@
 import * as _ from 'lodash'
-import { debuglog, inspect } from 'util'
+import { inspect } from 'util'
 import { ConfigInterface } from './config.interface'
 
-
-const debug = debuglog('cerioom.core.config')
 
 export class Config implements ConfigInterface {
     constructor(obj: Record<string, any>) {
@@ -13,7 +11,6 @@ export class Config implements ConfigInterface {
     }
 
     public set(key: string, value: any): this {
-        debug('set, key=%s, value=%O', key, value)
         if (!_.has(this, key)) {
             _.set(this, key, Object.freeze(value))
             this.deepFreeze(this)
@@ -23,7 +20,6 @@ export class Config implements ConfigInterface {
     }
 
     public get<T extends any>(key, defaultValue?): T {
-        debug('get, key=%s, defaultValue=%O', key, defaultValue)
         return _.result(this, key, defaultValue)
     }
 

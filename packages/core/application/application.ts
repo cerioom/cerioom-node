@@ -60,8 +60,8 @@ export class Application extends Service implements ApplicationInterface {
         }
     }
 
-    public onUncaughtException(err: Error, logger: LoggerInterface): void {
-        logger.error({action: 'onUncaughtException', error: {message: err.message}}, err.message)
+    public onUncaughtException(error: Error, logger: LoggerInterface): void {
+        logger.error({action: 'onUncaughtException', error: {message: error.message}}, error.message)
         process.kill(process.pid, 'SIGINT')
     }
 
