@@ -37,21 +37,17 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
         if (!this._log) {
             let parentLogger: LoggerInterface
 
-            if (this._context?.log) {
-                parentLogger = this._context.log
+            if (this._context?.logger) {
+                parentLogger = this._context.logger
             } else {
                 try {
-                    parentLogger = this.getContext(ContextScopeEnum.REQUEST).log
+                    parentLogger = this.getContext(ContextScopeEnum.REQUEST).logger || new Logger()
                 } catch (e) {
-                    try {
-                        parentLogger = this.getContext(ContextScopeEnum.APP).log
-                    } catch (e) {
-                        parentLogger = new Logger()
-                    }
+                    parentLogger = new Logger()
                 }
             }
 
-            const bindings = parentLogger.bindings() || {}
+            const bindings = parentLogger?.bindings() || {}
             this._log = parentLogger.child({...bindings, module: this._module})
         }
 
