@@ -130,7 +130,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     }
 
     public async send(event: string | symbol, args: any): Promise<any> {
-        throw new RuntimeError('Not implemented')
+        throw new Error('Not implemented "send"')
     }
 
     public getClientId(): string {
