@@ -4,7 +4,7 @@ import { Strategy } from './strategy'
 
 
 export class FirstStrategy extends Strategy {
-    public getProviderConfig(opts?: any): ConfigFeatureProviderDefInterface {
+    public async getProviderConfig(opts?: any): Promise<ConfigFeatureProviderDefInterface> {
         if (!this.providers.length || !this.providers[0]) {
             throw new RuntimeError('Provider not found')
         }

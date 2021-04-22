@@ -2,6 +2,6 @@ import { ConfigFeatureProviderDefInterface } from './config-feature-provider-def
 
 
 export interface ConfigFeatureInterface {
-    strategy: string
-    providers: Array<ConfigFeatureProviderDefInterface>
+    strategy: string | Function
+    providers: ConfigFeatureProviderDefInterface[]
 }

@@ -5,7 +5,7 @@ import { Strategy } from './strategy'
 
 
 export class RandomStrategy extends Strategy {
-    public getProviderConfig(opts?: any): ConfigFeatureProviderDefInterface {
+    public async getProviderConfig(opts?: any): Promise<ConfigFeatureProviderDefInterface> {
         if (!this.providers.length) {
             throw new RuntimeError('Provider not found')
         }

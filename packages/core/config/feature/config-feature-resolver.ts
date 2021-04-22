@@ -1,11 +1,42 @@
 import { RuntimeError } from '../../error'
 import { ConfigInterface } from '../index'
-import { ConfigFeatureProviderRegistry } from './config-feature-provider.registry'
-import { ConfigFeatureProviderInterface } from './config-feature-provider.interface'
+import { ConfigFeatureProviderRegistry } from './config-feature-provider-registry'
 import { ConfigFeatureInterface } from './config-feature.interface'
-import { StrategyInterface, FirstStrategy, LastStrategy, RandomStrategy } from './startegy'
+import { ConfigFeatureProviderInterface } from './provider/config-feature-provider.interface'
+import { FirstStrategy, LastStrategy, RandomStrategy, StrategyInterface } from './startegy'
 
 
+/**
+ * **Example:**
+ * ```ts
+ * class TestProvider extends ConfigFeatureProvider {
+ *     public async do(): Promise<any> {
+ *         return 'done!'
+ *     }
+ * }
+ *
+ * const config = new Config({
+ *     "namespace": {
+ *         "feature1": {
+ *             // ConfigFeatureInterface
+ *             "strategy": "first", // random|first|last|fallback|roundrobin
+ *             "providers": [{
+ *                 // ConfigFeatureProviderDefInterface
+ *                 "provider": "testProvider", // LoggerProvider|
+ *                 "properties": {
+ *                     "key": "value1" // string|array|boolean|number
+ *                 }
+ *             }]
+ *         }
+ *     }
+ * })
+ * const registry = new ConfigFeatureProviderRegistry().set('testProvider', TestProvider)
+ * const configFeatureResolver = new ConfigFeatureResolver(config, registry)
+ * const provider = await configFeatureResolver.getProvider('namespace.feature1')
+ * provider.getProperties() // {key: 'value1'}
+ * await provider.do() // 'done!'
+ * ```
+ */
 export class ConfigFeatureResolver {
     public constructor(
         protected config: ConfigInterface,
@@ -13,7 +44,7 @@ export class ConfigFeatureResolver {
     ) {
     }
 
-    public resolve(key: string, opts?: any): ConfigFeatureProviderInterface {
+    public async getProvider(key: string, opts?: any): Promise<ConfigFeatureProviderInterface> {
         const featureConfig = this.config.get<ConfigFeatureInterface>(key)
         if (!featureConfig) {
             throw new RuntimeError(`Feature config not found by key "${key}"`)
@@ -31,10 +62,18 @@ export class ConfigFeatureResolver {
                 strategy = new LastStrategy(featureConfig.providers)
                 break
             default:
-                throw new RuntimeError('Unknown feature strategy')
+                if (typeof featureConfig.strategy === 'function') {
+                    try {
+                        strategy = featureConfig.strategy(featureConfig.providers)
+                    } catch (e) {
+                        throw new RuntimeError(`Unknown feature strategy "${featureConfig.strategy}"`).setCause(e)
+                    }
+                } else {
+                    throw new RuntimeError(`Unknown feature strategy "${featureConfig.strategy}"`)
+                }
         }
 
-        const providerConfig = strategy.getProviderConfig(opts)
+        const providerConfig = await strategy.getProviderConfig(opts)
         if (providerConfig === null) {
             throw new RuntimeError('Provider config not found')
         }

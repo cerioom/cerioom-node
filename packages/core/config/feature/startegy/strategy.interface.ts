@@ -2,5 +2,5 @@ import { ConfigFeatureProviderDefInterface } from '../config-feature-provider-de
 
 
 export interface StrategyInterface {
-    getProviderConfig(opts?: any): ConfigFeatureProviderDefInterface
+    getProviderConfig(opts?: any): Promise<ConfigFeatureProviderDefInterface>
 }
