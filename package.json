@@ -21,7 +21,8 @@
         "lint": "eslint **/*.ts --fix",
         "update-dependencies": "ncu -u && lerna exec -- ncu -u",
         "clean": "find . -name node_modules -exec rm -rf '{}' + && find . -name package-lock.json -exec rm -rf '{}' +",
-        "test": "npm run lint && lerna run test"
+        "test": "lerna run test",
+        "build": "lerna run build"
     },
     "dependencies": {},
     "devDependencies": {
