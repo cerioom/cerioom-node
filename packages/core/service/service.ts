@@ -37,7 +37,7 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
         if (!this._log) {
             let parentLogger: LoggerInterface
 
-            if (this._context) {
+            if (this._context?.log) {
                 parentLogger = this._context.log
             } else {
                 try {
