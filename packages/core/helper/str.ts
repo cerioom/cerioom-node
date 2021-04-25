@@ -74,11 +74,14 @@ export class Str {
     public static increment(text: string, separator = '_'): string {
         const parts = text.split(separator)
         let number = '1'
-        if (!Number.isNaN(parts[1])) {
-            let num = Number(parts[1])
-            number = String(num++)
+        if (parts[1] && !Number.isNaN(parts[1])) {
+            number = String(Number(parts[1]) + 1)
         }
 
         return `${parts[0]}${separator}${number}`
+    }
+
+    public static resolveTemplate(template: string, vars: Record<string, string | number>): string {
+        return template.replace(/\${(.*?)}/g, (_, g) => String(vars[g]));
     }
 }
