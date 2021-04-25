@@ -1,5 +1,5 @@
 import { RuntimeError } from '../../error'
-import { ConfigInterface } from '../index'
+import { ConfigFeatureProviderDefInterface, ConfigInterface } from '../index'
 import { ConfigFeatureProviderRegistry } from './config-feature-provider-registry'
 import { ConfigFeatureInterface } from './config-feature.interface'
 import { ConfigFeatureProviderInterface } from './provider/config-feature-provider.interface'
@@ -44,7 +44,7 @@ export class ConfigFeatureResolver {
     ) {
     }
 
-    public async getProvider(key: string, opts?: any): Promise<ConfigFeatureProviderInterface> {
+    public async getProviderConfig(key: string, opts: any): Promise<ConfigFeatureProviderDefInterface> {
         const featureConfig = this.config.get<ConfigFeatureInterface>(key)
         if (!featureConfig) {
             throw new RuntimeError(`Feature config not found by key "${key}"`)
@@ -77,6 +77,11 @@ export class ConfigFeatureResolver {
         if (providerConfig === null) {
             throw new RuntimeError('Provider config not found')
         }
+        return providerConfig
+    }
+
+    public async getProvider(key: string, opts?: any): Promise<ConfigFeatureProviderInterface> {
+        const providerConfig = await this.getProviderConfig(key, opts)
 
         const featureProviderClass = this.registry.get(providerConfig.provider)
         if (!featureProviderClass) {
