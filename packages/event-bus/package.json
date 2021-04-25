@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/event-bus",
-    "version": "0.6.9",
+    "version": "0.7.0",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -28,7 +28,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.6.6",
+        "@cerioom/core": "^0.7.0",
         "eventemitter2": "^6.4.3"
     },
     "gitHead": "71c7adf9320824591b6530c7bbf3a91e9a553259"

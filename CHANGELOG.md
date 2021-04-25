@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/cerioom/cerioom-node/compare/v0.6.10...v0.7.0) (2021-04-25)
+
+
+### Features
+
+* **core:** add getProviderConfig for config-feature-resolver ([1d71ea5](https://github.com/cerioom/cerioom-node/commit/1d71ea5172c909522a9fbe2e928bc4cf7bdbe464))
+* **core:** add resolveTemplate for Str ([8b24ffc](https://github.com/cerioom/cerioom-node/commit/8b24ffc8069e74e3f6df524aae63dc201f322b31))
+
+
+
+
+
 ## [0.6.10](https://github.com/cerioom/cerioom-node/compare/v0.6.9...v0.6.10) (2021-04-22)
 
 
