@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/cerioom/cerioom-node/compare/v0.7.0...v0.8.0) (2021-05-01)
+
+
+### Bug Fixes
+
+* **mongodb:** making filter for `find` ([63893b5](https://github.com/cerioom/cerioom-node/commit/63893b5e0df67c8256b95cbf212e54186fee2cb3))
+* **packages:** bump ([3f81a35](https://github.com/cerioom/cerioom-node/commit/3f81a35b363571fd0813d3b7f74926d7689517c8))
+
+
+
+
+
 # [0.7.0](https://github.com/cerioom/cerioom-node/compare/v0.6.10...v0.7.0) (2021-04-25)
 
 **Note:** Version bump only for package @cerioom/mongodb
