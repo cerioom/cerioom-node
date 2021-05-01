@@ -97,7 +97,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
 
             await this.emit('pre:find', {repository: this, filter: filter, options: opts})
             const cursor = db.collection(this.collectionName)
-                .find(filter, opts)
+                .find(this.mongodbResourceQuery.makeFilter({filter: filter}, this.resourceQueryMapper), opts)
                 .comment(this.context.requestId ? `requestId=${this.context.requestId}` : '')
             await this.emit('post:find', {repository: this, records: cursor, options: opts})
 
