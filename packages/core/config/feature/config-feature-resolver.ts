@@ -44,7 +44,7 @@ export class ConfigFeatureResolver {
     ) {
     }
 
-    public async getProviderConfig(key: string, opts: any): Promise<ConfigFeatureProviderDefInterface> {
+    public async getProviderConfig(key: string, opts?: any): Promise<ConfigFeatureProviderDefInterface> {
         const featureConfig = this.config.get<ConfigFeatureInterface>(key)
         if (!featureConfig) {
             throw new RuntimeError(`Feature config not found by key "${key}"`)
