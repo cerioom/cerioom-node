@@ -25,7 +25,6 @@ import {
     UpdateQuery,
 } from 'mongodb'
 import { MongodbService } from '../'
-import { ResourceQueryMapper } from '../../resource'
 import { MongodbResourceQuery } from '../resource-query'
 
 
@@ -47,7 +46,7 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         return this.serializer
     }
 
-    public getResourceQueryMapper(): ResourceQueryMapper | undefined {
+    public getResourceQueryMapper() {
         return this.resourceQueryMapper
     }
 
