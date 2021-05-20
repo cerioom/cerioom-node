@@ -27,15 +27,25 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
         this.store.del(this.makeKey(key))
     }
 
+    /**
+     * @param key
+     * @param data
+     * @param ttl in seconds
+     */
     public async set(key: string, data: V, ttl?: number): Promise<void> {
         this.store.set(this.makeKey(key), data, ttl ? ttl * 1000 : undefined)
     }
 
+    /**
+     * @param key
+     * @param cb
+     * @param ttl in seconds
+     */
     public async cached(key: string, cb: () => V, ttl = 60): Promise<V> {
-        let value = await this.get(this.makeKey(key))
+        let value = await this.get(key)
         if (value === undefined) {
             value = await cb()
-            await this.set(this.makeKey(key), value, ttl)
+            await this.set(key, value, ttl)
         }
 
         this.log.debug({key: key}, 'cached')
