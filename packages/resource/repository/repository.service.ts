@@ -49,6 +49,18 @@ export abstract class Repository<Model> extends Service implements RepositoryInt
         this.emit('constructed', {repository: this, modelClass: this.modelClass})
     }
 
+    public abstract getModelClass(): any
+
+    public abstract getSerializer(): SerializerInterface<Model>
+
+    public abstract getResourceQueryMapper(): ResourceQueryMapper
+
+    public abstract getCollection(): Promise<any>
+
+    public abstract getConnection(): Promise<any>
+
+    public abstract getNamespace(): Promise<any>
+
     public abstract count(filter: FilterQuery<Model>, options: CommonOptions | undefined): Promise<number>
 
     public abstract export(query: ResourceQueryInterface, options: (FindOneOptions<Model> & {transform?: (document: Model) => any}) | undefined): Promise<Readable>
@@ -58,12 +70,6 @@ export abstract class Repository<Model> extends Service implements RepositoryInt
     public abstract findOne(filter: FilterQuery<Model>, options: FindOneOptions<Model> | undefined): Promise<Model | null>
 
     public abstract findOneAndUpdate(filter: FilterQuery<Model>, update: UpdateQuery<Model & {updated?: Date}>, options: (FindOneAndUpdateOption<Model> & {autoCreate?: boolean}) | undefined): Promise<Model>
-
-    public abstract getCollection(): Promise<any>
-
-    public abstract getConnection(): Promise<any>
-
-    public abstract getNamespace(): Promise<any>
 
     // todo public abstract insertOne(entity: Model, options: InsertOneOptionsInterface | undefined): Promise<InsertOneResultInterface<Model>>
 

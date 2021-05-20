@@ -1,7 +1,6 @@
+import { ResponseEnvelopeInterface, SerializerInterface, ServiceInterface } from '@cerioom/core'
 import { Readable } from 'stream'
-import { ResponseEnvelopeInterface } from '@cerioom/core'
-import { ServiceInterface } from '@cerioom/core'
-import { ResourceQueryInterface } from '../resource-query'
+import { ResourceQueryInterface, ResourceQueryMapper } from '../resource-query'
 import { InsertManyOptionsInterface } from './insert-many-options.interface'
 import { InsertManyResultInterface } from './insert-many-result.interface'
 import { RemoveManyResultInterface } from './remove-many-result.interface'
@@ -29,10 +28,13 @@ export interface FindOneAndUpdateOption<T> {
 
 
 export interface RepositoryInterface<Model> extends ServiceInterface {
-    // todo new (opts: {modelClass: any, collectionName?: string, schemaFormatter?: SchemaFormatter<Modelodel>}): RepositoryInterface<Modelodel>
+    // todo new (opts: {modelClass: any, serializer?: SerializerInterface<Model>, resourceQueryMapper?: ResourceQueryMapper}): RepositoryInterface<Modelodel>
+    getModelClass: () => any
     getConnection: () => Promise<any>
     getNamespace: () => Promise<any>
     getCollection: () => Promise<any>
+    getSerializer: () => SerializerInterface<Model>
+    getResourceQueryMapper: () => ResourceQueryMapper
     insert: (entities: Model[], options?: InsertManyOptionsInterface) => Promise<InsertManyResultInterface>
     findOne: (filter: FilterQuery<Model>, options?: FindOneOptions<Model>) => Promise<Model | null>
     find: (filter: FilterQuery<Model>, options?: FindOneOptions<Model>) => Promise<Readable>
