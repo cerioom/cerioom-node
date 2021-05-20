@@ -1,6 +1,5 @@
-import { ValidatorInterface } from '.'
+import { ValidateFunction, ValidatorInterface } from '.'
 import { LoggerInterface } from '..'
-import { NotImplementedError } from '../error'
 import { LoggableInterface } from '../logger'
 
 
@@ -26,7 +25,7 @@ export abstract class Validator implements ValidatorInterface, LoggableInterface
         return this.log
     }
 
-    public validate(how: any, what: any): any {
-        throw new NotImplementedError()
-    }
+    public abstract validate(how: any, what: any): any
+
+    public abstract compile(how: any): ValidateFunction
 }
