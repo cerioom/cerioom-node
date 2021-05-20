@@ -46,10 +46,6 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         return this.serializer
     }
 
-    public getResourceQueryMapper() {
-        return this.resourceQueryMapper
-    }
-
     public async getCollection(): Promise<any> {
         return (await this.getNamespace()).collection(this.collectionName)
     }
