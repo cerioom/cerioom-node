@@ -1,4 +1,4 @@
-import { DI, ResponseEnvelopeInterface, RuntimeError } from '@cerioom/core'
+import { DI, ResponseEnvelopeInterface, RuntimeError, SerializerInterface } from '@cerioom/core'
 import {
     InsertManyResultInterface,
     RemoveManyResultInterface,
@@ -25,6 +25,7 @@ import {
     UpdateQuery,
 } from 'mongodb'
 import { MongodbService } from '../'
+import { ResourceQueryMapper } from '../../resource'
 import { MongodbResourceQuery } from '../resource-query'
 
 
@@ -36,6 +37,30 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
     protected constructor(opts: RepositoryConstructorOptions<Model> & {collectionName?: string}) {
         super(opts)
         this.collectionName = opts.collectionName ?? _.camelCase(opts.modelClass.constructor.name)
+    }
+
+    public getModelClass(): any {
+        return this.modelClass
+    }
+
+    public getSerializer(): SerializerInterface<Model> {
+        return this.serializer
+    }
+
+    public getResourceQueryMapper(): ResourceQueryMapper | undefined {
+        return this.resourceQueryMapper
+    }
+
+    public async getCollection(): Promise<any> {
+        return (await this.getNamespace()).collection(this.collectionName)
+    }
+
+    public async getConnection(): Promise<any> {
+        return await this.mongodbService.getConnection()
+    }
+
+    public async getNamespace(): Promise<Db> {
+        return await this.mongodbService.getDb()
     }
 
     public async count(filter: ResourceQueryFilterInterface<Model>, options?: CommonOptions): Promise<number> {
@@ -170,18 +195,6 @@ export abstract class Repository<Model> extends BaseRepository<Model> implements
         } finally {
             opts.session?.endSession()
         }
-    }
-
-    public async getCollection(): Promise<any> {
-        return (await this.getNamespace()).collection(this.collectionName)
-    }
-
-    public async getConnection(): Promise<any> {
-        return await this.mongodbService.getConnection()
-    }
-
-    public async getNamespace(): Promise<Db> {
-        return await this.mongodbService.getDb()
     }
 
     // todo public abstract insertOne(entity: Model, options: InsertOneOptionsInterface | undefined): Promise<InsertOneResultInterface<Model>>
