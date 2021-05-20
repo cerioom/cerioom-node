@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/cerioom/cerioom-node/compare/v0.8.0...v0.9.0) (2021-05-20)
+
+
+### Bug Fixes
+
+* **event-bus:** small fix ([f5e7268](https://github.com/cerioom/cerioom-node/commit/f5e7268f846367d733d445584c48f06f740dc679))
+
+
+
+
+
 # [0.8.0](https://github.com/cerioom/cerioom-node/compare/v0.7.0...v0.8.0) (2021-05-01)
 
 
