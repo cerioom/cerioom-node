@@ -10,7 +10,7 @@ export class EventBusService extends Service implements EventBusInterface {
 
     constructor(transports: EventBusTransportInterface[]) {
         super()
-        if (!transports.length) {
+        if (!transports?.length) {
             throw new RuntimeError('Transport for event bus was not defined')
         }
 
