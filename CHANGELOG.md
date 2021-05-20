@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.2](https://github.com/cerioom/cerioom-node/compare/v0.9.1...v0.9.2) (2021-05-20)
+
+
+### Bug Fixes
+
+* **mongodb:** add getters for repository ([9a5e2d6](https://github.com/cerioom/cerioom-node/commit/9a5e2d691b32d0ad4e564676b94bff97a2f6394c))
+
+
+
+
+
 ## [0.9.1](https://github.com/cerioom/cerioom-node/compare/v0.9.0...v0.9.1) (2021-05-20)
 
 
