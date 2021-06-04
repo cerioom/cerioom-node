@@ -7,7 +7,6 @@ import { ServiceInterface } from './service.interface'
 
 export abstract class Service extends EventEmitter implements ServiceInterface {
     private _module: string
-    private _log: LoggerInterface | undefined
     private _context: ContextInterface
 
 
@@ -25,9 +24,7 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     }
 
     public getContext(scope: ContextScope = ContextScope.REQUEST): ContextInterface {
-        if (!this._context) {
-            this._context = DI.get(ContextManager).getContext(scope)
-        }
+        this._context = DI.get(ContextManager).getContext(scope)
         return this._context
     }
 
@@ -37,23 +34,15 @@ export abstract class Service extends EventEmitter implements ServiceInterface {
     }
 
     public get log(): LoggerInterface {
-        if (!this._log) {
-            let bindings
+        let bindings
 
-            if (this._context?.logger) {
-                bindings = this._context.logger.bindings()
-            } else {
-                try {
-                    bindings = this.getContext(ContextScope.REQUEST).logger?.bindings() || {}
-                } catch (e) {
-                    bindings = {}
-                }
-            }
-
-            this._log = DI.get(Logger).child({...bindings, module: this._module})
+        try {
+            bindings = this.getContext(ContextScope.REQUEST).logger?.bindings() || {}
+        } catch (e) {
+            bindings = {}
         }
 
-        return this._log
+        return DI.get(Logger).child({...bindings, module: this._module})
     }
 
     public getModuleName(): string {

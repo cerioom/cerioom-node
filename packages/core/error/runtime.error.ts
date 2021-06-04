@@ -2,6 +2,7 @@ import { CharSet, Str } from '../helper'
 import { ErrorInterface } from './error.interface'
 import { ValidationResultInterface } from './validation-result.interface'
 
+// todo https://www.npmjs.com/package/common-errors
 
 export class RuntimeError extends Error implements ErrorInterface {
     public readonly id: string
