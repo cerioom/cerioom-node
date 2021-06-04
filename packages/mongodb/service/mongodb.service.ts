@@ -7,10 +7,10 @@ import {
     MongoClient,
     MongoClientOptions,
     ReadPreference,
-    ReplSetOptions,
     ServerOptions,
     SocketOptions,
     SSLOptions,
+    UnifiedTopologyOptions
 } from 'mongodb'
 
 
@@ -32,11 +32,15 @@ const dbCreateOptions = <DbCreateOptions> {
     readPreference: ReadPreference.PRIMARY_PREFERRED,
 }
 
+const unifiedTopologyOptions: UnifiedTopologyOptions = {
+    useUnifiedTopology: true,
+    maxPoolSize: 1_000,
+    minPoolSize: 5,
+}
+
 const sslOptions: SSLOptions = {
     poolSize: 100,
 }
-
-const replSetOptions = <ReplSetOptions> {}
 
 const socketOptions: SocketOptions = {
     noDelay: true,
@@ -87,6 +91,13 @@ export class MongodbService extends Service {
     }
 
     public async getConnection(): Promise<MongoClient> {
+        if (connections.has(this.context.tenant.id)) {
+            const mongoClient: MongoClient = connections.get(this.context.tenant.id)
+            if (mongoClient.isConnected()) {
+                return mongoClient
+            }
+        }
+
         const [url, options] = this.getConnectionParams()
         const mongoClient: MongoClient = await this.clientClass.connect(url, options)
         if (!connections.has(this.context.tenant.id)) {
@@ -113,7 +124,7 @@ export class MongodbService extends Service {
 
         const envConfig = DI.get(Env).config
 
-        const connectionOptions = <MongoClientOptions> {
+        const defaultOptions = <MongoClientOptions> {
             appname: process.env.npm_package_name ?? '',
             family: 4, // IP version
             ...dbCreateOptions,
@@ -121,44 +132,24 @@ export class MongodbService extends Service {
             ...serverOptions,
             ...socketOptions,
             ...sslOptions,
+            ...unifiedTopologyOptions,
             useNewUrlParser: true,
-            useUnifiedTopology: true,
         }
 
-        const username = envConfig.get('mongodb.username')
-        if (username) {
-            const password = envConfig.get('mongodb.password')
-            // @ts-expect-error
-            connectionOptions.auth = {user: username, password: password}
-        }
-
-        const authSource = envConfig.get('mongodb.authSource')
-        if (authSource) {
-            // @ts-expect-error
-            connectionOptions.authSource = authSource
-        }
-
-        const schema = envConfig.get('mongodb.schema') || 'mongodb'
-
-        if (username || authSource) {
-            connectionOptions.authMechanism = envConfig.get('mongodb.authMechanism') ?? 'SCRAM-SHA-1'
-        }
-
-        const replicaSet = envConfig.get('mongodb.replicaSet')
-        if (replicaSet) {
-            Object.assign(connectionOptions, replSetOptions, {replicaSet: replicaSet})
-        }
-
-        let servers = envConfig.get('mongodb.servers') || '127.0.0.1'
+        const options = <MongoClientOptions & {schema?: string, servers?: string | string[]}> {...defaultOptions, ...envConfig.get<object>('mongodb')}
+        const schema = options.schema || 'mongodb'
+        let servers = options.servers || 'localhost'
         if (Array.isArray(servers)) {
             servers = servers.join(',')
         }
+        delete options.schema
+        delete options.servers
 
         const connectionUrl = `${schema}://${servers}`
 
-        connectionsParams.set(hash, [connectionUrl, connectionOptions])
+        connectionsParams.set(hash, [connectionUrl, options])
 
-        return [connectionUrl, connectionOptions]
+        return [connectionUrl, options]
     }
 
     protected onExit(): void {
