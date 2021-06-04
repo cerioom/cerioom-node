@@ -50,7 +50,13 @@ export class PinoLogger extends Logger {
     }
 
     public child(bindings: Record<any, any>): LoggerInterface {
-        return this._logger.child(bindings)
+        const diff = Object.keys(bindings).reduce((diff, key) => {
+            if (this._logger.bindings()[key] === bindings[key]) {
+                return diff
+            }
+            return {...diff, [key]: bindings[key]}
+        }, {})
+        return this._logger.child(diff)
     }
 
     public fatal(...args): void {
