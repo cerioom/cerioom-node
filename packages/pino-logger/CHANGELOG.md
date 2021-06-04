@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.5](https://github.com/cerioom/cerioom-node/compare/v0.9.4...v0.9.5) (2021-06-04)
+
+
+### Bug Fixes
+
+* **pino-logger:** merging bindings ([dc47009](https://github.com/cerioom/cerioom-node/commit/dc4700902aaf57f823491be4531ab02e9ce6dd89))
+
+
+
+
+
 ## [0.9.1](https://github.com/cerioom/cerioom-node/compare/v0.9.0...v0.9.1) (2021-05-20)
 
 

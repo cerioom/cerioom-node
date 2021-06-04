@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/pino-logger",
-    "version": "0.9.1",
+    "version": "0.9.5",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.9.1",
+        "@cerioom/core": "^0.9.5",
         "pino": "6.7.0",
         "pino-noir": "^2.2.1"
     },

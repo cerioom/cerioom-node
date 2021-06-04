@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.5](https://github.com/cerioom/cerioom-node/compare/v0.9.4...v0.9.5) (2021-06-04)
+
+
+### Bug Fixes
+
+* **core:** context ([6fc43c3](https://github.com/cerioom/cerioom-node/commit/6fc43c3eef4c8701f19fa63251945abe63eb4e53))
+* **mongo:** getting connection ([61b5ecf](https://github.com/cerioom/cerioom-node/commit/61b5ecfedec245a502d420c7045443688ac2d400))
+* **pino-logger:** merging bindings ([dc47009](https://github.com/cerioom/cerioom-node/commit/dc4700902aaf57f823491be4531ab02e9ce6dd89))
+
+
+
+
+
 ## [0.9.4](https://github.com/cerioom/cerioom-node/compare/v0.9.3...v0.9.4) (2021-05-20)
 
 

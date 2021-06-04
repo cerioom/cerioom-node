@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/ajv-validator",
-    "version": "0.9.1",
+    "version": "0.9.5",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.9.1",
+        "@cerioom/core": "^0.9.5",
         "ajv": "^6.12.6",
         "ajv-i18n": "^3.6.0"
     },
