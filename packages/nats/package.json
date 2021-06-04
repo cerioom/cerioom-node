@@ -31,7 +31,8 @@
         "@cerioom/event-bus": "^0.9.5",
         "@cerioom/resource": "^0.9.5",
         "middie": "^5.2.0",
-        "node-nats-streaming": "^0.3.2"
+        "node-nats-streaming": "^0.3.2",
+        "ts-nats": "^1.2.15"
     },
     "devDependencies": {
         "ts-nats": "^1.2.15"
