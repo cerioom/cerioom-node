@@ -1,6 +1,7 @@
+import { Str } from '@cerioom/core'
 import { ConstructorOptions, EventEmitter2 } from 'eventemitter2'
-import { RequestEnvelopeInterface } from '@cerioom/core'
-import { EventBusTransportInterface, MsgInterface } from './'
+import { EventBusTransportInterface } from './event-bus-transport.interface'
+import { MsgInterface } from './msg.interface'
 
 
 export class EventEmitterTransport implements EventBusTransportInterface {
@@ -13,15 +14,25 @@ export class EventEmitterTransport implements EventBusTransportInterface {
     }
 
     public async publish(event: string | symbol, msg: MsgInterface): Promise<void> {
-        await this.eventEmitter2.emitAsync(event, msg)
+        const res = {
+            messageId: Str.random(), headers: {}, setHeader: function(key: string, value) {
+                this.headers[key] = value
+            },
+        }
+        await this.eventEmitter2.emitAsync(event, msg, res)
     }
 
-    public async send(event: string | symbol, msg: MsgInterface): Promise<any> {
+    public async send(event: string | symbol, ...values: any[]): Promise<any> {
         throw new Error('Not implemented "send"')
     }
 
-    public async request(event: string | symbol, data: RequestEnvelopeInterface): Promise<any[]> {
-        return await this.eventEmitter2.emitAsync(event, data)
+    public async request(event: string | symbol, req: any): Promise<any[]> {
+        const res = {
+            messageId: Str.random(), headers: {}, setHeader: function(key: string, value) {
+                this.headers[key] = value
+            },
+        }
+        return await this.eventEmitter2.emitAsync(event, req, res)
     }
 
     public async subscribe(event: string | symbol, listener: (...args: any[]) => void): Promise<void> {
