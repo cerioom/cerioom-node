@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.11](https://github.com/cerioom/cerioom-node/compare/v0.9.10...v0.9.11) (2021-06-05)
+
+
+### Bug Fixes
+
+* **core:** add castValue for utils ([0b407c2](https://github.com/cerioom/cerioom-node/commit/0b407c215f21301a95eee5aaef95ecd34bfabeb7))
+* **core:** context headers serializer/desiarializer ([16a6e52](https://github.com/cerioom/cerioom-node/commit/16a6e5294c8c09e2da69f4088577b3a5cc2923dc))
+
+
+
+
+
 ## [0.9.10](https://github.com/cerioom/cerioom-node/compare/v0.9.9...v0.9.10) (2021-06-05)
 
 
