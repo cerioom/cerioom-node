@@ -1,35 +1,46 @@
 import {
     Application,
     ContextManager,
+    ContextScope,
     DI,
     Env,
+    Mw,
     RequestEnvelopeInterface,
     ResponseEnvelopeInterface,
     RuntimeError,
-    Service,
+    Service
 } from '@cerioom/core'
-import { EventBusTransportInterface } from '@cerioom/event-bus'
-import { hostname } from 'os'
-import { Client as NatsClient, connect as NATS, Msg, NatsConnectionOptions, NatsError, Payload, Subscription } from 'ts-nats'
-import { SubscribeOptionsInterface } from './subscribe-options.interface'
-import Middie = require('middie/engine')
+import {EventBusTransportInterface} from '@cerioom/event-bus'
+import {hostname} from 'os'
+import {
+    connect as NATS,
+    ConnectionOptions,
+    headers,
+    JSONCodec,
+    Msg,
+    NatsConnection as NatsClient,
+    NatsError,
+    PublishOptions,
+    Subscription,
+} from 'nats'
+import {SubscribeOptionsInterface} from './subscribe-options.interface'
 
 
 export class NatsTransport extends Service implements EventBusTransportInterface {
     public readonly kind = 'nats'
 
     protected readonly DEFAULT_REQUEST_TIMEOUT_MS
-    protected readonly pool: Map<string, {nats: NatsClient}> = new Map()
+    protected readonly pool: Map<string, NatsClient> = new Map()
     protected subscriptions: Map<string | symbol, WeakMap<Function, Subscription>> = new Map()
-    protected middie: Middie
-    private _listeners: Function[] = []
+    private readonly _listeners: Function[] = []
 
     protected env = DI.get(Env)
-    protected app = DI.get(Application)
+    protected mw = DI.get(Mw)
+    protected application = DI.get(Application)
     protected contextManager = DI.get(ContextManager)
 
 
-    constructor(opts: {middie: Middie}) {
+    constructor (/* opts: {mw: any} */) {
         super()
 
         this.DEFAULT_REQUEST_TIMEOUT_MS = this.env.isDevMode ? 30_000 : 1_500
@@ -38,11 +49,9 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             this.log.warn('onExit')
             await this.gracefulUnSubscribeAll()
         })
-
-        this.middie = opts.middie
     }
 
-    public async gracefulUnSubscribeAll(): Promise<void> {
+    public async gracefulUnSubscribeAll (): Promise<void> {
         this.subscriptions.forEach((listeners, subject) => {
             let i = 0
             this._listeners.forEach(listener => {
@@ -58,64 +67,93 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         this.subscriptions.clear()
     }
 
-    public async request(
-        subject: string,
-        payload: RequestEnvelopeInterface,
+    public async request (
+        event: string,
+        data: RequestEnvelopeInterface,
     ): Promise<ResponseEnvelopeInterface[]> {
-        const conn = await this.getConnection()
-        const headers = this.contextManager.makeHeaders(this.context)
+        const nats = await this.getConnection()
+        const jc = JSONCodec()
+        const h = headers()
+        const contextHeaders = this.contextManager.makeHeaders(this.context)
+        for (const key of Object.keys(contextHeaders)) {
+            h.append(key, contextHeaders[key])
+        }
 
-        this.emit('pre:request', {subject: subject, payload: payload, headers: headers, opts: {}})
-        const msg = await conn.nats.request(
-            subject,
-            this.DEFAULT_REQUEST_TIMEOUT_MS, // todo
-            {...payload, headers: headers},
-        )
-        this.emit('post:request', {subject: subject, payload: payload, headers: headers, opts: {}, response: [msg.data]})
+        const opts = {
+            headers: h,
+            timeout: this.DEFAULT_REQUEST_TIMEOUT_MS // todo
+        }
+        this.emit('cerioom.nats.event-bus.nats-transport.request:pre', {event: event, data: data, opts: opts})
+        const msg = await nats.request(event, jc.encode(data), opts)
+        const result = jc.decode(msg.data)
+        this.emit('cerioom.nats.event-bus.nats-transport.request:post', {event: event, data: data, opts: opts, response: [result]})
 
-        return [msg.data] as ResponseEnvelopeInterface[] // todo
+        return [result] as ResponseEnvelopeInterface[] // todo
     }
 
-    public async publish(
-        subject: string,
-        payload: RequestEnvelopeInterface,
+    public async publish (
+        event: string,
+        data: RequestEnvelopeInterface,
     ): Promise<void> {
-        const conn = await this.getConnection()
-        const headers = this.contextManager.makeHeaders(this.context)
+        try {
+            const opts = <PublishOptions>{headers: headers()}
+            const nats = await this.getConnection()
+            const jc = JSONCodec()
+            const contextHeaders = this.contextManager.makeHeaders(this.context)
+            for (const key of Object.keys(contextHeaders)) {
+                opts.headers?.append(key, contextHeaders[key])
+            }
 
-        this.emit('pre:published', {subject: subject, payload: payload, headers: headers, opts: {}})
-        await conn.nats.publish(subject, {...payload, headers: headers})
-        this.emit('post:published', {subject: subject, payload: payload, headers: headers, opts: {}})
+            this.emit('cerioom.nats.event-bus.nats-transport.published:pre', {event: event, data: data, opts: opts})
+            await nats.publish(event, jc.encode(data), opts)
+            this.emit('cerioom.nats.event-bus.nats-transport.published:post', {event: event, data: data, opts: opts})
+        } catch (err) {
+            this.log.error({error: RuntimeError.toLog(err)})
+            throw err
+        }
     }
 
-    public async subscribe(
+    public async subscribe (
         subject: string,
         listener: Function,
         opts?: SubscribeOptionsInterface,
     ): Promise<void> {
         const subscribeOptions: any = Object.assign({}, opts)
         if (!opts || !('queue' in opts)) {
-            subscribeOptions.queue = this.app.name || process.env.npm_package_name
+            subscribeOptions.queue = this.application.name || process.env.npm_package_name
         }
 
-        const conn = await this.getConnection()
-        this.middie.use(subject, this.callbackHandler.bind(this, conn, listener))
+        const nats = await this.getConnection()
+        this.mw.use(this.callbackHandler.bind(this, nats, listener))
 
-        this.emit('pre:subscribe', {subject: subject, cb: listener, opts: opts})
-        const subscription = await conn.nats.subscribe(
+        const callback = this.requestHandler.bind(this, listener, nats)
+
+        this.emit('pre:subscribe', {
+            subject: subject,
+            cb: listener,
+            opts: opts
+        })
+        const subscription = await nats.subscribe(
             subject,
-            this.requestHandler.bind(this, listener, conn, this.middie),
-            subscribeOptions,
+            {
+                ...subscribeOptions,
+                callback: callback
+            },
         )
-        this.emit('post:subscribe', {subscription: subscription, subject: subject, cb: listener, opts: opts})
+        this.emit('post:subscribe', {
+            subscription: subscription,
+            subject: subject,
+            cb: listener,
+            opts: opts
+        })
 
         this._listeners.push(listener)
-        const listeners = this.subscriptions.get(subject) || new WeakMap()
+        const listeners = this.subscriptions.get(subject) ?? new WeakMap()
         listeners.set(listener, subscription)
         this.subscriptions.set(subject, listeners)
     }
 
-    public async unsubscribe(subject: string | symbol, listener: (...args: any[]) => void, opts?: any): Promise<void> {
+    public async unsubscribe (subject: string | symbol, listener: (...args: any[]) => void, opts?: any): Promise<void> {
         const listeners = this.subscriptions.get(subject)
         if (listeners) {
             const subscription = listeners.get(listener)
@@ -125,80 +163,100 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         }
     }
 
-    public async send(event: string | symbol, args: any): Promise<any> {
+    public async send (event: string | symbol, args: any): Promise<any> {
         throw new Error('Not implemented "send"')
     }
 
-    public getClientId(): string {
+    public getClientId (): string {
         const hostName = hostname().replace(/\./, '-')
-        const serviceName = this.app.name || process.env.npm_package_name
+        const serviceName = this.application.name || process.env.npm_package_name
         return `${hostName}_${serviceName}_${process.pid}`
     }
 
-    protected requestHandler(listener, conn, middie, err: NatsError | null, msg: Msg): void {
-        const initialRequest = <RequestEnvelopeInterface> {headers: {}, params: {}, query: {}, body: {}}
-        const req = Object.assign({url: msg.subject}, initialRequest, msg.data)
-        const res: any = {replyTo: msg.reply}
+    protected requestHandler (listener, conn, err: NatsError | null, msg: Msg): void {
+        const headers = {}
+        if (msg.headers) {
+            for (const [key] of msg.headers) {
+                headers[`x-${key}`] = msg.headers.get(key)
+            }
+        }
 
-        middie.run(req, res)
+        const initialRequest = <RequestEnvelopeInterface>{
+            event: msg.subject,
+            headers: {},
+            params: {},
+            query: {},
+            body: {}
+        }
+        const req = Object.assign({}, initialRequest, JSONCodec().decode(msg.data), {headers: headers})
+        const res: any = {
+            respond: msg.reply ? msg.respond : null,
+            headers: {},
+            setHeader: function (key, value) {
+                this.headers[key] = value
+            }
+        }
+
+        DI.get(ContextManager).setContext(ContextScope.REQUEST, () => {
+            this.log.info({}, 'request start')
+            this.mw.run(req, res, (req, res) => {
+                this.log.info({}, 'request finish')
+            })
+        })
     }
 
-    protected async callbackHandler(conn, cb, req, res, done): Promise<void> {
+    protected async callbackHandler (conn, listener, req, res, done): Promise<void> {
         try {
-            const resp = await cb(req, res)
+            const resp = await listener(req, res)
+
             if (resp instanceof Error) {
                 throw resp
             }
-            if (typeof res.replyTo === 'string') {
-                conn.nats.publish(res.replyTo, resp)
+            if (res && typeof res.respond === 'function') {
+                res.respond(resp)
             }
-        } catch (e) {
-            if (typeof res.replyTo === 'string') {
-                conn.nats.publish(res.replyTo, <ResponseEnvelopeInterface> {
+            done()
+        } catch (err) {
+            if (res && typeof res.respond === 'function') {
+                res.respond(<ResponseEnvelopeInterface>{
                     data: null,
-                    error: {
-                        id: e.id || undefined,
-                        statusCode: e.statusCode,
-                        name: e.name,
-                        message: e.message,
-                        data: e.data || undefined,
-                        validation: e.validation || undefined,
-                        stack: this.env.isDevMode ? e.stack : undefined,
-                    },
+                    error: RuntimeError.toLog(err),
                     meta: {},
                 })
+                done()
+            } else {
+                this.log.error({error: RuntimeError.toLog(err)})
+                done(err)
             }
-        } finally {
-            done()
         }
     }
 
-    protected async getConnection(): Promise<{nats: NatsClient}> {
-        let conn: {nats: NatsClient} | null = this.pool.get('default') || null
-        if (!conn) {
-            conn = await this.createConnection()
-            if (!conn) {
+    protected async getConnection (): Promise<NatsClient> {
+        let nats = this.pool.get('default') ?? null
+        if (!nats) {
+            nats = await this.createConnection()
+            if (!nats) {
                 const error = new RuntimeError('Connection failed')
                 this.log.error(RuntimeError.toLog(error), 'Connection failed')
                 throw error
             }
 
-            this.pool.set('default', conn)
-            this.emit('connected.default', conn)
+            this.pool.set('default', nats)
+            this.emit('connected.default', nats)
         }
 
-        return conn
+        return nats
     }
 
-    protected async createConnection(/* tenantId: string, tenantConfig: ConfigInterface */): Promise<{nats: NatsClient} | null> {
+    protected async createConnection (/* tenantId: string, tenantConfig: ConfigInterface */): Promise<NatsClient | null> {
         try {
             const clientId = this.getClientId()
             const servers = this.env.config.get<string[]>('nats.connection.servers')
-            const options = <NatsConnectionOptions> {
+            const options = <ConnectionOptions>{
                 name: clientId,
-                url: servers.shift(),
-                encoding: 'utf-8',
-                payload: Payload.JSON,
+                servers: servers,
+                noRandomize: true,
+                reconnect: true,
             }
 
             const user = this.env.config.get<string>('nats.connection.user')
@@ -209,27 +267,33 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             }
 
             const nc = await NATS(options)
+            const jc = JSONCodec<{ ok: boolean }>()
 
             const subject = `${clientId}.health-check`
-            nc.subscribe(subject, (err: NatsError | null, msg: Msg): void => {
+            const callback = (err: NatsError | null, msg: Msg): void => {
                 if (err) {
+                    // eslint-disable-next-line @typescript-eslint/no-throw-literal
                     throw err
                 }
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                msg.reply && nc.publish(msg.reply, msg.data)
-            })
+                // msg.reply && nc.publish(msg.reply, msg.data)
+                msg.respond(msg.data)
+            }
+            nc.subscribe(subject, {callback: callback})
 
-            const msg = await nc.request(subject, 1_000, {ok: true})
-            if (msg.data.ok === true) {
-                this.log.info({action: 'connection', tenantId: 'default'}, 'NATS is connected for the tenant')
-
-                return {nats: nc}
+            const msg = await nc.request(subject, jc.encode({ok: true}), {timeout: 1_000})
+            const payload = jc.decode(msg.data)
+            if (payload.ok) {
+                this.log.info({
+                    action: 'connection',
+                    tenantId: 'default'
+                }, 'NATS is connected for the tenant')
+                return nc
             }
 
             return null
-        } catch (ex) {
-            this.log.error({error: ex})
-            throw ex
+        } catch (err) {
+            this.log.error({error: RuntimeError.toLog(err)})
+            throw err
         }
     }
 }
