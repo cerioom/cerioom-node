@@ -99,9 +99,9 @@ export class Util {
             value = value === 'true';
         } else if (value === 'null') {
             value = null;
-        } else if (value === 'undefined') {
+        } else if (value === 'undefined' || value === undefined) {
             value = undefined;
-        } else if (json.indexOf(value.trim()[0]) > -1) {
+        } else if (typeof value === 'string' && json.indexOf(value.trim()[0]) > -1) {
             try {
                 value = JSON.parse(value);
             } catch (e) {
