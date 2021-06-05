@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.8](https://github.com/cerioom/cerioom-node/compare/v0.9.7...v0.9.8) (2021-06-05)
+
+
+### Bug Fixes
+
+* **nats:** use connection without tenant ([2fc4964](https://github.com/cerioom/cerioom-node/commit/2fc4964912620976b763b9562333a9c0fad3e82b))
+
+
+
+
+
 ## [0.9.7](https://github.com/cerioom/cerioom-node/compare/v0.9.6...v0.9.7) (2021-06-05)
 
 
