@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.10](https://github.com/cerioom/cerioom-node/compare/v0.9.9...v0.9.10) (2021-06-05)
+
+
+### Bug Fixes
+
+* **ajv-validator:** add compile ([d98aeb7](https://github.com/cerioom/cerioom-node/commit/d98aeb707d37a93150b071fbfa4313b59ddab392))
+* **event-bus:** change args to req ([a7d88c7](https://github.com/cerioom/cerioom-node/commit/a7d88c7af32738f3e19f6ec3d4930f79ea05995c))
+* **packages:** bump ([6a7099e](https://github.com/cerioom/cerioom-node/commit/6a7099e78d5fc001465d4bc091a943be85b28706))
+
+
+
+
+
 ## [0.9.9](https://github.com/cerioom/cerioom-node/compare/v0.9.8...v0.9.9) (2021-06-05)
 
 
