@@ -1,5 +1,6 @@
 import { ConstructorOptions, EventEmitter2 } from 'eventemitter2'
-import { EventBusTransportInterface } from './'
+import { RequestEnvelopeInterface } from '@cerioom/core'
+import { EventBusTransportInterface, MsgInterface } from './'
 
 
 export class EventEmitterTransport implements EventBusTransportInterface {
@@ -11,16 +12,16 @@ export class EventEmitterTransport implements EventBusTransportInterface {
         this.eventEmitter2 = new EventEmitter2(opts)
     }
 
-    public async publish(event: string | symbol, ...values: any[]): Promise<void> {
-        await this.eventEmitter2.emitAsync(event, ...values)
+    public async publish(event: string | symbol, msg: MsgInterface): Promise<void> {
+        await this.eventEmitter2.emitAsync(event, msg)
     }
 
-    public async send(event: string | symbol, ...values: any[]): Promise<any> {
+    public async send(event: string | symbol, msg: MsgInterface): Promise<any> {
         throw new Error('Not implemented "send"')
     }
 
-    public async request(event: string | symbol, ...values: any[]): Promise<any[]> {
-        return await this.eventEmitter2.emitAsync(event, ...values)
+    public async request(event: string | symbol, data: RequestEnvelopeInterface): Promise<any[]> {
+        return await this.eventEmitter2.emitAsync(event, data)
     }
 
     public async subscribe(event: string | symbol, listener: (...args: any[]) => void): Promise<void> {
