@@ -181,7 +181,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         const tenant = this.context.tenant
         let conn: {nats: NatsClient} | null = this.pool.get(tenant.id) || null
         if (!conn) {
-            conn = await this.createConnection(tenant.config, tenant.id)
+            conn = await this.createConnection(tenant.id, tenant.config)
             if (!conn) {
                 this.log.error({tenant: {id: tenant.id}}, 'Connection failed')
                 throw new RuntimeError('Connection failed')
@@ -206,8 +206,8 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 payload: Payload.JSON,
             }
 
-            const user = tenantConfig.get<string>('nats.connection.user')
-            const pass = tenantConfig.get<string>('nats.connection.pass')
+            const user = this.env.config.get<string>('nats.connection.user')
+            const pass = this.env.config.get<string>('nats.connection.pass')
             if (user && pass) {
                 options.user = user
                 options.pass = pass
