@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.7](https://github.com/cerioom/cerioom-node/compare/v0.9.6...v0.9.7) (2021-06-05)
+
+
+### Bug Fixes
+
+* **nats:** use main credential for connection ([ee3e0fb](https://github.com/cerioom/cerioom-node/commit/ee3e0fba6d0fb3f2765b456ac78326162fb7dfec))
+
+
+
+
+
 ## [0.9.6](https://github.com/cerioom/cerioom-node/compare/v0.9.5...v0.9.6) (2021-06-04)
 
 
