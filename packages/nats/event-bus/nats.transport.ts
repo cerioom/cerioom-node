@@ -11,7 +11,6 @@ import {
 import { EventBusTransportInterface } from '@cerioom/event-bus'
 import { hostname } from 'os'
 import { Client as NatsClient, connect as NATS, Msg, NatsConnectionOptions, NatsError, Payload, Subscription } from 'ts-nats'
-import { RequestOptionsInterface } from './request-options.interface'
 import { SubscribeOptionsInterface } from './subscribe-options.interface'
 import Middie = require('middie/engine')
 
@@ -62,18 +61,17 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     public async request(
         subject: string,
         payload: RequestEnvelopeInterface,
-        opts: RequestOptionsInterface,
     ): Promise<ResponseEnvelopeInterface[]> {
         const conn = await this.getConnection()
         const headers = this.contextManager.makeHeaders(this.context)
 
-        this.emit('pre:request', {subject: subject, payload: payload, headers: headers, opts: opts})
+        this.emit('pre:request', {subject: subject, payload: payload, headers: headers, opts: {}})
         const msg = await conn.nats.request(
             subject,
-            opts.timeout ?? this.DEFAULT_REQUEST_TIMEOUT_MS,
+            this.DEFAULT_REQUEST_TIMEOUT_MS, // todo
             {...payload, headers: headers},
         )
-        this.emit('post:request', {subject: subject, payload: payload, headers: headers, opts: opts, response: [msg.data]})
+        this.emit('post:request', {subject: subject, payload: payload, headers: headers, opts: {}, response: [msg.data]})
 
         return [msg.data] as ResponseEnvelopeInterface[] // todo
     }
@@ -81,14 +79,13 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     public async publish(
         subject: string,
         payload: RequestEnvelopeInterface,
-        opts: RequestOptionsInterface,
     ): Promise<void> {
         const conn = await this.getConnection()
         const headers = this.contextManager.makeHeaders(this.context)
 
-        this.emit('pre:published', {subject: subject, payload: payload, headers: headers, opts: opts})
+        this.emit('pre:published', {subject: subject, payload: payload, headers: headers, opts: {}})
         await conn.nats.publish(subject, {...payload, headers: headers})
-        this.emit('post:published', {subject: subject, payload: payload, headers: headers, opts: opts})
+        this.emit('post:published', {subject: subject, payload: payload, headers: headers, opts: {}})
     }
 
     public async subscribe(
