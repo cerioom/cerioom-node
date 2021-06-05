@@ -1,4 +1,4 @@
-import { LoggerInterface, RuntimeError, Validator } from '@cerioom/core'
+import { LoggerInterface, RuntimeError, ValidateFunction, Validator } from '@cerioom/core'
 import ajv from 'ajv'
 import localize from 'ajv-i18n'
 import fs from 'fs'
@@ -97,6 +97,10 @@ export class AjvValidator extends Validator {
         this.updateAjvInstance()
 
         return this
+    }
+
+    public compile(how: any): ValidateFunction<unknown> {
+        throw new Error('Method not implemented.')
     }
 
     public validate(keyRef: any, data: any): any {
