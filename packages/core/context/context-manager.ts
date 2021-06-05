@@ -124,8 +124,10 @@ export class ContextManager implements ContextManagerInterface {
             const serializer = this.serializersRepository.get(key)
             if (serializer) {
                 prev = {...prev, ...serializer.serialize(value)}
-            } else {
+            } else if (typeof value === 'object') {
                 prev[_.kebabCase(key)] = JSON.stringify(value)
+            } else {
+                prev[_.kebabCase(key)] = value
             }
 
             return prev
@@ -141,12 +143,14 @@ export class ContextManager implements ContextManagerInterface {
             const serializer = this.deserializersRepository.get(key)
             if (serializer) {
                 prev = {...prev, ...serializer.deserialize(value)}
-            } else {
+            } else if (typeof value === 'object') {
                 try {
                     prev[_.camelCase(key)] = JSON.parse(value)
                 } catch (e) {
                     prev[_.camelCase(key)] = value
                 }
+            } else {
+                prev[_.camelCase(key)] = value
             }
 
             return prev
