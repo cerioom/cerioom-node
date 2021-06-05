@@ -1,6 +1,5 @@
 import {
     Application,
-    ConfigInterface,
     ContextManager,
     DI,
     Env,
@@ -178,24 +177,23 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     }
 
     protected async getConnection(): Promise<{nats: NatsClient}> {
-        const tenant = this.context.tenant
-        let conn: {nats: NatsClient} | null = this.pool.get(tenant.id) || null
+        let conn: {nats: NatsClient} | null = this.pool.get('default') || null
         if (!conn) {
-            conn = await this.createConnection(tenant.id, tenant.config)
+            conn = await this.createConnection()
             if (!conn) {
-                this.log.error({tenant: {id: tenant.id}}, 'Connection failed')
-                throw new RuntimeError('Connection failed')
+                const error = new RuntimeError('Connection failed')
+                this.log.error(RuntimeError.toLog(error), 'Connection failed')
+                throw error
             }
 
-            this.pool.set(tenant.id, conn)
-            this.emit(`connected.${tenant.id}`, conn)
+            this.pool.set('default', conn)
+            this.emit('connected.default', conn)
         }
 
         return conn
     }
 
-    // @LoggingOptions({maskedFields: ['nats.password']})
-    protected async createConnection(tenantId: string, tenantConfig: ConfigInterface): Promise<{nats: NatsClient} | null> {
+    protected async createConnection(/* tenantId: string, tenantConfig: ConfigInterface */): Promise<{nats: NatsClient} | null> {
         try {
             const clientId = this.getClientId()
             const servers = this.env.config.get<string[]>('nats.connection.servers')
@@ -226,7 +224,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
 
             const msg = await nc.request(subject, 1_000, {ok: true})
             if (msg.data.ok === true) {
-                this.log.info({action: 'connection', tenantId: tenantId}, 'NATS is connected for the tenant')
+                this.log.info({action: 'connection', tenantId: 'default'}, 'NATS is connected for the tenant')
 
                 return {nats: nc}
             }
