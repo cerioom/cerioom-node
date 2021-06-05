@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.14](https://github.com/cerioom/cerioom-node/compare/v0.9.13...v0.9.14) (2021-06-05)
+
+
+### Bug Fixes
+
+* **nats:** change transport ([e89018b](https://github.com/cerioom/cerioom-node/commit/e89018b5cc3b21020d75f1fd1079fa9538c27d33))
+
+
+
+
+
 ## [0.9.13](https://github.com/cerioom/cerioom-node/compare/v0.9.12...v0.9.13) (2021-06-05)
 
 
