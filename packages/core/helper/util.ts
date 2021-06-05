@@ -85,4 +85,29 @@ export class Util {
             return args[0]
         }
     }
+
+    public static castValue(value: any) {
+        const bool = ['false', 'true'];
+        const json = '{[';
+
+        const numb = Number(value);
+        if (value === null) {
+            // skip transformation
+        } else if (!Number.isNaN(numb)) {
+            value = numb;
+        } else if (bool.indexOf(value) > -1) {
+            value = value === 'true';
+        } else if (value === 'null') {
+            value = null;
+        } else if (value === 'undefined') {
+            value = undefined;
+        } else if (json.indexOf(value.trim()[0]) > -1) {
+            try {
+                value = JSON.parse(value);
+            } catch (e) {
+            }
+        }
+
+        return value;
+    }
 }
