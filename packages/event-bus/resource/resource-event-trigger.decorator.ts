@@ -20,7 +20,6 @@ export function ResourceEventTrigger (version = '', delimiter = '.') {
                 }
 
                 if (eventBus && 'publish' in eventBus) {
-                    // @ts-expect-error
                     setImmediate(async () => await eventBus.publish(event, {data: args}))
                 } else {
                     // todo logging
