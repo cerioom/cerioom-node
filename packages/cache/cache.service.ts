@@ -3,22 +3,22 @@ import { CacheStoreInterface } from './cache-store.interface'
 import { CacheInterface } from './cache.interface'
 
 
-export abstract class CacheService<K, V> extends Service implements CacheInterface<K, V> {
+export abstract class CacheService extends Service implements CacheInterface {
     protected keyPrefix = ''
     protected keySeparator = ':'
 
 
     public abstract clear(): Promise<void>
 
-    public abstract get(key: K): Promise<V | undefined>
+    public abstract get<K, V>(key: K): Promise<V | undefined>
 
-    public abstract remove(key: K): Promise<void>
+    public abstract remove<K>(key: K): Promise<void>
 
-    public abstract set(key: K, data: V, ttl: number | undefined): Promise<void>
+    public abstract set<K, V>(key: K, data: V, ttl: number | undefined): Promise<void>
 
     public abstract getStore(): CacheStoreInterface
 
-    public abstract cached(key: K, cb, ttl?: number): Promise<V>
+    public abstract cached<K, V>(key: K, cb: () => V, ttl?: number | undefined): Promise<V | unknown>
 
     public configure(options?: {keyPrefix?: string, keySeparator?: string}): this {
         this.keyPrefix = options?.keyPrefix ?? ''
@@ -26,5 +26,5 @@ export abstract class CacheService<K, V> extends Service implements CacheInterfa
         return this
     }
 
-    protected abstract makeKey(key: K): any
+    protected abstract makeKey<K>(key: K): any
 }

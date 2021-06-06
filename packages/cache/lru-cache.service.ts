@@ -2,8 +2,8 @@ import { CacheService } from './'
 import LRU from 'lru-cache'
 
 
-export class LruCacheService<V = any> extends CacheService<string, V> {
-    protected store: LRU<string, V>
+export class LruCacheService extends CacheService {
+    protected store: LRU<string, any>
 
     constructor(opts?: {
         max: number
@@ -19,11 +19,11 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
         this.store.reset()
     }
 
-    public async get(key: string): Promise<V | undefined> {
+    public async get<K, V>(key: K): Promise<V | undefined> {
         return this.store.get(this.makeKey(key))
     }
 
-    public async remove(key: string): Promise<void> {
+    public async remove<K>(key: K): Promise<void> {
         this.store.del(this.makeKey(key))
     }
 
@@ -32,7 +32,7 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
      * @param data
      * @param ttl in seconds
      */
-    public async set(key: string, data: V, ttl?: number): Promise<void> {
+    public async set<K, V>(key: K, data: V, ttl?: number): Promise<void> {
         this.store.set(this.makeKey(key), data, ttl ? ttl * 1000 : undefined)
     }
 
@@ -41,7 +41,7 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
      * @param cb
      * @param ttl in seconds
      */
-    public async cached(key: string, cb: () => V, ttl = 60): Promise<V> {
+    public async cached<K, V>(key: K, cb: () => V, ttl = 60): Promise<V | unknown> {
         let value = await this.get(key)
         if (value === undefined) {
             value = await cb()
@@ -52,11 +52,11 @@ export class LruCacheService<V = any> extends CacheService<string, V> {
         return value
     }
 
-    public getStore(): LRU<string, V> {
+    public getStore(): LRU<string, any> {
         return this.store
     }
 
-    protected makeKey(key: string): string {
+    protected makeKey<K>(key: K): string {
         return [this.keyPrefix, String(key)].filter(Boolean).join(this.keySeparator)
     }
 }

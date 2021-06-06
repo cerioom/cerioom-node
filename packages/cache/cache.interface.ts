@@ -1,8 +1,8 @@
-export interface CacheInterface<K, V> {
+export interface CacheInterface {
     configure: (options?: {keyPrefix?: string, keySeparator?: string}) => void
-    set: (key: K, data: V, ttl?: number) => Promise<void>
-    get: (key: K) => Promise<V | undefined>
-    remove: (key: K) => Promise<void>
+    set: <K, V>(key: K, data: V, ttl?: number) => Promise<void>
+    get: <K, V>(key: K) => Promise<V | undefined>
+    remove: <K>(key: K) => Promise<void>
     clear: () => Promise<void>
-    cached: (key: K, cb, ttl?: number) => Promise<V>
+    cached: <K, V>(key: K, cb: () => V, ttl?: number | undefined) => Promise<V | unknown>
 }
