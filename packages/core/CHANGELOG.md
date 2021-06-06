@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.17](https://github.com/cerioom/cerioom-node/compare/v0.9.16...v0.9.17) (2021-06-06)
+
+
+### Bug Fixes
+
+* **core:** add new error permission denied ([b698188](https://github.com/cerioom/cerioom-node/commit/b69818822d4e2de6608c45113fc6abbbd57c5b26))
+* **core:** log decorator ([35e7996](https://github.com/cerioom/cerioom-node/commit/35e7996982d9bbb69eaced39dbfc396bb5213825))
+* **core:** response-envelope.interface ([151d7a1](https://github.com/cerioom/cerioom-node/commit/151d7a1163bd9540e52af0ac1018ee25bc3b36f6))
+
+
+
+
+
 ## [0.9.13](https://github.com/cerioom/cerioom-node/compare/v0.9.12...v0.9.13) (2021-06-05)
 
 

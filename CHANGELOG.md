@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.17](https://github.com/cerioom/cerioom-node/compare/v0.9.16...v0.9.17) (2021-06-06)
+
+
+### Bug Fixes
+
+* **core:** add new error permission denied ([b698188](https://github.com/cerioom/cerioom-node/commit/b69818822d4e2de6608c45113fc6abbbd57c5b26))
+* **core:** log decorator ([35e7996](https://github.com/cerioom/cerioom-node/commit/35e7996982d9bbb69eaced39dbfc396bb5213825))
+* **core:** response-envelope.interface ([151d7a1](https://github.com/cerioom/cerioom-node/commit/151d7a1163bd9540e52af0ac1018ee25bc3b36f6))
+* **event-bus:** add resource-event-trigger.decorator.ts ([69ef215](https://github.com/cerioom/cerioom-node/commit/69ef2154de959fb962d93bbf041cb7a93d41b6f4))
+* **nats:** change creating a connection ([3fe5b5a](https://github.com/cerioom/cerioom-node/commit/3fe5b5ac775df5689d63bcff3326419f420dcf40))
+* **resource:** add resource.decorator.ts ([d6db217](https://github.com/cerioom/cerioom-node/commit/d6db217368211492450ba73c82366aadd8744339))
+
+
+
+
+
 ## [0.9.16](https://github.com/cerioom/cerioom-node/compare/v0.9.15...v0.9.16) (2021-06-06)
 
 
