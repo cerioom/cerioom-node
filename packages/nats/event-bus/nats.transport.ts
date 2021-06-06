@@ -280,17 +280,15 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             }
             nc.subscribe(subject, {callback: callback})
 
-            const msg = await nc.request(subject, jc.encode({ok: true}), {timeout: 1_000})
-            const payload = jc.decode(msg.data)
-            if (payload.ok) {
-                this.log.info({
-                    action: 'connection',
-                    tenantId: 'default'
-                }, 'NATS is connected for the tenant')
-                return nc
-            }
+            setImmediate(async () => {
+                const msg = await nc.request(subject, jc.encode({ok: true}), {timeout: 1_000})
+                const payload = jc.decode(msg.data)
+                if (payload.ok) {
+                    this.log.info({action: 'connection', tenantId: 'default'}, 'NATS is connected for the tenant')
+                }
+            })
 
-            return null
+            return nc
         } catch (err) {
             this.log.error({error: RuntimeError.toLog(err)})
             throw err
