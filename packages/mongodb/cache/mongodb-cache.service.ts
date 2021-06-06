@@ -4,7 +4,7 @@ import { Collection } from 'mongodb'
 import { MongodbService } from '../'
 
 
-export class MongodbCacheService<K, V> extends CacheService<K, V> {
+export class MongodbCacheService extends CacheService {
     protected mongodbService = DI.get(MongodbService)
 
 
@@ -14,7 +14,7 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
         super()
     }
 
-    public async cached(key: K, cb: () => V, ttl = 60): Promise<V> {
+    public async cached<K, V>(key: K, cb: () => V, ttl = 60): Promise<V | unknown> {
         let value = await this.get(key)
         if (value === undefined) {
             value = await cb()
@@ -29,7 +29,7 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
         await collection.deleteMany({})
     }
 
-    public async get(key: K): Promise<V | undefined> {
+    public async get<K, V>(key: K): Promise<V | undefined> {
         const collection = await this.getStore()
         const _key = this.makeKey(key)
         const result = await collection.findOne({_id: _key})
@@ -40,11 +40,11 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
         return result ? result.data : undefined
     }
 
-    public async remove(key: K): Promise<void> {
+    public async remove<K>(key: K): Promise<void> {
         await (await this.getStore()).deleteOne({_id: this.makeKey(key)}, {j: true})
     }
 
-    public async set(key: K, data: V, ttl = 60): Promise<void> {
+    public async set<K, V>(key: K, data: V, ttl = 60): Promise<void> {
         await (await this.getStore()).updateOne(
             {_id: this.makeKey(key)},
             {
@@ -62,7 +62,7 @@ export class MongodbCacheService<K, V> extends CacheService<K, V> {
         return (await this.mongodbService.getDb()).collection(this.collectionName)
     }
 
-    protected makeKey(key: K): string {
+    protected makeKey<K>(key: K): string {
         return [this.keyPrefix, String(key)].filter(Boolean).join(this.keySeparator)
     }
 }
