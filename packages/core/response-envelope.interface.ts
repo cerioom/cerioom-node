@@ -1,6 +1,6 @@
 export interface ResponseEnvelopeInterface<T = any> {
     data: T | T[]
-    meta: {
+    meta?: {
         total?: number
         offset?: number
         limit?: number
