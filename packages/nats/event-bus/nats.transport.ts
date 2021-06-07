@@ -8,12 +8,13 @@ import {
     RequestEnvelopeInterface,
     ResponseEnvelopeInterface,
     RuntimeError,
-    Service
+    Service,
+    Str
 } from '@cerioom/core'
 import {EventBusTransportInterface} from '@cerioom/event-bus'
 import {hostname} from 'os'
 import {
-    connect as NATS,
+    connect,
     ConnectionOptions,
     headers,
     JSONCodec,
@@ -29,6 +30,8 @@ import {SubscribeOptionsInterface} from './subscribe-options.interface'
 export class NatsTransport extends Service implements EventBusTransportInterface {
     public readonly kind = 'nats'
 
+    protected id: string
+
     protected readonly DEFAULT_REQUEST_TIMEOUT_MS
     protected readonly pool: Map<string, NatsClient> = new Map()
     protected subscriptions: Map<string | symbol, WeakMap<Function, Subscription>> = new Map()
@@ -40,8 +43,10 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     protected contextManager = DI.get(ContextManager)
 
 
-    constructor (/* opts: {mw: any} */) {
+    constructor () {
         super()
+
+        this.id = Str.random()
 
         this.DEFAULT_REQUEST_TIMEOUT_MS = this.env.isDevMode ? 30_000 : 1_500
 
@@ -233,18 +238,74 @@ export class NatsTransport extends Service implements EventBusTransportInterface
 
     protected async getConnection (): Promise<NatsClient> {
         let nats = this.pool.get('default') ?? null
-        if (!nats) {
-            nats = await this.createConnection()
-            if (!nats) {
-                const error = new RuntimeError('Connection failed')
-                this.log.error(RuntimeError.toLog(error), 'Connection failed')
-                throw error
+        if (nats) {
+            if (nats instanceof Promise) {
+                await nats;
+            }
+        } else {
+            // nats = this.createConnection()
+            // if (!nats) {
+            //     const error = new RuntimeError('Connection failed')
+            //     this.log.error(RuntimeError.toLog(error), 'Connection failed')
+            //     throw error
+            // }
+
+            const servers = this.env.config.get<string[]>('nats.connection.servers')
+            const options = <ConnectionOptions>{
+                name: this.getClientId(),
+                servers: servers,
+                noRandomize: true,
+                reconnect: true,
             }
 
+            const user = this.env.config.get<string>('nats.connection.user')
+            const pass = this.env.config.get<string>('nats.connection.pass')
+            if (user && pass) {
+                options.user = user
+                options.pass = pass
+            }
+
+            // @ts-ignore
+            nats = connect(options)
+            // @ts-ignore
             this.pool.set('default', nats)
-            this.emit('connected.default', nats)
+
+            try {
+                // @ts-ignore
+                nats = await nats
+                // @ts-ignore
+                this.pool.set('default', nats)
+
+                const jc = JSONCodec<{ ok: boolean }>()
+
+                const subject = `${options.name}.health-check`
+                const callback = (err: NatsError | null, msg: Msg): void => {
+                    if (err) {
+                        // eslint-disable-next-line @typescript-eslint/no-throw-literal
+                        throw err
+                    }
+                    // msg.reply && nc.publish(msg.reply, msg.data)
+                    msg.respond(msg.data)
+                }
+                nats?.subscribe(subject, {callback: callback})
+
+                setImmediate(async () => {
+                    const msg = await nats?.request(subject, jc.encode({ok: true}), {timeout: 1_000})
+                    const payload = jc.decode(msg!.data)
+                    if (payload.ok) {
+                        this.log.info({action: 'connection', tenantId: 'default'}, 'NATS is connected for the tenant')
+                    }
+                })
+            } catch (err) {
+                this.pool.delete('default');
+                // this.log.warn({ ...logData, error: err });
+                throw err;
+            }
         }
 
+        this.emit('connected.default', nats)
+
+        // @ts-ignore
         return nats
     }
 
@@ -266,7 +327,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 options.pass = pass
             }
 
-            const nc = await NATS(options)
+            const nats = await connect(options)
             const jc = JSONCodec<{ ok: boolean }>()
 
             const subject = `${clientId}.health-check`
@@ -278,17 +339,17 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 // msg.reply && nc.publish(msg.reply, msg.data)
                 msg.respond(msg.data)
             }
-            nc.subscribe(subject, {callback: callback})
+            nats.subscribe(subject, {callback: callback})
 
             setImmediate(async () => {
-                const msg = await nc.request(subject, jc.encode({ok: true}), {timeout: 1_000})
+                const msg = await nats.request(subject, jc.encode({ok: true}), {timeout: 1_000})
                 const payload = jc.decode(msg.data)
                 if (payload.ok) {
                     this.log.info({action: 'connection', tenantId: 'default'}, 'NATS is connected for the tenant')
                 }
             })
 
-            return nc
+            return nats
         } catch (err) {
             this.log.error({error: RuntimeError.toLog(err)})
             throw err
