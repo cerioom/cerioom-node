@@ -1,33 +1,41 @@
-import { Application, ContextManager, DI, RuntimeError } from '@cerioom/core'
+import { ContextManager, DI, RuntimeError } from '@cerioom/core'
 import 'reflect-metadata'
 
 
-export function ResourceName (resourceName: string): ClassDecorator {
+/**
+ * Example:
+ * <code>ResourceEvent({format: 'app.v1.${resource}.${action}'})</code>
+ */
+export function ResourceEvent ({format}: {format: string, name: string}): ClassDecorator {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return function <TFunction extends Function> (target: TFunction): TFunction | void {
-        const app = DI.get(Application)
-        Reflect.defineMetadata(`${app.name}:resourceName`, resourceName, target)
+        Reflect.defineMetadata('resourceEvent.format', format, target)
     }
 }
 
-export function ResourceAction (actionName: string): MethodDecorator {
+export function ResourceName (name: string): ClassDecorator {
+    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+    return function <TFunction extends Function> (target: TFunction): TFunction | void {
+        Reflect.defineMetadata('resourceEvent:resourceName', name, target)
+    }
+}
+
+export function ResourceAction (name: string): MethodDecorator {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return function <T> (target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> | void {
-        const app = DI.get(Application)
-        Reflect.defineMetadata(`${app.name}:actionName`, actionName, target.constructor, propertyKey)
+        Reflect.defineMetadata('resourceEvent:actionName', name, target.constructor, propertyKey)
     }
 }
 
-export function ResourcePermission (): ClassDecorator {
+export function ResourcePermissionCheck (): ClassDecorator {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return function <TFunction extends Function> (target: TFunction): TFunction | void {
-        const app = DI.get(Application)
-        const RESOURCE_NAME = `${app.name}:resourceName`
+        const RESOURCE_NAME = 'resourceEvent:resourceName'
         if (!Reflect.getMetadata(RESOURCE_NAME, target)) {
             return
         }
 
-        const ACTION_NAME = `${app.name}:actionName`
+        const ACTION_NAME = 'resourceEvent:actionName'
 
         // @ts-expect-error
         const _target = target.name === 'ioc_wrapper' ? target.__parent : target // typescript-ioc hack!!!
