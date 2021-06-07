@@ -1,18 +1,17 @@
-import { Application, DI, RuntimeError } from '@cerioom/core'
+import { DI, RuntimeError, Str } from '@cerioom/core'
 import { EventBusService } from '../event-bus.service'
 import 'reflect-metadata'
 
 
-export function ResourceEventTrigger (version = '', delimiter = '.') {
+/**
+ * Example:
+ * <code>@ResourceEventTrigger()</code>
+ */
+export function ResourceEventTrigger () {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value
         descriptor.value = async function (...args: any[]): Promise<any> {
-            const app = DI.get(Application)
             const eventBus = DI.get(EventBusService)
-            const resource = Reflect.getMetadata(`${app.name}:resourceName`, this.constructor)
-            const action = Reflect.getMetadata(`${app.name}:actionName`, target.constructor, propertyKey)
-            const event = [app.name, version, resource, action].filter(Boolean).join(delimiter)
-
             try {
                 let result = originalMethod.apply(this, args)
                 if (result instanceof Promise) {
@@ -20,6 +19,10 @@ export function ResourceEventTrigger (version = '', delimiter = '.') {
                 }
 
                 if (eventBus && 'publish' in eventBus) {
+                    const format = Reflect.getMetadata('resourceEvent:format', this.constructor)
+                    const resource = Reflect.getMetadata('resourceEvent:resourceName', this.constructor)
+                    const action = Reflect.getMetadata('resourceEvent:actionName', target.constructor, propertyKey)
+                    const event = Str.resolveTemplate(format, {resource: resource, action: action})
                     setImmediate(async () => await eventBus.publish(event, {data: args}))
                 } else {
                     // todo logging
@@ -33,6 +36,7 @@ export function ResourceEventTrigger (version = '', delimiter = '.') {
                 } else {
                     // todo logging
                 }
+                throw err
             }
         }
     }

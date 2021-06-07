@@ -7,9 +7,11 @@ import { MsgInterface } from './msg.interface'
 export class EventEmitterTransport implements EventBusTransportInterface {
     public readonly kind = 'event-emitter'
 
+    protected id: string
     protected eventEmitter2: EventEmitter2
 
     constructor(opts?: ConstructorOptions) {
+        this.id = Str.random()
         this.eventEmitter2 = new EventEmitter2(opts)
     }
 
@@ -22,7 +24,7 @@ export class EventEmitterTransport implements EventBusTransportInterface {
         await this.eventEmitter2.emitAsync(event, msg, res)
     }
 
-    public async send(event: string | symbol, ...values: any[]): Promise<any> {
+    public async send(event: string | symbol, req: any): Promise<any> {
         throw new Error('Not implemented "send"')
     }
 
