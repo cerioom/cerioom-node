@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/cerioom/cerioom-node/compare/v0.9.19...v0.10.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* **event-bus:** resource-event-trigger decorator ([c8f6809](https://github.com/cerioom/cerioom-node/commit/c8f6809d092aac297ad58dabf3e4d439aa54336a))
+
+
+
+
+
 ## [0.9.19](https://github.com/cerioom/cerioom-node/compare/v0.9.18...v0.9.19) (2021-06-07)
 
 

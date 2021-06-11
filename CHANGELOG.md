@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/cerioom/cerioom-node/compare/v0.9.19...v0.10.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* **code:** security + hash password ([af7e4cf](https://github.com/cerioom/cerioom-node/commit/af7e4cfa6e793e89bd6b1191ac4abca7d37b3792))
+* **event-bus:** resource-event-trigger decorator ([c8f6809](https://github.com/cerioom/cerioom-node/commit/c8f6809d092aac297ad58dabf3e4d439aa54336a))
+* **packages:** bump ([df69426](https://github.com/cerioom/cerioom-node/commit/df694264622c2e25b1bbcc618a92b31afd92dfd9))
+* **resource:** resource decorator ([964f28d](https://github.com/cerioom/cerioom-node/commit/964f28d821b44f800bafa50cec6ecc2d3c54b26a))
+
+
+### Features
+
+* **core:** add connect-controller-method decorator ([c591e70](https://github.com/cerioom/cerioom-node/commit/c591e702579b2377145d91f0ded59da8dd1c2ae2))
+
+
+
+
+
 ## [0.9.19](https://github.com/cerioom/cerioom-node/compare/v0.9.18...v0.9.19) (2021-06-07)
 
 

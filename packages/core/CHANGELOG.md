@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/cerioom/cerioom-node/compare/v0.9.19...v0.10.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* **code:** security + hash password ([af7e4cf](https://github.com/cerioom/cerioom-node/commit/af7e4cfa6e793e89bd6b1191ac4abca7d37b3792))
+
+
+### Features
+
+* **core:** add connect-controller-method decorator ([c591e70](https://github.com/cerioom/cerioom-node/commit/c591e702579b2377145d91f0ded59da8dd1c2ae2))
+
+
+
+
+
 ## [0.9.19](https://github.com/cerioom/cerioom-node/compare/v0.9.18...v0.9.19) (2021-06-07)
 
 

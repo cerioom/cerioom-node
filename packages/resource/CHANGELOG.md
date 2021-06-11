@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/cerioom/cerioom-node/compare/v0.9.19...v0.10.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* **packages:** bump ([df69426](https://github.com/cerioom/cerioom-node/commit/df694264622c2e25b1bbcc618a92b31afd92dfd9))
+* **resource:** resource decorator ([964f28d](https://github.com/cerioom/cerioom-node/commit/964f28d821b44f800bafa50cec6ecc2d3c54b26a))
+
+
+
+
+
 ## [0.9.19](https://github.com/cerioom/cerioom-node/compare/v0.9.18...v0.9.19) (2021-06-07)
 
 
