@@ -6,10 +6,10 @@ import 'reflect-metadata'
  * Example:
  * <code>ResourceEvent({format: 'app.v1.${resource}.${action}'})</code>
  */
-export function ResourceEvent ({format}: {format: string, name: string}): ClassDecorator {
+export function ResourceEvent ({format}: {format: string}): ClassDecorator {
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
     return function <TFunction extends Function> (target: TFunction): TFunction | void {
-        Reflect.defineMetadata('resourceEvent.format', format, target)
+        Reflect.defineMetadata('resourceEvent:format', format, target)
     }
 }
 
