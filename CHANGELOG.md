@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/cerioom/cerioom-node/compare/v0.10.0...v0.10.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* **mongodb:** connection with common and tenant parameters ([da1ba23](https://github.com/cerioom/cerioom-node/commit/da1ba23c4c0256be04fc3f55f0cb6a7a12307ba8))
+* **packages:** bump ([eeebeb9](https://github.com/cerioom/cerioom-node/commit/eeebeb9d55e452bac361347e9a1fdd7c3981ca3b))
+
+
+
+
+
 # [0.10.0](https://github.com/cerioom/cerioom-node/compare/v0.9.19...v0.10.0) (2021-06-11)
 
 
