@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.5](https://github.com/cerioom/cerioom-node/compare/v0.10.4...v0.10.5) (2021-06-11)
+
+
+### Bug Fixes
+
+* **packages:** bump ([e8bdf19](https://github.com/cerioom/cerioom-node/commit/e8bdf19fa4af2295c2c5b6481fe3a86f2db03d0b))
+
+
+
+
+
 ## [0.10.4](https://github.com/cerioom/cerioom-node/compare/v0.10.3...v0.10.4) (2021-06-11)
 
 
