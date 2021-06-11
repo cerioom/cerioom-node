@@ -27,7 +27,7 @@ describe('security', () => {
 
     it('should hash and verify a password', async () => {
         const password = 'secretpsw123'
-        const salt = 'qwerty1234567890'
+        const salt = 'qwerty'
 
         {
             const hash = await Security.hashPassword(password)
@@ -40,8 +40,8 @@ describe('security', () => {
         }
 
         {
-            const hash = await Security.hashPassword(password, salt, {encoding: 'hex'})
-            expect(Security.verifyPassword(hash, password, salt, {encoding: 'hex'})).toBeTruthy()
+            const hash = await Security.hashPassword(password, salt, {encoding: 'hex', separator: ':', keyLen: 32})
+            expect(Security.verifyPassword(hash, password, salt, {encoding: 'hex', separator: ':', keyLen: 32})).toBeTruthy()
         }
     })
 })

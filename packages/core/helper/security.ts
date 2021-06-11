@@ -102,13 +102,13 @@ export class Security {
             const key = (await scryptAsync(password, salt, opts.keyLen)) as Buffer
             return randomSalt + opts.separator + key.toString(opts.encoding)
         } catch (e) {
-            throw new RuntimeError('Unexpected error').setCause(e)
+            throw new RuntimeError(e.message).setCause(e)
         }
     }
 
     public static async verifyPassword(
         hash: string,
-        secret: string,
+        password: string,
         salt = '',
         options?: {
             encoding?: BinaryToTextEncoding,
@@ -116,9 +116,13 @@ export class Security {
             keyLen?: number,
         },
     ): Promise<boolean> {
-        const opts = Object.assign({}, defaultHashPassOpts, options)
-        const [randomSalt, key] = hash.split(opts.separator)
-        const derivedKey = (await scryptAsync(secret, randomSalt + salt, 64)) as Buffer
-        return timingSafeEqual(Buffer.from(key, opts.encoding), derivedKey)
+        try {
+            const opts = Object.assign({}, defaultHashPassOpts, options)
+            const [randomSalt, key] = hash.split(opts.separator)
+            const derivedKey = (await scryptAsync(password, randomSalt + salt, opts.keyLen)) as Buffer
+            return timingSafeEqual(Buffer.from(key, opts.encoding), derivedKey)
+        } catch (e) {
+            throw new RuntimeError(e.message).setCause(e)
+        }
     }
 }
