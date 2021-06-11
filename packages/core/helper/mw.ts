@@ -3,15 +3,15 @@ import {EventEmitter} from 'events'
 export type MiddlewareNext = (e?: any) => void
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Request {
+export interface AppRequest {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Response {
+export interface AppResponse {
 }
 
-type SuccessMiddleware = (request: Request, response: Response, next: MiddlewareNext) => void
-type ErrorMiddleware = (err: Error, request: Request, response: Response, next: MiddlewareNext) => void
+type SuccessMiddleware = (request: AppRequest, response: AppResponse, next: MiddlewareNext) => void
+type ErrorMiddleware = (err: Error, request: AppRequest, response: AppResponse, next: MiddlewareNext) => void
 
 export type Middleware = SuccessMiddleware | ErrorMiddleware
 
@@ -56,7 +56,7 @@ export class Mw extends EventEmitter {
     public run (
         request: any,
         response: any,
-        handler: (request: Request, response: Response) => void
+        handler: (request: AppRequest, response: AppResponse) => void
     ) {
         this.executor(request, response, () => {
             handler(request, response)

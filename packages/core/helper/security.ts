@@ -1,5 +1,6 @@
 import { BinaryToTextEncoding, createCipheriv, createDecipheriv, randomBytes, scrypt, timingSafeEqual } from 'crypto'
 import * as _ from 'lodash'
+import sss from 'shamirs-secret-sharing'
 import { promisify } from 'util'
 import { RuntimeError } from '../error'
 
@@ -123,5 +124,21 @@ export class Security {
         } catch (e) {
             throw new RuntimeError(e.message).setCause(e)
         }
+    }
+
+    public static shamirSplit(secret: Buffer, options: {shares: number, threshold: number, random?: (size: number) => string}): Buffer[] {
+        const opts = Object.assign(
+            {},
+            {
+                random: (size) => randomBytes(size)
+            },
+            options
+        )
+
+        return sss.split(secret, opts)
+    }
+
+    public static shamirCombine(shares: Buffer[]): string {
+        return sss.combine(shares)
     }
 }

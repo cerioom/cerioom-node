@@ -1,5 +1,6 @@
 export * from './application'
 export * from './config'
+export * from './connect-controller-method.decorator'
 export * from './context'
 export * from './di'
 export * from './env'
