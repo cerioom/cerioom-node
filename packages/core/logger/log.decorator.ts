@@ -16,6 +16,9 @@ export function Log (params: {logLevel: string} = {logLevel: 'info'}): ClassDeco
                 if (!('module' in this.log.bindings()) && 'getModuleName' in this) {
                     module = {module: this.getModuleName()}
                 }
+
+                // todo const maskFields = Reflect.getMetadata('security:maskFields', target.constructor, descriptor.value.methodName)
+
                 this.log[params.logLevel]({...module, action: descriptor.value.methodName})
 
                 return originalMethod.apply(this, args)
