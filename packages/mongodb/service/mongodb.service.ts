@@ -134,6 +134,7 @@ export class MongodbService extends Service {
             ...sslOptions,
             ...unifiedTopologyOptions,
             useNewUrlParser: true,
+            useUnifiedTopology: true,
         }
 
         const options = <MongoClientOptions & {schema?: string, servers?: string | string[]}> {
