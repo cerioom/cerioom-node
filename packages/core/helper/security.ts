@@ -1,4 +1,4 @@
-import { BinaryToTextEncoding, createCipheriv, createDecipheriv, createHash, randomBytes, scrypt, timingSafeEqual } from 'crypto'
+import { BinaryToTextEncoding, createCipheriv, createDecipheriv, randomBytes, scrypt, timingSafeEqual } from 'crypto'
 import * as _ from 'lodash'
 import { promisify } from 'util'
 import { RuntimeError } from '../error'
@@ -97,9 +97,8 @@ export class Security {
     ): Promise<string> {
         try {
             const opts = Object.assign({}, defaultHashPassOpts, options)
-            const randomSalt = randomBytes(16).toString(opts.encoding)
-            salt = createHash('sha256').update(randomSalt + salt).digest(opts.encoding)
-            const key = (await scryptAsync(password, salt, opts.keyLen)) as Buffer
+            const randomSalt = randomBytes(16).toString(opts.encoding);
+            const key = (await scryptAsync(password, randomSalt + salt, opts.keyLen)) as Buffer
             return randomSalt + opts.separator + key.toString(opts.encoding)
         } catch (e) {
             throw new RuntimeError(e.message).setCause(e)

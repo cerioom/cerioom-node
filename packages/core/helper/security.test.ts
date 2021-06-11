@@ -26,22 +26,22 @@ describe('security', () => {
     })
 
     it('should hash and verify a password', async () => {
-        const password = 'secretpsw123'
+        const password = '123456'
         const salt = 'qwerty'
 
         {
             const hash = await Security.hashPassword(password)
-            expect(Security.verifyPassword(hash, password)).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password)).toBeTruthy()
         }
 
         {
             const hash = await Security.hashPassword(password, salt)
-            expect(Security.verifyPassword(hash, password, salt)).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password, salt)).toBeTruthy()
         }
 
         {
             const hash = await Security.hashPassword(password, salt, {encoding: 'hex', separator: ':', keyLen: 32})
-            expect(Security.verifyPassword(hash, password, salt, {encoding: 'hex', separator: ':', keyLen: 32})).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password, salt, {encoding: 'hex', separator: ':', keyLen: 32})).toBeTruthy()
         }
     })
 })
