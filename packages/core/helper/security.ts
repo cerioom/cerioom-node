@@ -1,6 +1,23 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'crypto'
+import { BinaryToTextEncoding, createCipheriv, createDecipheriv, createHash, randomBytes, scrypt, timingSafeEqual } from 'crypto'
 import * as _ from 'lodash'
+import { promisify } from 'util'
+import { RuntimeError } from '../error'
 
+
+const scryptAsync = promisify(scrypt)
+
+const defaultCryptOpts = {
+    algorithm: 'aes-256-cbc',
+    encoding: 'base64',
+    separator: '.',
+    keyLen: 32,
+}
+
+const defaultHashPassOpts = {
+    encoding: 'base64',
+    separator: '.',
+    keyLen: 32,
+}
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Security {
@@ -20,39 +37,88 @@ export class Security {
         return redacted ?? input
     }
 
-    public static encrypt(
+    public static async encrypt(
         text: string,
-        key: string,
-        encoding: BufferEncoding = 'base64',
-        algorithm = 'aes-256-cbc',
-        ivLength = 16,
-        separator = '.'
-    ): string {
-        const passwordHash = createHash('md5').update(key, 'utf8').digest('hex').toUpperCase()
-        const iv = randomBytes(ivLength)
-        const cipher = createCipheriv(algorithm, passwordHash, Buffer.from(iv))
-        let encrypted = cipher.update(text)
-        encrypted = Buffer.concat([encrypted, cipher.final()])
-        return iv.toString(encoding) + separator + encrypted.toString(encoding)
+        secret: string,
+        salt = '',
+        options?: {
+            algorithm?: string,
+            encoding?: BufferEncoding,
+            separator?: string,
+            keyLen?: number
+        },
+    ): Promise<string> {
+        try {
+            const opts = Object.assign({}, defaultCryptOpts, options)
+            const key = (await scryptAsync(secret, salt, opts.keyLen)) as Buffer
+            const iv = randomBytes(16)
+            const cipher = createCipheriv(opts.algorithm, key, Buffer.from(iv))
+            let encrypted = cipher.update(text)
+            encrypted = Buffer.concat([encrypted, cipher.final()])
+            return iv.toString(opts.encoding) + opts.separator + encrypted.toString(opts.encoding)
+        } catch (e) {
+            throw new RuntimeError(e.message).setCause(e)
+        }
     }
 
-    public static decrypt(
-        text: string,
-        key: string,
-        encoding: BufferEncoding = 'base64',
-        algorithm = 'aes-256-cbc',
-        separator = '.'
-    ): string | undefined {
+    public static async decrypt(
+        encrypted: string,
+        secret: string,
+        salt = '',
+        options?: {
+            algorithm?: string,
+            encoding?: BufferEncoding,
+            separator?: string,
+            keyLen?: number
+        },
+    ): Promise<string> {
         try {
-            const passwordHash = createHash('md5').update(key, 'utf8').digest('hex').toUpperCase()
-            const [iv, str] = text.split(separator)
-            const encryptedText = Buffer.from(str, encoding)
-            const decipher = createDecipheriv(algorithm, passwordHash, Buffer.from(iv, encoding))
+            const opts = Object.assign({}, defaultCryptOpts, options)
+            const key = (await scryptAsync(secret, salt, opts.keyLen)) as Buffer
+            const [iv, str] = encrypted.split(opts.separator)
+            const encryptedText = Buffer.from(str, opts.encoding)
+            const decipher = createDecipheriv(opts.algorithm, key, Buffer.from(iv, opts.encoding))
             let decrypted = decipher.update(encryptedText)
             decrypted = Buffer.concat([decrypted, decipher.final()])
             return decrypted.toString()
         } catch (e) {
-            return undefined
+            throw new RuntimeError(e.message).setCause(e)
         }
+    }
+
+    public static async hashPassword(
+        password: string,
+        salt = '',
+        options?: {
+            encoding?: BinaryToTextEncoding,
+            separator?: string,
+            keyLen?: number,
+        },
+    ): Promise<string> {
+        try {
+            const opts = Object.assign({}, defaultHashPassOpts, options)
+            const randomSalt = randomBytes(16).toString(opts.encoding)
+            salt = createHash('sha256').update(randomSalt + salt).digest(opts.encoding)
+            const key = (await scryptAsync(password, salt, opts.keyLen)) as Buffer
+            return randomSalt + opts.separator + key.toString(opts.encoding)
+        } catch (e) {
+            throw new RuntimeError('Unexpected error').setCause(e)
+        }
+    }
+
+    public static async verifyPassword(
+        hash: string,
+        secret: string,
+        salt = '',
+        options?: {
+            encoding?: BinaryToTextEncoding,
+            separator?: string,
+            keyLen?: number,
+        },
+    ): Promise<boolean> {
+        const opts = Object.assign({}, defaultHashPassOpts, options)
+        const [randomSalt, key] = hash.split(opts.separator)
+        const derivedKey = (await scryptAsync(secret, randomSalt + salt, 64)) as Buffer
+        return timingSafeEqual(Buffer.from(key, opts.encoding), derivedKey)
     }
 }
