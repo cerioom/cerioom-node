@@ -136,7 +136,11 @@ export class MongodbService extends Service {
             useNewUrlParser: true,
         }
 
-        const options = <MongoClientOptions & {schema?: string, servers?: string | string[]}> {...defaultOptions, ...envConfig.get<object>('mongodb')}
+        const options = <MongoClientOptions & {schema?: string, servers?: string | string[]}> {
+            ...defaultOptions,
+            ...envConfig.get<object>('mongodb'),
+            ...this.context.get<object>('mongodb')
+        }
         const schema = options.schema || 'mongodb'
         let servers = options.servers || 'localhost'
         if (Array.isArray(servers)) {
