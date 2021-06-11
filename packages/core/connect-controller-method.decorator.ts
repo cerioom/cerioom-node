@@ -20,9 +20,11 @@ export function ConnectControllerMethod (): MethodDecorator {
                     .sort((a, b) => a.argIndex > b.argIndex ? 1 : -1)
                     .map(conf => {
                         switch (conf.type) {
-                            case 'param': return conf.name ? _.get(args[REQ].params, conf.name) : args[REQ].params
-                            case 'query': return conf.name ? _.get(args[REQ].query, conf.name) : args[REQ].query
-                            case 'body': return conf.name ? _.get(args[REQ].body, conf.name) : args[REQ].body
+                            case 'headers':
+                            case 'params':
+                            case 'query':
+                            case 'body':
+                                return conf.name ? _.get(args[REQ][conf.type], conf.name) : args[REQ][conf.type]
                             case 'request': return args[REQ]
                             case 'response': return args[RES]
                             case 'next': return args[NEXT]
@@ -48,10 +50,18 @@ export function ConnectControllerMethod (): MethodDecorator {
     }
 }
 
+export function Headers (name?: string) {
+    return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+        const data = Reflect.getMetadata('connectController:param', target, propertyKey) || []
+        data.push({type: 'headers', argIndex: parameterIndex, name: name})
+        Reflect.defineMetadata('connectController:param', data, target, propertyKey)
+    }
+}
+
 export function Params (name?: string) {
     return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
         const data = Reflect.getMetadata('connectController:param', target, propertyKey) || []
-        data.push({type: 'param', argIndex: parameterIndex, name: name})
+        data.push({type: 'params', argIndex: parameterIndex, name: name})
         Reflect.defineMetadata('connectController:param', data, target, propertyKey)
     }
 }

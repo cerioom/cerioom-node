@@ -31,17 +31,17 @@ describe('security', () => {
 
         {
             const hash = await Security.hashPassword(password)
-            expect(await Security.verifyPassword(hash, password)).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password)).toBe(true)
         }
 
         {
             const hash = await Security.hashPassword(password, salt)
-            expect(await Security.verifyPassword(hash, password, salt)).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password, salt)).toBe(true)
         }
 
         {
             const hash = await Security.hashPassword(password, salt, {encoding: 'hex', separator: ':', keyLen: 32})
-            expect(await Security.verifyPassword(hash, password, salt, {encoding: 'hex', separator: ':', keyLen: 32})).toBeTruthy()
+            expect(await Security.verifyPassword(hash, password, salt, {encoding: 'hex', separator: ':', keyLen: 32})).toBe(true)
         }
     })
 })
