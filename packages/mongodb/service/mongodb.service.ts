@@ -12,6 +12,7 @@ import {
     SSLOptions,
     UnifiedTopologyOptions
 } from 'mongodb'
+import { ConnectionIdentifier } from './connection.identifier'
 
 
 const dbCreateOptions = <DbCreateOptions> {
@@ -66,6 +67,7 @@ const connections = new Map<string, any>()
 
 export class MongodbService extends Service {
     protected connection: MongoClient
+    private readonly connectionIdentifier = DI.get(ConnectionIdentifier)
 
 
     constructor(
@@ -91,20 +93,24 @@ export class MongodbService extends Service {
     }
 
     public async getConnection(): Promise<MongoClient> {
-        if (connections.has(this.context.tenant.id)) {
+        const connId = await this.connectionIdentifier.getIdentifier(this.context.tenant)
+
+        if (connections.has(connId)) {
             const mongoClient: MongoClient = connections.get(this.context.tenant.id)
             if (mongoClient.isConnected()) {
                 return mongoClient
             }
         }
 
-        const [url, options] = this.getConnectionParams()
+        const [url, options] = await this.getConnectionParams()
         const mongoClient: MongoClient = await this.clientClass.connect(url, options)
         if (!connections.has(this.context.tenant.id)) {
             mongoClient.on('error', this.onError.bind(this))
             mongoClient.on('close', this.onClose.bind(this))
         }
-        connections.set(this.context.tenant.id, mongoClient)
+
+        connections.set(connId, mongoClient)
+
         return mongoClient
     }
 
@@ -114,9 +120,10 @@ export class MongodbService extends Service {
         return [tenantId, appName].filter(Boolean).join('-')
     }
 
-    protected getConnectionParams(): [string, MongoClientOptions] {
-        const hash = this.context.tenant.id || 'default'
-        const connectionParams = connectionsParams.get(hash)
+    protected async getConnectionParams(): Promise<[string, MongoClientOptions]> {
+        const connId = await this.connectionIdentifier.getIdentifier(this.context.tenant)
+
+        const connectionParams = connectionsParams.get(connId)
         if (connectionParams) {
             // return cached params
             return connectionParams
@@ -152,7 +159,7 @@ export class MongodbService extends Service {
 
         const connectionUrl = `${schema}://${servers}`
 
-        connectionsParams.set(hash, [connectionUrl, options])
+        connectionsParams.set(connId, [connectionUrl, options])
 
         return [connectionUrl, options]
     }
