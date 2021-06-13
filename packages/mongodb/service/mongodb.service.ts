@@ -96,7 +96,7 @@ export class MongodbService extends Service {
         const connId = await this.connectionIdentifier.getIdentifier(this.context.tenant)
 
         if (connections.has(connId)) {
-            const mongoClient: MongoClient = connections.get(this.context.tenant.id)
+            const mongoClient: MongoClient = connections.get(connId)
             if (mongoClient.isConnected()) {
                 return mongoClient
             }
@@ -104,7 +104,7 @@ export class MongodbService extends Service {
 
         const [url, options] = await this.getConnectionParams()
         const mongoClient: MongoClient = await this.clientClass.connect(url, options)
-        if (!connections.has(this.context.tenant.id)) {
+        if (!connections.has(connId)) {
             mongoClient.on('error', this.onError.bind(this))
             mongoClient.on('close', this.onClose.bind(this))
         }
