@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.7](https://github.com/cerioom/cerioom-node/compare/v0.10.6...v0.10.7) (2021-06-13)
+
+
+### Bug Fixes
+
+* **core:** add @Session, @Ip, @HostParam to connect-controller-method ([3d9628f](https://github.com/cerioom/cerioom-node/commit/3d9628fbf8c6cbd8fce42abc37946a0c5c96f4de))
+
+
+
+
+
 ## [0.10.6](https://github.com/cerioom/cerioom-node/compare/v0.10.5...v0.10.6) (2021-06-11)
 
 
