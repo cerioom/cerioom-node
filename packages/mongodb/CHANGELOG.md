@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.8](https://github.com/cerioom/cerioom-node/compare/v0.10.7...v0.10.8) (2021-06-13)
+
+
+### Bug Fixes
+
+* **mongodb:** add connection identifier ([bb7e5b3](https://github.com/cerioom/cerioom-node/commit/bb7e5b3e2215f2e32c14b01627df8181ebff04e0))
+* **packages:** bump ([edb5a6d](https://github.com/cerioom/cerioom-node/commit/edb5a6df2cd2c5199598ec66c5e0b343f55371ff))
+
+
+
+
+
 ## [0.10.7](https://github.com/cerioom/cerioom-node/compare/v0.10.6...v0.10.7) (2021-06-13)
 
 
