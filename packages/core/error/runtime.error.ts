@@ -38,9 +38,26 @@ export class RuntimeError extends Error implements ErrorInterface {
         return JSON.stringify(error)
     }
 
-    public static fromString(str: string) {
-        const errorObj = JSON.parse(str)
-        return errorObj // todo
+    public static fromString(error: string) {
+        return RuntimeError.deserialize(JSON.parse(error))
+    }
+
+    public static deserialize(error: any /* todo */, errorClass?: [any]) {
+        let err
+        if (errorClass) {
+            // eslint-disable-next-line @typescript-eslint/no-implied-eval
+            // const fnErr = Function('msg', `return new ${error.name}(msg)`)();
+            // err = fnErr(error.message)
+            err = new errorClass[0](error.message)
+        } else if (error.name in global) {
+            err = new global[error.name](error.message)
+        } else {
+            err = new RuntimeError(error.message).setCause(error)
+        }
+        Object.defineProperty(err, 'id', {value: error.id, configurable: true, writable: false})
+        err.setData(error.data)
+        err.setValidation(error.validation)
+        return err
     }
 
     public static toLog(error): Record<string, any> {
