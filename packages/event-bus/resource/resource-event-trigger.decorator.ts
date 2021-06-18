@@ -1,4 +1,5 @@
-import { DI, RuntimeError, Security, Str } from '@cerioom/core'
+import { ContextManager, DI, RuntimeError, Security, Str } from '@cerioom/core'
+import { ContextScope } from '@cerioom/core/context/context-manager'
 import { EventBusService } from '../event-bus.service'
 import 'reflect-metadata'
 
@@ -11,12 +12,13 @@ export function ResourceEventTrigger () {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value
         descriptor.value = async function (...args: any[]): Promise<any> {
+            const tenantId = DI.get(ContextManager).getContext(ContextScope.REQUEST).get<string>('tenant.id')
             const eventBus = DI.get(EventBusService)
             const format = Reflect.getMetadata('resourceEvent:format', this.constructor)
             const resource = Reflect.getMetadata('resourceEvent:resourceName', this.constructor)
             const action = Reflect.getMetadata('resourceEvent:actionName', target.constructor, propertyKey)
             const maskFields = Reflect.getMetadata('security:maskFields', target.constructor, propertyKey)
-            const event = Str.resolveTemplate(format, {resource: resource, action: action})
+            const event = Str.resolveTemplate(format, {resource: resource, action: action, tenantId: tenantId})
 
             let eventPayload = {data: args}
             if (maskFields?.length) {
