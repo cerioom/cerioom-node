@@ -27,6 +27,8 @@ export function ConnectControllerMethod(): MethodDecorator {
                             case 'body':
                             case 'ip':
                             case 'hosts':
+                            case 'protocol':
+                            case 'route':
                                 return conf.name ? _.get(args[REQ][conf.type], conf.name) : args[REQ][conf.type]
                             case 'request':
                                 return args[REQ]
@@ -38,17 +40,16 @@ export function ConnectControllerMethod(): MethodDecorator {
                                 return null
                         }
                     })
-                    .filter(Boolean)
 
                 // @ts-expect-error
-                const result = originalMethod.apply(this, newArgs.length ? newArgs : args)
+                let result = originalMethod.apply(this, newArgs.length ? newArgs : args)
                 if (result instanceof Promise) {
-                    return await result
+                    result = await result
                 }
 
                 return result
-            } catch (e) {
-                args[2](e) // todo
+            } catch (err) {
+                return err
             }
         }
 
@@ -133,6 +134,22 @@ export function HostParam(name?: string) {
     return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
         const data = Reflect.getMetadata('connectController:param', target, propertyKey) || []
         data.push({type: 'hosts', argIndex: parameterIndex, name: name})
+        Reflect.defineMetadata('connectController:param', data, target, propertyKey)
+    }
+}
+
+export function Protocol() {
+    return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+        const data = Reflect.getMetadata('connectController:param', target, propertyKey) || []
+        data.push({type: 'protocol', argIndex: parameterIndex})
+        Reflect.defineMetadata('connectController:param', data, target, propertyKey)
+    }
+}
+
+export function Route() {
+    return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+        const data = Reflect.getMetadata('connectController:param', target, propertyKey) || []
+        data.push({type: 'route', argIndex: parameterIndex})
         Reflect.defineMetadata('connectController:param', data, target, propertyKey)
     }
 }
