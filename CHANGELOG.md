@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.9](https://github.com/cerioom/cerioom-node/compare/v0.10.8...v0.10.9) (2021-06-18)
+
+
+### Bug Fixes
+
+* **core:** add `protocol` and `route` for  request-envelope.interface and decorator ([dff0474](https://github.com/cerioom/cerioom-node/commit/dff0474e1e2eea43e5dcda16d0c49b04e65feffa))
+* **core:** error deserialization ([a12a5b0](https://github.com/cerioom/cerioom-node/commit/a12a5b04d9453f656b5e4b67ba8ef015d5da0a67))
+* **core:** Middleware alternative ([dbbdb93](https://github.com/cerioom/cerioom-node/commit/dbbdb93852f6753059203a1d059f61137f988487))
+* **event-bus:** add `tenantId` to playholders of event template ([87af801](https://github.com/cerioom/cerioom-node/commit/87af80176b9ed4b975236089707594e7cadb1447))
+* **event-bus:** request returns first result from the array ([b0c65d6](https://github.com/cerioom/cerioom-node/commit/b0c65d61d99d62497c4e3a51d510d484d03e5696))
+* **mongodb:** small changes ([aeafcdf](https://github.com/cerioom/cerioom-node/commit/aeafcdf133184b73deb96e00dcce69711629b3a8))
+* **nats:** Mw with subject ([f6173ae](https://github.com/cerioom/cerioom-node/commit/f6173aed5b463aeda1df9d9577cb74c5f11d6c84))
+
+
+
+
+
 ## [0.10.8](https://github.com/cerioom/cerioom-node/compare/v0.10.7...v0.10.8) (2021-06-13)
 
 

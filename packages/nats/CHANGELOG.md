@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.9](https://github.com/cerioom/cerioom-node/compare/v0.10.8...v0.10.9) (2021-06-18)
+
+
+### Bug Fixes
+
+* **nats:** Mw with subject ([f6173ae](https://github.com/cerioom/cerioom-node/commit/f6173aed5b463aeda1df9d9577cb74c5f11d6c84))
+
+
+
+
+
 ## [0.10.7](https://github.com/cerioom/cerioom-node/compare/v0.10.6...v0.10.7) (2021-06-13)
 
 **Note:** Version bump only for package @cerioom/nats

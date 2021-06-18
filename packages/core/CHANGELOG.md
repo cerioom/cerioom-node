@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.9](https://github.com/cerioom/cerioom-node/compare/v0.10.8...v0.10.9) (2021-06-18)
+
+
+### Bug Fixes
+
+* **core:** add `protocol` and `route` for  request-envelope.interface and decorator ([dff0474](https://github.com/cerioom/cerioom-node/commit/dff0474e1e2eea43e5dcda16d0c49b04e65feffa))
+* **core:** error deserialization ([a12a5b0](https://github.com/cerioom/cerioom-node/commit/a12a5b04d9453f656b5e4b67ba8ef015d5da0a67))
+* **core:** Middleware alternative ([dbbdb93](https://github.com/cerioom/cerioom-node/commit/dbbdb93852f6753059203a1d059f61137f988487))
+
+
+
+
+
 ## [0.10.7](https://github.com/cerioom/cerioom-node/compare/v0.10.6...v0.10.7) (2021-06-13)
 
 

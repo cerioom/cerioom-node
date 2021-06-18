@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.9](https://github.com/cerioom/cerioom-node/compare/v0.10.8...v0.10.9) (2021-06-18)
+
+
+### Bug Fixes
+
+* **event-bus:** add `tenantId` to playholders of event template ([87af801](https://github.com/cerioom/cerioom-node/commit/87af80176b9ed4b975236089707594e7cadb1447))
+* **event-bus:** request returns first result from the array ([b0c65d6](https://github.com/cerioom/cerioom-node/commit/b0c65d61d99d62497c4e3a51d510d484d03e5696))
+
+
+
+
+
 ## [0.10.7](https://github.com/cerioom/cerioom-node/compare/v0.10.6...v0.10.7) (2021-06-13)
 
 **Note:** Version bump only for package @cerioom/event-bus
