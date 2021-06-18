@@ -71,3 +71,34 @@ export class Mw extends EventEmitter {
         next(err)
     }
 }
+
+// type Next = () => Promise<void> | void
+// type Middleware<Req, Res> = (req: Req, res: Res, next: Next) => Promise<void> | void
+// type Pipeline<Req, Res> = {
+//     use: (...middlewares: Middleware<Req, Res>[]) => void
+//     run: (req: Req, res: Res) => Promise<void>
+// }
+//
+// export function Pipeline<Req, Res>(...middlewares: Middleware<Req, Res>[]): Pipeline<Req, Res> {
+//     const stack: Middleware<Req, Res>[] = middlewares
+//     const use: Pipeline<Req, Res>['use'] = (...middlewares) => {
+//         stack.push(...middlewares)
+//     }
+//     const run: Pipeline<Req, Res>['run'] = async (req: Req, res: Res) => {
+//         let prevIndex = -1
+//         const runner = async (index: number): Promise<void> => {
+//             if (index === prevIndex) {
+//                 throw new Error('next() called multiple times')
+//             }
+//             prevIndex = index
+//             const middleware = stack[index]
+//             if (middleware) {
+//                 await middleware(req, res, () => {
+//                     return runner(index + 1)
+//                 })
+//             }
+//         }
+//         await runner(0)
+//     }
+//     return {use: use, run: run}
+// }
