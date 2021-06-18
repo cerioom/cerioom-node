@@ -28,13 +28,13 @@ export class EventEmitterTransport implements EventBusTransportInterface {
         throw new Error('Not implemented "send"')
     }
 
-    public async request(event: string | symbol, req: any): Promise<any[]> {
+    public async request(event: string | symbol, req: any): Promise<any> {
         const res = {
             messageId: Str.random(), headers: {}, setHeader: function(key: string, value) {
                 this.headers[key] = value
             },
         }
-        return await this.eventEmitter2.emitAsync(event, req, res)
+        return (await this.eventEmitter2.emitAsync(event, req, res)).find(resp => resp !== undefined)
     }
 
     public async subscribe(event: string | symbol, listener: (...args: any[]) => void): Promise<void> {

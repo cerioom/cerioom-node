@@ -9,5 +9,5 @@ export interface EventBusTransportInterface {
     unsubscribe: (event: string | symbol, listener: (...args: any[]) => void) => Promise<void>
     publish: (event: string | symbol, msg: MsgInterface, opts?: any) => Promise<void>
     send: (event: string | symbol, msg: MsgInterface, opts?: any) => Promise<any>
-    request: (event: string | symbol, data: RequestEnvelopeInterface, opts?: any) => Promise<ResponseEnvelopeInterface[]>
+    request: (event: string | symbol, data: RequestEnvelopeInterface, opts?: any) => Promise<ResponseEnvelopeInterface>
 }

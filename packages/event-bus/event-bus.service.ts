@@ -28,7 +28,7 @@ export class EventBusService extends Service implements EventBusInterface {
     }
 
     public async publish(event: string | symbol, resp: ResponseEnvelopeInterface): Promise<void> {
-        const msg = {event: event, messageId: Str.random(), headers: {}, params: {}, query: {}, body: resp}
+        const msg = {route: event, messageId: Str.random(), headers: {}, params: {}, query: {}, body: resp}
         const promises: any[] = []
         this.transports.forEach(transport => {
             promises.push(transport.publish(event, {...msg, kind: transport.kind}))
@@ -38,7 +38,7 @@ export class EventBusService extends Service implements EventBusInterface {
     }
 
     public async send(event: string | symbol, resp: ResponseEnvelopeInterface): Promise<void> {
-        const msg = {event: event, messageId: Str.random(), headers: {}, params: {}, query: {}, body: resp}
+        const msg = {route: event, messageId: Str.random(), headers: {}, params: {}, query: {}, body: resp}
         const promises: any[] = []
         this.transports.forEach(transport => {
             promises.push(transport.send(event, {...msg, kind: transport.kind}))
@@ -47,8 +47,8 @@ export class EventBusService extends Service implements EventBusInterface {
         this.emit('cerioom.event-bus.event-bus-service.sent', event, msg)
     }
 
-    public async request(event: string | symbol, data: RequestEnvelopeInterface): Promise<any[]> {
-        const msg = {event: event, messageId: Str.random(), ...data}
+    public async request(event: string | symbol, envelope: RequestEnvelopeInterface): Promise<any> {
+        const msg = {route: event, messageId: Str.random(), ...envelope}
         const promises: any[] = []
         this.transports.forEach(transport => {
             promises.push(transport.request(event, {...msg, kind: transport.kind}))
