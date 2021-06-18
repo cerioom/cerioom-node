@@ -75,13 +75,15 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     public async request (
         event: string,
         data: RequestEnvelopeInterface,
-    ): Promise<ResponseEnvelopeInterface[]> {
+    ): Promise<ResponseEnvelopeInterface> {
         const nats = await this.getConnection()
         const jc = JSONCodec()
         const h = headers()
         const contextHeaders = this.contextManager.makeHeaders(this.context)
         for (const key of Object.keys(contextHeaders)) {
-            h.append(key, contextHeaders[key])
+            if (contextHeaders[key] !== undefined) {
+                h.append(key, contextHeaders[key])
+            }
         }
 
         const opts = {
@@ -90,10 +92,10 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         }
         this.emit('cerioom.nats.event-bus.nats-transport.request:pre', {event: event, data: data, opts: opts})
         const msg = await nats.request(event, jc.encode(data), opts)
-        const result = jc.decode(msg.data)
+        const result = jc.decode(msg.data) as ResponseEnvelopeInterface
         this.emit('cerioom.nats.event-bus.nats-transport.request:post', {event: event, data: data, opts: opts, response: [result]})
 
-        return [result] as ResponseEnvelopeInterface[] // todo
+        return result
     }
 
     public async publish (
@@ -106,7 +108,9 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             const jc = JSONCodec()
             const contextHeaders = this.contextManager.makeHeaders(this.context)
             for (const key of Object.keys(contextHeaders)) {
-                opts.headers?.append(key, contextHeaders[key])
+                if (contextHeaders[key] !== undefined) {
+                    opts.headers?.append(key, contextHeaders[key])
+                }
             }
 
             this.emit('cerioom.nats.event-bus.nats-transport.published:pre', {event: event, data: data, opts: opts})
@@ -128,23 +132,55 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             subscribeOptions.queue = this.application.name || process.env.npm_package_name
         }
 
-        const nats = await this.getConnection()
-        this.mw.use(this.callbackHandler.bind(this, nats, listener))
-
-        const callback = this.requestHandler.bind(this, listener, nats)
-
         this.emit('pre:subscribe', {
             subject: subject,
             cb: listener,
             opts: opts
         })
+        const nats = await this.getConnection()
         const subscription = await nats.subscribe(
             subject,
             {
                 ...subscribeOptions,
-                callback: callback
+                callback: this.callback.bind(this)
             },
         )
+
+        function toRegexp(subject: string): RegExp {
+            const exp = subject
+                .replace(/\./g, '\\.')
+                .replace(/\*/g, '.*')
+                .replace(/>$/, '.*')
+            return new RegExp(exp)
+        }
+
+        this.mw.use(async function (matcher: RegExp, req, res, done) {
+            if (!matcher.test(req.route)) {
+                return await done()
+            }
+
+            try {
+                const result = await listener(req, res)
+                if (result?.error instanceof Error) {
+                    throw result.error
+                }
+                if (res?.reply) {
+                    await this.publish(res.reply, result)
+                }
+                done()
+            } catch (err) {
+                if (res?.reply) {
+                    await this.publish(res.reply, <ResponseEnvelopeInterface> {
+                        error: RuntimeError.toJSON(err),
+                    })
+                    done()
+                } else {
+                    this.log.error({error: RuntimeError.toLog(err)})
+                    done(err)
+                }
+            }
+        }.bind(this, toRegexp(subject)))
+
         this.emit('post:subscribe', {
             subscription: subscription,
             subject: subject,
@@ -178,7 +214,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         return `${hostName}_${serviceName}_${process.pid}`
     }
 
-    protected requestHandler (listener, conn, err: NatsError | null, msg: Msg): void {
+    protected callback (err: NatsError | null, msg: Msg): void {
         const headers = {}
         if (msg.headers) {
             for (const [key] of msg.headers) {
@@ -186,20 +222,30 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             }
         }
 
-        const initialRequest = <RequestEnvelopeInterface>{
-            event: msg.subject,
+        const initialRequest = <RequestEnvelopeInterface> {
+            ip: '::1', // todo
+            hosts: '', // todo
+            protocol: 'nats',
+            route: msg.subject,
             headers: {},
             params: {},
             query: {},
-            body: {}
+            body: {},
         }
         const req = Object.assign({}, initialRequest, JSONCodec().decode(msg.data), {headers: headers})
+        const natsTransport = this
         const res: any = {
-            respond: msg.reply ? msg.respond : null,
             headers: {},
+            reply: msg.reply,
             setHeader: function (key, value) {
                 this.headers[key] = value
-            }
+            },
+            send: async function (data: any) {
+                if (msg.reply) {
+                    await natsTransport.publish(msg.reply, data)
+                }
+            },
+            json: this.send
         }
 
         DI.get(ContextManager).setContext(ContextScope.REQUEST, () => {
@@ -210,31 +256,32 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         })
     }
 
-    protected async callbackHandler (conn, listener, req, res, done): Promise<void> {
-        try {
-            const resp = await listener(req, res)
-
-            if (resp instanceof Error) {
-                throw resp
-            }
-            if (res && typeof res.respond === 'function') {
-                res.respond(resp)
-            }
-            done()
-        } catch (err) {
-            if (res && typeof res.respond === 'function') {
-                res.respond(<ResponseEnvelopeInterface>{
-                    data: null,
-                    error: RuntimeError.toLog(err),
-                    meta: {},
-                })
-                done()
-            } else {
-                this.log.error({error: RuntimeError.toLog(err)})
-                done(err)
-            }
-        }
-    }
+    // protected async callbackHandler (listener, req, res, done): Promise<void> {
+    //     try {
+    //         const resp = await listener(req, res, done)
+    //
+    //         if (resp instanceof Error) {
+    //             throw resp
+    //         }
+    //         if (resp?.error instanceof Error) {
+    //             throw resp.error
+    //         }
+    //         if (res?.reply) {
+    //             await this.publish(res.reply, resp)
+    //         }
+    //         done()
+    //     } catch (err) {
+    //         if (res?.reply) {
+    //             await this.publish(res.reply, <ResponseEnvelopeInterface> {
+    //                 error: RuntimeError.toJSON(err),
+    //             })
+    //             done()
+    //         } else {
+    //             this.log.error({error: RuntimeError.toLog(err)})
+    //             done(err)
+    //         }
+    //     }
+    // }
 
     protected async getConnection (): Promise<NatsClient> {
         let nats = this.pool.get('default') ?? null
