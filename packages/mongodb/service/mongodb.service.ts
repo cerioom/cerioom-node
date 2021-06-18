@@ -132,8 +132,6 @@ export class MongodbService extends Service {
         const envConfig = DI.get(Env).config
 
         const defaultOptions = <MongoClientOptions> {
-            appname: process.env.npm_package_name ?? '',
-            family: 4, // IP version
             ...dbCreateOptions,
             ...highAvailabilityOptions,
             ...serverOptions,
