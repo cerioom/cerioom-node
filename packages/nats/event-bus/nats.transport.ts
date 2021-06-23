@@ -98,9 +98,11 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         return result
     }
 
+    // @ts-ignore
     public async publish (
         event: string,
         data: RequestEnvelopeInterface,
+        opts?: any,
     ): Promise<void> {
         try {
             const opts = <PublishOptions>{headers: headers()}
