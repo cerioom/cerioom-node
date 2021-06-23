@@ -48,9 +48,10 @@ export class EventBusService extends Service implements EventBusInterface {
     }
 
     public async request(event: string | symbol, envelope: RequestEnvelopeInterface): Promise<any> {
-        const msg = {route: event, messageId: Str.random(), ...envelope}
+        const msg = {messageId: Str.random(), ...envelope, route: event}
         const promises: any[] = []
         this.transports.forEach(transport => {
+            // @ts-ignore
             promises.push(transport.request(event, {...msg, kind: transport.kind}))
         })
 
