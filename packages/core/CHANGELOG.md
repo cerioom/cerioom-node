@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.10](https://github.com/cerioom/cerioom-node/compare/v0.10.9...v0.10.10) (2021-06-23)
+
+
+### Bug Fixes
+
+* **core:** request-envelope.interface.ts ([acd506c](https://github.com/cerioom/cerioom-node/commit/acd506c012b4662e9413005574312f89f4ba3f09))
+
+
+
+
+
 ## [0.10.9](https://github.com/cerioom/cerioom-node/compare/v0.10.8...v0.10.9) (2021-06-18)
 
 
