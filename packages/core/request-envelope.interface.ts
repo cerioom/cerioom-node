@@ -1,6 +1,6 @@
 export interface RequestEnvelopeInterface {
-    protocol: string
-    route: string,
+    protocol?: string
+    route?: string,
     headers?: Record<string, string>
     params?: Record<string, string>
     query?: {
