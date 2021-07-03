@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.13](https://github.com/cerioom/cerioom-node/compare/v0.10.12...v0.10.13) (2021-07-03)
+
+
+### Bug Fixes
+
+* **event-bus:** change interface ([d94f0ba](https://github.com/cerioom/cerioom-node/commit/d94f0ba75edb63b02202bafed33df981d0048e75))
+* **event-bus:** change interface ([ca077c2](https://github.com/cerioom/cerioom-node/commit/ca077c2f17307732c7d0211c5bf8475a38d1b246))
+* **packages:** bump ([600a122](https://github.com/cerioom/cerioom-node/commit/600a1226ddcf7afd21238e100859b5a036f2e937))
+
+
+
+
+
 ## [0.10.12](https://github.com/cerioom/cerioom-node/compare/v0.10.11...v0.10.12) (2021-07-03)
 
 
