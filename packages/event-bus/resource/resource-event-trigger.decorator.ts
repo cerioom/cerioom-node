@@ -1,7 +1,7 @@
+import 'reflect-metadata'
 import { ContextManager, DI, RuntimeError, Security, Str } from '@cerioom/core'
 import { ContextScope } from '@cerioom/core/context/context-manager'
 import { EventBusService } from '../event-bus.service'
-import 'reflect-metadata'
 
 
 /**
@@ -20,15 +20,6 @@ export function ResourceEventTrigger () {
             const maskFields = Reflect.getMetadata('security:maskFields', target.constructor, propertyKey)
             const event = Str.resolveTemplate(format, {resource: resource, action: action, tenantId: tenantId})
 
-            let eventPayload = {data: args}
-            if (maskFields?.length) {
-                eventPayload = {
-                    data: Array.isArray(args)
-                        ? args.map(el => Security.maskFields(el, maskFields))
-                        : Security.maskFields(args, maskFields)
-                }
-            }
-
             try {
                 let result = originalMethod.apply(this, args)
                 if (result instanceof Promise) {
@@ -36,6 +27,14 @@ export function ResourceEventTrigger () {
                 }
 
                 if (eventBus && 'publish' in eventBus) {
+                    let eventPayload = {data: result}
+                    if (maskFields?.length) {
+                        eventPayload = {
+                            data: Array.isArray(args)
+                                ? args.map(el => Security.maskFields(el, maskFields))
+                                : Security.maskFields(args, maskFields)
+                        }
+                    }
                     setImmediate(async () => await eventBus.publish(event, eventPayload))
                 } else {
                     // todo logging
@@ -44,6 +43,15 @@ export function ResourceEventTrigger () {
             } catch (err) {
                 this.log.error({error: RuntimeError.toLog(err)})
                 if (eventBus && 'publish' in eventBus) {
+                    let eventPayload = {data: args}
+                    if (maskFields?.length) {
+                        eventPayload = {
+                            data: Array.isArray(args)
+                                ? args.map(el => Security.maskFields(el, maskFields))
+                                : Security.maskFields(args, maskFields)
+                        }
+                    }
+
                     // @ts-expect-error
                     setImmediate(async () => await eventBus.publish(event, {data: eventPayload, error: RuntimeError.toJSON(err)}))
                 } else {
