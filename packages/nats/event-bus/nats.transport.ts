@@ -21,7 +21,6 @@ import {
     Msg,
     NatsConnection as NatsClient,
     NatsError,
-    PublishOptions,
     Subscription,
 } from 'nats'
 import {SubscribeOptionsInterface} from './subscribe-options.interface'
@@ -75,20 +74,23 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     public async request (
         event: string,
         data: RequestEnvelopeInterface,
+        options?: any
     ): Promise<ResponseEnvelopeInterface> {
         const nats = await this.getConnection()
         const jc = JSONCodec()
-        const h = headers()
+        const msgHdrs = headers()
         const contextHeaders = this.contextManager.makeHeaders(this.context)
-        for (const key of Object.keys(contextHeaders)) {
-            if (contextHeaders[key] !== undefined) {
-                h.append(key, contextHeaders[key])
+        const incomingHeaders = {...contextHeaders, ...options.headers}
+        for (const key of Object.keys(incomingHeaders)) {
+            if (incomingHeaders[key] !== undefined) {
+                msgHdrs.append(key, incomingHeaders[key])
             }
         }
 
         const opts = {
-            headers: h,
-            timeout: this.DEFAULT_REQUEST_TIMEOUT_MS // todo
+            timeout: this.DEFAULT_REQUEST_TIMEOUT_MS, // todo
+            ...options,
+            headers: msgHdrs,
         }
         this.emit('cerioom.nats.event-bus.nats-transport.request:pre', {event: event, data: data, opts: opts})
         const msg = await nats.request(event, jc.encode(data), opts)
@@ -102,17 +104,24 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     public async publish (
         event: string,
         data: RequestEnvelopeInterface,
-        opts?: any,
+        options?: any,
     ): Promise<void> {
         try {
-            const opts = <PublishOptions>{headers: headers()}
             const nats = await this.getConnection()
             const jc = JSONCodec()
+            const msgHdrs = headers()
             const contextHeaders = this.contextManager.makeHeaders(this.context)
-            for (const key of Object.keys(contextHeaders)) {
-                if (contextHeaders[key] !== undefined) {
-                    opts.headers?.append(key, contextHeaders[key])
+            const incomingHeaders = {...contextHeaders, ...options.headers}
+            for (const key of Object.keys(incomingHeaders)) {
+                if (incomingHeaders[key] !== undefined) {
+                    msgHdrs.append(key, incomingHeaders[key])
                 }
+            }
+
+            const opts = {
+                timeout: this.DEFAULT_REQUEST_TIMEOUT_MS, // todo
+                ...options,
+                headers: msgHdrs,
             }
 
             this.emit('cerioom.nats.event-bus.nats-transport.published:pre', {event: event, data: data, opts: opts})
