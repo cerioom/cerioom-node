@@ -29,19 +29,21 @@ export class EventBusService extends Service implements EventBusInterface {
         return this.transports
     }
 
-    public async publish(event: string | symbol, msg: MsgInterface<ResponseEnvelopeInterface>, options?: any): Promise<void> {
+    public async publish(event: string | symbol, body: ResponseEnvelopeInterface, options?: any): Promise<void> {
+        const msg = {body: body, route: String(event), messageId: Str.random()}
         const promises: any[] = []
         this.transports.forEach(transport => {
-            promises.push(transport.publish(event, {...msg, kind: transport.kind, route: String(event), messageId: Str.random()}, options))
+            promises.push(transport.publish(event, {...msg, kind: transport.kind}, options))
         })
         await Promise.all(promises)
-        this.emit('cerioom.event-bus.event-bus-service.published', event, msg)
+        this.emit('cerioom.event-bus.event-bus-service.published', event, msg, options)
     }
 
-    public async send(event: string | symbol, msg: MsgInterface<ResponseEnvelopeInterface>, options?: any): Promise<void> {
+    public async send(event: string | symbol, body: ResponseEnvelopeInterface, options?: any): Promise<void> {
+        const msg = {body: body, route: String(event), messageId: Str.random()}
         const promises: any[] = []
         this.transports.forEach(transport => {
-            promises.push(transport.send(event, {...msg, kind: transport.kind, route: String(event), messageId: Str.random()}, options))
+            promises.push(transport.send(event, {...msg, kind: transport.kind}, options))
         })
         await Promise.all(promises)
         this.emit('cerioom.event-bus.event-bus-service.sent', event, msg)
