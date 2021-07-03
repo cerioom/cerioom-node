@@ -1,5 +1,6 @@
-import { RequestEnvelopeInterface, ResponseEnvelopeInterface } from '@cerioom/core'
+import { ResponseEnvelopeInterface } from '@cerioom/core'
 import { EventBusTransportInterface } from './event-bus-transport.interface'
+import { MsgInterface } from './msg.interface'
 
 
 export interface EventBusInterface {
@@ -8,7 +9,7 @@ export interface EventBusInterface {
 
     subscribe: (event: string | symbol, listener: (...args: any[]) => void) => Promise<void>
     unsubscribe: (event: string | symbol, listener: (...args: any[]) => void) => Promise<void>
-    publish: (event: string | symbol, resp: ResponseEnvelopeInterface) => Promise<void>
-    send: (event: string | symbol, resp: ResponseEnvelopeInterface) => Promise<any>
-    request: (event: string | symbol, envelope: RequestEnvelopeInterface) => Promise<ResponseEnvelopeInterface>
+    publish: (event: string | symbol, msg: MsgInterface<ResponseEnvelopeInterface>, options?: any) => Promise<void>
+    send: (event: string | symbol, msg: MsgInterface<ResponseEnvelopeInterface>, options?: any) => Promise<any>
+    request: (event: string | symbol, msg: MsgInterface<any>, options?: any) => Promise<ResponseEnvelopeInterface>
 }

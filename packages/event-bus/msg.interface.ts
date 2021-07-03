@@ -1,11 +1,8 @@
-import { ResponseEnvelopeInterface } from '@cerioom/core/index'
+import { RequestEnvelopeInterface } from '@cerioom/core'
 
 
-export interface MsgInterface {
+export interface MsgInterface<T> extends RequestEnvelopeInterface {
     kind: string
     messageId: string
-    headers: Record<string, string>
-    params: Record<string, string>
-    query: object
-    body: ResponseEnvelopeInterface
+    body: T
 }
