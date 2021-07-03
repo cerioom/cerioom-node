@@ -1,3 +1,4 @@
+import {hostname} from 'os'
 import {
     Application,
     ContextManager,
@@ -11,8 +12,7 @@ import {
     Service,
     Str
 } from '@cerioom/core'
-import {EventBusTransportInterface} from '@cerioom/event-bus'
-import {hostname} from 'os'
+import {EventBusTransportInterface, MsgInterface} from '@cerioom/event-bus'
 import {
     connect,
     ConnectionOptions,
@@ -73,7 +73,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
 
     public async request (
         event: string,
-        data: RequestEnvelopeInterface,
+        msg: MsgInterface<any>,
         options?: any
     ): Promise<ResponseEnvelopeInterface> {
         const nats = await this.getConnection()
@@ -92,18 +92,17 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             ...options,
             headers: msgHdrs,
         }
-        this.emit('cerioom.nats.event-bus.nats-transport.request:pre', {event: event, data: data, opts: opts})
-        const msg = await nats.request(event, jc.encode(data), opts)
-        const result = jc.decode(msg.data) as ResponseEnvelopeInterface
-        this.emit('cerioom.nats.event-bus.nats-transport.request:post', {event: event, data: data, opts: opts, response: [result]})
+        this.emit('cerioom.nats.event-bus.nats-transport.request:pre', {event: event, msg: msg, opts: opts})
+        const respMsg = await nats.request(event, jc.encode(msg), opts)
+        const result = jc.decode(respMsg.data) as ResponseEnvelopeInterface
+        this.emit('cerioom.nats.event-bus.nats-transport.request:post', {event: event, msg: msg, opts: opts, response: [result]})
 
         return result
     }
 
-    // @ts-ignore
     public async publish (
         event: string,
-        data: RequestEnvelopeInterface,
+        msg: MsgInterface<ResponseEnvelopeInterface>,
         options?: any,
     ): Promise<void> {
         try {
@@ -124,9 +123,9 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 headers: msgHdrs,
             }
 
-            this.emit('cerioom.nats.event-bus.nats-transport.published:pre', {event: event, data: data, opts: opts})
-            await nats.publish(event, jc.encode(data), opts)
-            this.emit('cerioom.nats.event-bus.nats-transport.published:post', {event: event, data: data, opts: opts})
+            this.emit('cerioom.nats.event-bus.nats-transport.published:pre', {event: event, msg: msg, opts: opts})
+            await nats.publish(event, jc.encode(msg), opts)
+            this.emit('cerioom.nats.event-bus.nats-transport.published:post', {event: event, msg: msg, opts: opts})
         } catch (err) {
             this.log.error({error: RuntimeError.toLog(err)})
             throw err
@@ -267,33 +266,6 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         })
     }
 
-    // protected async callbackHandler (listener, req, res, done): Promise<void> {
-    //     try {
-    //         const resp = await listener(req, res, done)
-    //
-    //         if (resp instanceof Error) {
-    //             throw resp
-    //         }
-    //         if (resp?.error instanceof Error) {
-    //             throw resp.error
-    //         }
-    //         if (res?.reply) {
-    //             await this.publish(res.reply, resp)
-    //         }
-    //         done()
-    //     } catch (err) {
-    //         if (res?.reply) {
-    //             await this.publish(res.reply, <ResponseEnvelopeInterface> {
-    //                 error: RuntimeError.toJSON(err),
-    //             })
-    //             done()
-    //         } else {
-    //             this.log.error({error: RuntimeError.toLog(err)})
-    //             done(err)
-    //         }
-    //     }
-    // }
-
     protected async getConnection (): Promise<NatsClient> {
         let nats = this.pool.get('default') ?? null
         if (nats) {
@@ -301,13 +273,6 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 await nats;
             }
         } else {
-            // nats = this.createConnection()
-            // if (!nats) {
-            //     const error = new RuntimeError('Connection failed')
-            //     this.log.error(RuntimeError.toLog(error), 'Connection failed')
-            //     throw error
-            // }
-
             const servers = this.env.config.get<string[]>('nats.connection.servers')
             const options = <ConnectionOptions>{
                 name: this.getClientId(),
@@ -342,7 +307,6 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                         // eslint-disable-next-line @typescript-eslint/no-throw-literal
                         throw err
                     }
-                    // msg.reply && nc.publish(msg.reply, msg.data)
                     msg.respond(msg.data)
                 }
                 nats?.subscribe(subject, {callback: callback})
