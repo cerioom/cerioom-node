@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/nats",
-    "version": "0.10.13",
+    "version": "0.10.14",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
