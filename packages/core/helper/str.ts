@@ -1,4 +1,5 @@
 import { BinaryToTextEncoding, createHash } from 'crypto'
+import * as _ from 'lodash'
 
 
 const escapeMap = {
@@ -81,7 +82,7 @@ export class Str {
         return `${parts[0]}${separator}${number}`
     }
 
-    public static resolveTemplate(template: string, vars: Record<string, string | number>): string {
-        return template.replace(/\${(.*?)}/g, (_, g) => String(vars[g]));
+    public static resolveTemplate(template: string, vars: object): string {
+        return template.replace(/\${(.*?)}/g, (a, key) => String(_.get(vars, key)));
     }
 }
