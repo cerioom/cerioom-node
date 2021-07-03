@@ -47,9 +47,9 @@ export function ConnectControllerMethod(): MethodDecorator {
                     result = await result
                 }
 
-                return result
+                return 'send' in args[RES] ? args[RES].send(result) : result
             } catch (err) {
-                return err
+                return typeof args[NEXT] === 'function' ? args[NEXT](err) : args[NEXT]
             }
         }
 
