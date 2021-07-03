@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.12](https://github.com/cerioom/cerioom-node/compare/v0.10.11...v0.10.12) (2021-07-03)
+
+
+### Bug Fixes
+
+* **core:** connect-controller-method.decorator supports `send` or `return` ([647b8c3](https://github.com/cerioom/cerioom-node/commit/647b8c3ad4ef68e8975fb9fca4d0a4493b73ad24))
+* **core:** Str.resolveTemplate supports nested object ([44bd519](https://github.com/cerioom/cerioom-node/commit/44bd51964b6cde376d51666e1a820add79b9afd7))
+* **event-bus:** resource-event-trigger.decorator auto publish method result ([fe3ea6d](https://github.com/cerioom/cerioom-node/commit/fe3ea6d47a2f9cdad316056f61cae75003e64e67))
+* **nats:** handling headers for nats.transport ([df14f80](https://github.com/cerioom/cerioom-node/commit/df14f802ce627cd21a305272096ce46a1ada337d))
+* **packages:** bump ([5e10a32](https://github.com/cerioom/cerioom-node/commit/5e10a321b2ac4918a0a8c98e04841e9be9c4ca95))
+
+
+
+
+
 ## [0.10.11](https://github.com/cerioom/cerioom-node/compare/v0.10.9...v0.10.11) (2021-06-23)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.12](https://github.com/cerioom/cerioom-node/compare/v0.10.11...v0.10.12) (2021-07-03)
+
+
+### Bug Fixes
+
+* **event-bus:** resource-event-trigger.decorator auto publish method result ([fe3ea6d](https://github.com/cerioom/cerioom-node/commit/fe3ea6d47a2f9cdad316056f61cae75003e64e67))
+* **packages:** bump ([5e10a32](https://github.com/cerioom/cerioom-node/commit/5e10a321b2ac4918a0a8c98e04841e9be9c4ca95))
+
+
+
+
+
 ## [0.10.11](https://github.com/cerioom/cerioom-node/compare/v0.10.9...v0.10.11) (2021-06-23)
 
 
