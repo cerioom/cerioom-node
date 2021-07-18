@@ -18,7 +18,7 @@ export function ResourceEventTrigger () {
             const resource = Reflect.getMetadata('resourceEvent:resourceName', this.constructor)
             const action = Reflect.getMetadata('resourceEvent:actionName', target.constructor, propertyKey)
             const maskFields = Reflect.getMetadata('security:maskFields', target.constructor, propertyKey)
-            const event = Str.resolveTemplate(format, {resource: resource, action: action, tenantId: tenantId})
+            const event = Str.resolveTemplate(format || '', {resource: resource, action: action, tenantId: tenantId})
 
             try {
                 let result = originalMethod.apply(this, args)
@@ -26,7 +26,7 @@ export function ResourceEventTrigger () {
                     result = await result
                 }
 
-                if (eventBus && 'publish' in eventBus) {
+                if (event && eventBus && 'publish' in eventBus) {
                     let eventPayload = {data: result}
                     if (maskFields?.length) {
                         eventPayload = {
@@ -42,7 +42,7 @@ export function ResourceEventTrigger () {
                 return result
             } catch (err) {
                 this.log.error({error: RuntimeError.toLog(err)})
-                if (eventBus && 'publish' in eventBus) {
+                if (event && eventBus && 'publish' in eventBus) {
                     let eventPayload = {data: args}
                     if (maskFields?.length) {
                         eventPayload = {
