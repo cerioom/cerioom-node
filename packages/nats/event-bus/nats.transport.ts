@@ -80,7 +80,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         const jc = JSONCodec()
         const msgHdrs = headers()
         const contextHeaders = this.contextManager.makeHeaders(this.context)
-        const incomingHeaders = {...contextHeaders, ...options.headers}
+        const incomingHeaders = options?.headers ? {...contextHeaders, ...options.headers} : contextHeaders
         for (const key of Object.keys(incomingHeaders)) {
             if (incomingHeaders[key] !== undefined) {
                 msgHdrs.append(key, incomingHeaders[key])
@@ -110,7 +110,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             const jc = JSONCodec()
             const msgHdrs = headers()
             const contextHeaders = this.contextManager.makeHeaders(this.context)
-            const incomingHeaders = {...contextHeaders, ...options.headers}
+            const incomingHeaders = options?.headers ? {...contextHeaders, ...options.headers} : contextHeaders
             for (const key of Object.keys(incomingHeaders)) {
                 if (incomingHeaders[key] !== undefined) {
                     msgHdrs.append(key, incomingHeaders[key])
