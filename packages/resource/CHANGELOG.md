@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.15](https://github.com/cerioom/cerioom-node/compare/v0.10.14...v0.10.15) (2021-07-29)
+
+**Note:** Version bump only for package @cerioom/resource
+
+
+
+
+
 ## [0.10.12](https://github.com/cerioom/cerioom-node/compare/v0.10.11...v0.10.12) (2021-07-03)
 
 

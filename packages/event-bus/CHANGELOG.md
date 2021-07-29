@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.15](https://github.com/cerioom/cerioom-node/compare/v0.10.14...v0.10.15) (2021-07-29)
+
+
+### Bug Fixes
+
+* **event-bus:** change resource-event-trigger.decorator.ts ([3e7edae](https://github.com/cerioom/cerioom-node/commit/3e7edae284d49737363622e6b1130e28e60e8203))
+* **event-bus:** request fn definition ([c495657](https://github.com/cerioom/cerioom-node/commit/c495657fbf141adfb9e6b26d61689b24f013fa3f))
+
+
+
+
+
 ## [0.10.13](https://github.com/cerioom/cerioom-node/compare/v0.10.12...v0.10.13) (2021-07-03)
 
 
