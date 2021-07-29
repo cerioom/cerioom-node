@@ -1,8 +1,6 @@
-import * as _ from 'lodash'
-import { ResponseEnvelopeInterface, RuntimeError, Service, Str } from '@cerioom/core'
+import { RequestEnvelopeInterface, ResponseEnvelopeInterface, RuntimeError, Service, Str } from '@cerioom/core'
 import { EventBusTransportInterface } from './event-bus-transport.interface'
 import { EventBusInterface } from './event-bus.interface'
-import { MsgInterface } from './msg.interface'
 
 
 // https://moleculer.services/docs/0.12/transporters.html
@@ -49,10 +47,10 @@ export class EventBusService extends Service implements EventBusInterface {
         this.emit('cerioom.event-bus.event-bus-service.sent', event, msg)
     }
 
-    public async request(event: string | symbol, msg: MsgInterface<any>, options?: any): Promise<any> {
+    public async request(event: string | symbol, msg: RequestEnvelopeInterface, options?: any): Promise<any> {
         const promises: any[] = []
         this.transports.forEach(transport => {
-            promises.push(transport.request(event, {...msg, kind: transport.kind, route: String(event), messageId: Str.random()}, options))
+            promises.push(transport.request(event, {...msg, body: msg.body, kind: transport.kind, route: String(event), messageId: Str.random()}, options))
         })
 
         const results = await Promise.all(promises)
