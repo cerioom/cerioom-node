@@ -83,6 +83,6 @@ export class Str {
     }
 
     public static resolveTemplate(template: string, vars: object): string {
-        return template.replace(/\${(.*?)}/g, (a, key) => String(_.get(vars, key)));
+        return (template || '').replace(/\${(.*?)}/g, (a, key) => String(_.get(vars, key)));
     }
 }
