@@ -10,7 +10,9 @@ export function ConnectExceptionHandler() {
 
                 return result
             } catch (e) {
-                args[2](e) // todo
+                if (typeof args[2] === 'function') {
+                    args[2](e)
+                }
             }
         }
     }
