@@ -244,19 +244,18 @@ export class NatsTransport extends Service implements EventBusTransportInterface
             body: {},
         }
         const req = Object.assign({}, initialRequest, JSONCodec().decode(msg.data), {headers: headers})
-        const natsTransport = this
         const res: any = {
             headers: {},
             reply: msg.reply,
         }
 
         res.setHeader = function (key, value) {
-            this.headers[key] = value
+            res.headers[key] = value
         }.bind(this)
 
         res.send = async function (data: any) {
             if (msg.reply) {
-                await natsTransport.publish(msg.reply, data)
+                await this.publish(msg.reply, data)
                 msg.reply = undefined
             }
         }.bind(this)
