@@ -256,11 +256,10 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         res.send = async function (data: any) {
             if (msg.reply) {
                 await this.publish(msg.reply, data)
-                msg.reply = undefined
             }
         }.bind(this)
 
-        res.json = this.send.bind(this)
+        res.json = res.send.bind(this)
 
 
         DI.get(ContextManager).setContext(ContextScope.REQUEST, () => {
