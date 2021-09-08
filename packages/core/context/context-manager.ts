@@ -116,11 +116,11 @@ export class ContextManager implements ContextManagerInterface {
     }
 
     /**
-     * Make headers from context
+     * Make headers for transport layer (http / nats / ...)
      */
-    public makeHeaders(context: ContextInterface): Record<string, string> {
-        return Object.keys(context).reduce((prev, key) => {
-            const value = context[key] // todo js serialize
+    public makeHeaders(headers: Record<string, any>): Record<string, string> {
+        return Object.keys(headers).reduce((prev, key) => {
+            const value = headers[key] // todo js serialize
             const serializer = this.serializersRepository.get(key)
             if (serializer) {
                 prev = {...prev, ...serializer.serialize(value)}
@@ -135,7 +135,7 @@ export class ContextManager implements ContextManagerInterface {
     }
 
     /**
-     * Make context from headers
+     * Make context from headers of transport layer
      */
     public makeContext(headers: Record<string, string>): ContextInterface {
         const data = Object.keys(headers).reduce((prev, key) => {
