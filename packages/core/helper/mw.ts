@@ -32,7 +32,7 @@ export class Mw extends EventEmitter {
         return this.properties[key]
     }
 
-    public use (nextFn: Middleware) {
+    public use (nextFn: Middleware): this {
         if (isErrorMiddleware(nextFn)) {
             const prevent = this.finalize.bind({})
             this.finalize = (e, request, response, next) => prevent(e, request, response, () => {
@@ -51,6 +51,8 @@ export class Mw extends EventEmitter {
                 })
             })
         }
+
+        return this
     }
 
     public run (
