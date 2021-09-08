@@ -174,7 +174,7 @@ export class NatsTransport extends Service implements EventBusTransportInterface
                 if (result?.error instanceof Error) {
                     throw result.error
                 }
-                if (res?.reply) {
+                if (result !== undefined && res?.reply) {
                     await this.publish(res.reply, result)
                 }
                 done()
@@ -248,16 +248,21 @@ export class NatsTransport extends Service implements EventBusTransportInterface
         const res: any = {
             headers: {},
             reply: msg.reply,
-            setHeader: function (key, value) {
-                this.headers[key] = value
-            },
-            send: async function (data: any) {
-                if (msg.reply) {
-                    await natsTransport.publish(msg.reply, data)
-                }
-            },
-            json: this.send
         }
+
+        res.setHeader = function (key, value) {
+            this.headers[key] = value
+        }.bind(this)
+
+        res.send = async function (data: any) {
+            if (msg.reply) {
+                await natsTransport.publish(msg.reply, data)
+                msg.reply = undefined
+            }
+        }.bind(this)
+
+        res.json = this.send.bind(this)
+
 
         DI.get(ContextManager).setContext(ContextScope.REQUEST, () => {
             this.log.info({}, 'request start')
