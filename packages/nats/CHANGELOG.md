@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.17](https://github.com/cerioom/cerioom-node/compare/v0.10.16...v0.10.17) (2021-09-08)
+
+
+### Bug Fixes
+
+* **nats:** fix ([51b8498](https://github.com/cerioom/cerioom-node/commit/51b8498f73d724240f0a137b7902aaebd47ef111))
+
+
+
+
+
 ## [0.10.16](https://github.com/cerioom/cerioom-node/compare/v0.10.15...v0.10.16) (2021-08-07)
 
 
