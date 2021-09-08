@@ -225,11 +225,12 @@ export class NatsTransport extends Service implements EventBusTransportInterface
     }
 
     protected callback (err: NatsError | null, msg: Msg): void {
-        const headers = {}
+        let headers = {}
         if (msg.headers) {
-            for (const [key] of msg.headers) {
-                headers[`x-${key}`] = msg.headers.get(key)
+            for(const [key] of msg.headers) {
+                headers[key] = msg.headers.get(key)
             }
+            headers = this.contextManager.makeHeaders(headers)
         }
 
         const initialRequest = <RequestEnvelopeInterface> {
