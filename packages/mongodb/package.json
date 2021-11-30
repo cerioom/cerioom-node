@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/mongodb",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -28,9 +28,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/cache": "^0.11.0",
-        "@cerioom/core": "^0.11.0",
-        "@cerioom/resource": "^0.11.0",
+        "@cerioom/cache": "^0.11.1",
+        "@cerioom/core": "^0.11.1",
+        "@cerioom/resource": "^0.11.1",
         "mongodb": "^3.6.9"
     },
     "devDependencies": {

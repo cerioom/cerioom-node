@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/phone-number",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.11.0",
+        "@cerioom/core": "^0.11.1",
         "google-libphonenumber": "^3.2.16"
     },
     "gitHead": "f72974a23cc1eda7858f72b4d9d3555c80caa210"
