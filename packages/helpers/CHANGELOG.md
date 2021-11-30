@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/cerioom/cerioom-node/compare/v0.11.1...v0.12.0) (2021-11-30)
+
+
+### Features
+
+* **helpers:** add types ([c5332a7](https://github.com/cerioom/cerioom-node/commit/c5332a7e510cf59bbeab025d386281bc57acaff2))
+
+
+
+
+
 ## [0.11.1](https://github.com/cerioom/cerioom-node/compare/v0.11.0...v0.11.1) (2021-11-30)
 
 
