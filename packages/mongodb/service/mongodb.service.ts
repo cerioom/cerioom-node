@@ -1,21 +1,11 @@
 // https://thecodebarbarian.com/managing-connections-with-the-mongodb-node-driver.html
 import { Application, DI, Env, Service } from '@cerioom/core'
-import {
-    Db,
-    DbCreateOptions,
-    HighAvailabilityOptions,
-    MongoClient,
-    MongoClientOptions,
-    ReadPreference,
-    ServerOptions,
-    SocketOptions,
-    SSLOptions,
-    UnifiedTopologyOptions
-} from 'mongodb'
+import { Db, MongoClient, MongoClientOptions, ReadPreference, } from 'mongodb'
 import { ConnectionIdentifier } from './connection.identifier'
 
 
-const dbCreateOptions = <DbCreateOptions> {
+const defaultOptions = <MongoClientOptions> {
+    // dbCreateOptions,
     forceServerObjectId: true,
     pkFactory: {
         // createPk: () => UUID.v1(),
@@ -31,34 +21,28 @@ const dbCreateOptions = <DbCreateOptions> {
      * Now We will use PRIMARY_PREFERRED (because primary can be dead)
      */
     readPreference: ReadPreference.PRIMARY_PREFERRED,
-}
 
-const unifiedTopologyOptions: UnifiedTopologyOptions = {
-    useUnifiedTopology: true,
-    maxPoolSize: 1_000,
-    minPoolSize: 5,
-}
+    // highAvailabilityOptions,
+    ha: true,
+    haInterval: 10_000,
+    domainsEnabled: false,
 
-const sslOptions: SSLOptions = {
+    // serverOptions,
     poolSize: 100,
-}
 
-const socketOptions: SocketOptions = {
+    // socketOptions,
     noDelay: true,
     keepAlive: true,
     keepAliveInitialDelay: 30_000,
     connectTimeoutMS: 10_000,
     socketTimeoutMS: 60_000,
-}
 
-const serverOptions = <ServerOptions> {
-    haInterval: 10_000,
-}
+    // unifiedTopologyOptions,
+    useUnifiedTopology: true,
+    maxPoolSize: 1_000,
+    minPoolSize: 5,
 
-const highAvailabilityOptions = <HighAvailabilityOptions> {
-    ha: true,
-    haInterval: 10_000,
-    domainsEnabled: false,
+    useNewUrlParser: true,
 }
 
 const connectionsParams = new Map<string, [string, MongoClientOptions]>()
@@ -130,17 +114,6 @@ export class MongodbService extends Service {
         }
 
         const envConfig = DI.get(Env).config
-
-        const defaultOptions = <MongoClientOptions> {
-            ...dbCreateOptions,
-            ...highAvailabilityOptions,
-            ...serverOptions,
-            ...socketOptions,
-            ...sslOptions,
-            ...unifiedTopologyOptions,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }
 
         const options = <MongoClientOptions & {schema?: string, servers?: string | string[]}> {
             ...defaultOptions,
