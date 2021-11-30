@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/cerioom/cerioom-node/compare/v0.12.1...v0.12.2) (2021-11-30)
+
+
+### Bug Fixes
+
+* **flake-id:** use @cerioom/helpers ([0d5e436](https://github.com/cerioom/cerioom-node/commit/0d5e436e2e8d45fbcd1a589cceba3d81489b815f))
+* **helpers:** add new charset to Str ([4ffe728](https://github.com/cerioom/cerioom-node/commit/4ffe72829ef44a62991f51f0ef262d476ca2d9db))
+
+
+
+
+
 ## [0.12.1](https://github.com/cerioom/cerioom-node/compare/v0.12.0...v0.12.1) (2021-11-30)
 
 

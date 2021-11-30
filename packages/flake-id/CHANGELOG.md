@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/cerioom/cerioom-node/compare/v0.12.1...v0.12.2) (2021-11-30)
+
+
+### Bug Fixes
+
+* **flake-id:** use @cerioom/helpers ([0d5e436](https://github.com/cerioom/cerioom-node/commit/0d5e436e2e8d45fbcd1a589cceba3d81489b815f))
+
+
+
+
+
 # [0.12.0](https://github.com/cerioom/cerioom-node/compare/v0.11.1...v0.12.0) (2021-11-30)
 
 **Note:** Version bump only for package @cerioom/flake-id
