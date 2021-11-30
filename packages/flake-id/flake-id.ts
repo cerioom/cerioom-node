@@ -1,4 +1,4 @@
-import { CharSet, UniqueIdInterface } from '@cerioom/core'
+import { CharSet, UniqueIdInterface } from '@cerioom/helpers'
 import FlakeIdGen from 'flake-idgen'
 import convertBase = require('bigint-base-converter')
 
