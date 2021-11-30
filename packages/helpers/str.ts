@@ -12,11 +12,21 @@ const escapeMap = {
 }
 
 export enum CharSet {
-    NUM = '0123456789',
-    ALPHA = 'abcdefghijklmnopqrstuvwxyz',
+    ALNUM = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    DIGIT = '0123456789',
+    LOWER = 'abcdefghijklmnopqrstuvwxyz',
+    PUNCT =  '!"\\#$%&\'()*+,\\-./:;<=>?@\\[\\]^_‘{|}~',
+    SPACE =  ' \\t\\r\\n\\v\\f',
+    UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    WORD = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_',
+    XDIGIT = '0123456789abcdefABCDEF',
     B16 = '0123456789abcdef',
+    B16_UPPER = '0123456789ABCDEF',
     B36 = '0123456789abcdefghijklmnopqrstuvwxyz',
-    B62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    B38 = '0123456789abcdefghijklmnopqrstuvwxyz-_',
+    B36_UPPER = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    B38_UPPER = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_',
     B64 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_',
 }
 
@@ -34,7 +44,7 @@ export class Str {
         return [...new Set(array)]
     }
 
-    public static random(length = 10, chars: CharSet | string = CharSet.B62): string {
+    public static random(length = 10, chars: CharSet | string = CharSet.ALNUM): string {
         const base = [...chars]
         // eslint-disable-next-line no-bitwise
         return [...Array(length)].map((_) => base[Math.random() * base.length | 0]).join('')
