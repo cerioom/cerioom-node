@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/helpers",
-    "version": "0.0.1",
+    "version": "0.11.0",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -30,8 +30,6 @@
         "lodash": "^4.17.21",
         "reflect-metadata": "^0.1.13",
         "shamirs-secret-sharing": "^1.0.1"
-    },
-    "devDependencies": {
     },
     "gitHead": ""
 }
