@@ -1,3 +1,4 @@
+export * from './mixin'
 export * from './mw'
 export * from './num'
 export * from './random'
