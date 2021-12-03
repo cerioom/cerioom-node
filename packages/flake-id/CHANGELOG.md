@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/cerioom/cerioom-node/compare/v0.12.2...v0.13.0) (2021-12-03)
+
+
+### Bug Fixes
+
+* **helpers:** remove types from index ([be6f867](https://github.com/cerioom/cerioom-node/commit/be6f86764fdf7e7b7b5ff46237271d48426f1f69))
+
+
+
+
+
 ## [0.12.2](https://github.com/cerioom/cerioom-node/compare/v0.12.1...v0.12.2) (2021-11-30)
 
 
