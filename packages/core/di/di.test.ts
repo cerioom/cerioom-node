@@ -16,6 +16,5 @@ describe('DI', () => {
         expect(DI.get('string')).toBe(1)
         expect(DI.get(Symbol('symbol'))).toBe(2)
         expect(DI.get(() => {})).toBe(3)
-        expect(1).toBe(1)
     })
 })

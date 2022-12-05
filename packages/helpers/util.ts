@@ -1,4 +1,4 @@
-const SEMVER_REGEX = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/
+const SEMVER_REGEX = /^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(?:-(?<suffix>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/
 
 
 export interface ParsedVersionInterface {
@@ -7,9 +7,11 @@ export interface ParsedVersionInterface {
     major: number
     minor: number
     patch: number
+    suffix: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+type AnyFunction = (...args: any[]) => any
+
 export class Util {
 
     public static async sleep(ms: number): Promise<void> {
@@ -19,11 +21,14 @@ export class Util {
     /**
      * @link https://github.com/icodeforlove/npm_atmpt
      */
-    public static async attempt(func: Function, config: any = {}): Promise<any> {
-        const delay = config.delay || 30
-        const maxAttempts = config.maxAttempts || 2
+    public static async attempt<T>(
+        func: AnyFunction,
+        config: { maxAttempts?: number; delay?: AnyFunction | number } = {}
+    ): Promise<T> {
+        const delay = config.delay || 0
+        const maxAttempts = config.maxAttempts || 1
 
-        return await (async(): Promise<any> => {
+        return await (async (): Promise<any> => {
             let attempts = 0
 
             do {
@@ -47,30 +52,33 @@ export class Util {
             .map(_ => arr.splice(0, chunkSize))
     }
 
-    public static toBoolean(val: string | number | null): boolean {
+    public static toBoolean(val: string | number | boolean | null): boolean {
         const list: {[key: string]: boolean | undefined} = {
+            '+': true,
             on: true,
             true: true,
             1: true,
             yes: true,
+            '-': false,
             off: false,
             false: false,
             0: false,
             no: false,
-            null: false
+            null: false,
         }
         return list[String(val).toLowerCase()] ?? false
     }
 
     public static parseVersion(version: string): ParsedVersionInterface {
-        if (!SEMVER_REGEX.test(version)) {
+        const m = version.match(SEMVER_REGEX)
+        if (!m || !m.groups) {
             throw new Error(`Unsupported version format "${version}"`)
         }
 
-        const [major, minor, patch] = version.split('.').map(Number)
+        const [major, minor, patch] = [m.groups.major, m.groups.minor, m.groups.patch].map(Number)
         const number = major * 1_000_000 + minor * 1_000 + patch
 
-        return {version: version, number: number, major: major, minor: minor, patch: patch}
+        return {version: version, number: number, major: major, minor: minor, patch: patch, suffix: m.groups.suffix}
     }
 
     public static ifEmpty(fn) {
@@ -84,27 +92,27 @@ export class Util {
     }
 
     public static castValue(value: any) {
-        const bool = ['false', 'true'];
-        const json = '{[';
+        const bool = ['false', 'true']
+        const json = '{['
 
-        const numb = Number(value);
+        const num = Number(value)
         if (value === null) {
             // skip transformation
-        } else if (!Number.isNaN(numb)) {
-            value = numb;
+        } else if (!Number.isNaN(num)) {
+            value = num
         } else if (bool.indexOf(value) > -1) {
-            value = value === 'true';
+            value = value === 'true'
         } else if (value === 'null') {
-            value = null;
+            value = null
         } else if (value === 'undefined' || value === undefined) {
-            value = undefined;
+            value = undefined
         } else if (typeof value === 'string' && json.indexOf(value.trim()[0]) > -1) {
             try {
-                value = JSON.parse(value);
+                value = JSON.parse(value)
             } catch (e) {
             }
         }
 
-        return value;
+        return value
     }
 }
