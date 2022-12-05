@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.1](https://github.com/cerioom/cerioom-node/compare/v0.13.0...v0.13.1) (2022-12-05)
+
+
+### Bug Fixes
+
+* **helpers:** refactor Util ([d07cef9](https://github.com/cerioom/cerioom-node/commit/d07cef9132220a5db895f4bd3df7cfc1c98ef79d))
+
+
+
+
+
 # [0.13.0](https://github.com/cerioom/cerioom-node/compare/v0.12.2...v0.13.0) (2021-12-03)
 
 
