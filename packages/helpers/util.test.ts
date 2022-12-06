@@ -98,4 +98,15 @@ describe('util', () => {
         expect(Util.castValue('{"a":1}')).toEqual({a: 1})
         expect(Util.castValue('["a", 1]')).toEqual(['a', 1])
     })
+
+    it ('should extract values', () => {
+        const obj = {
+            a: 1,
+            b: {
+                c: 2
+            }
+        }
+        expect(Util.subset(obj, ['b'])).toEqual({a: 1})
+        expect(Util.subset(obj, ['b.c'])).toEqual(obj)
+    })
 })

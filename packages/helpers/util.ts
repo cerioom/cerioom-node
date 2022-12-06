@@ -115,4 +115,12 @@ export class Util {
 
         return value
     }
+
+    /**
+     * This function is used to extract the value from the object by the key. It does not support nested keys.
+     * If you need to use nested keys, use the `lodash.get` function.
+     */
+    public static subset(obj: object, extract: string[]): object {
+        return Object.fromEntries(Object.entries(obj).filter(([key]) => !extract.includes(key)))
+    }
 }
