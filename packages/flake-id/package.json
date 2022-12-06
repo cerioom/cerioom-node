@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/flake-id",
-    "version": "0.13.1",
+    "version": "0.13.2",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/helpers": "^0.13.1",
+        "@cerioom/helpers": "^0.13.2",
         "bigint-base-converter": "^0.1.3",
         "flake-idgen": "^1.4.0"
     },
