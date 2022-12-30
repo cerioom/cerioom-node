@@ -1,3 +1,6 @@
+import { createHash } from 'crypto'
+
+
 const SEMVER_REGEX = /^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(?:-(?<suffix>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/
 
 
@@ -23,7 +26,7 @@ export class Util {
      */
     public static async attempt<T>(
         func: AnyFunction,
-        config: { maxAttempts?: number; delay?: AnyFunction | number } = {}
+        config: {maxAttempts?: number; delay?: AnyFunction | number} = {},
     ): Promise<T> {
         const delay = config.delay || 0
         const maxAttempts = config.maxAttempts || 1
@@ -122,5 +125,38 @@ export class Util {
      */
     public static subset(obj: object, extract: string[]): object {
         return Object.fromEntries(Object.entries(obj).filter(([key]) => !extract.includes(key)))
+    }
+
+    /**
+     * @link: https://en.gravatar.com/site/implement/images/
+     * @param email
+     * @param size
+     */
+    public static gravatar(email: string, size = 80): string {
+        const hash = createHash('md5').update(email).digest('hex')
+        return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=mp`
+    }
+
+    public static deepObjectSort(unordered, sortArrays = true) {
+        if (!unordered || typeof unordered !== 'object') {
+            return unordered
+        }
+
+        if (Array.isArray(unordered)) {
+            const newArr = unordered.map((item) => Util.deepObjectSort(item, sortArrays))
+            if (sortArrays) {
+                newArr.sort()
+            }
+            return newArr
+        }
+
+        const ordered = {}
+        Object.keys(unordered)
+            .sort()
+            .forEach((key) => {
+                ordered[key] = Util.deepObjectSort(unordered[key], sortArrays)
+            })
+
+        return ordered
     }
 }
