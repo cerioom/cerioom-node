@@ -47,11 +47,15 @@ export class Str {
     public static random(length = 10, chars: CharSet | string = CharSet.ALNUM): string {
         const base = [...chars]
         // eslint-disable-next-line no-bitwise
-        return [...Array(length)].map((_) => base[Math.random() * base.length | 0]).join('')
+        return [...Array(length)].map(() => base[Math.random() * base.length | 0]).join('')
     }
 
     public static hash(str: string, encoding: BinaryToTextEncoding = 'base64', algorithm: 'sha1' | 'sha256' | 'md5' = 'sha1'): string {
         return createHash(algorithm).update(str).digest(encoding)
+    }
+
+    public static md5(text: string) {
+        return Str.hash(text, 'hex', 'md5')
     }
 
     public static isDate(date: string): boolean {
@@ -109,5 +113,34 @@ export class Str {
         }
 
         return template.replace(resolveTemplatePhCache.get(ph), resolveTemplateReplacer(vars))
+    }
+
+    /**
+     * Alias
+     */
+    public static padLeft(text: string, length: number, char = ' ') {
+        return Str.pad(length, text, char)
+    }
+
+    public static pad(text: string | number, length: number | string, char = ' ') {
+        const invert = typeof text === 'number'
+        if(invert){
+            [length, text] = [text, length]
+        }
+
+        if(!(typeof text === 'string')){
+            text = text.toString()
+        }
+
+        length = length as number - text.length
+        if (length < 0) {
+            length = 0
+        }
+
+        const pad = char.repeat(length)
+
+        return invert
+            ? pad + text
+            : text + pad
     }
 }

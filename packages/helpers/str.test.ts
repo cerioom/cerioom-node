@@ -35,4 +35,16 @@ describe('str', () => {
             expect(Str.resolveTemplate(template, data, ['\\[\\[', '\\]\\]'])).toBe('Hello world!')
         }
     })
+
+    it('should pad string right', () => {
+        expect(Str.pad('a', 5)).toBe('a    ')
+        expect(Str.pad('abc', 5, 'x')).toBe('abcxx')
+        expect(Str.pad('abcdef', 5, 'x')).toBe('abcdef')
+    })
+
+    it('should pad string left', () => {
+        expect(Str.pad(5, 'ab')).toBe('   ab')
+        expect(Str.pad(5, 'a', 'x')).toBe('xxxxa')
+        expect(Str.padLeft('a', 5, 'x')).toBe('xxxxa')
+    })
 })
