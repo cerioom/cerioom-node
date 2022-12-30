@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/cerioom/cerioom-node/compare/v0.13.0...v0.15.0) (2022-12-30)
+
+
+### Bug Fixes
+
+* **helpers:** refactor Util ([d07cef9](https://github.com/cerioom/cerioom-node/commit/d07cef9132220a5db895f4bd3df7cfc1c98ef79d))
+
+
+
+
+
 # [0.14.0](https://github.com/cerioom/cerioom-node/compare/v0.13.2...v0.14.0) (2022-12-30)
 
 **Note:** Version bump only for package @cerioom/phone-number
