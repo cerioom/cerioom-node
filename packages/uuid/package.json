@@ -1,6 +1,6 @@
 {
     "name": "@cerioom/uuid",
-    "version": "0.13.0",
+    "version": "0.14.0",
     "description": "",
     "author": "Sergey Ilin <sergilyin@gmail.com>",
     "license": "MIT",
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@cerioom/core": "^0.13.0",
+        "@cerioom/core": "^0.14.0",
         "uuid": "^8.3.2"
     },
     "gitHead": "083bd7641d00077f6bd3f3fe21d92170301d4a96"
