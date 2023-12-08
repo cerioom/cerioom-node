@@ -143,4 +143,11 @@ export class Str {
             ? pad + text
             : text + pad
     }
+
+    public static sanitizeCodename(name: string): string {
+        return name
+            .replace(/^[^a-z0-9]*/i, '')
+            .replace(/[^a-z0-9]*$/i, '')
+            .replace(/[^a-z0-9\-._]/gi, '')
+    }
 }

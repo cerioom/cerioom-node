@@ -47,4 +47,8 @@ describe('str', () => {
         expect(Str.pad(5, 'a', 'x')).toBe('xxxxa')
         expect(Str.padLeft('a', 5, 'x')).toBe('xxxxa')
     })
+
+    it('should sanitize codename', () => {
+        expect(Str.sanitizeCodename('-1@as.c-f_fgZ.')).toBe('1as.c-f_fgZ')
+    })
 })
