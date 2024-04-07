@@ -36,7 +36,7 @@ export class Util {
 
             do {
                 try {
-                    return func(attempts)
+                    return func.constructor.name === 'AsyncFunction' ? await func(attempts) : func(attempts)
                 } catch (error) {
                     if (attempts >= maxAttempts) {
                         throw error
